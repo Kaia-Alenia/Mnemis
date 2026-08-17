@@ -1,0 +1,5 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/database">
+    <file alias="migrations/V001_initial.sql">database/migrations/V001_initial.sql</file>
+</qresource>
+</RCC>
