@@ -64,6 +64,10 @@ public:
         m_playbackRate = rate;
     }
 
+    void* getNativePlayer() const override {
+        return nullptr;
+    }
+
     // Simulation controls
     void setShouldFailLoad(bool fail) { m_shouldFailLoad = fail; }
     void setSimulatedDuration(double duration) { m_simulatedDuration = duration; }

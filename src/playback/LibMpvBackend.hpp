@@ -26,6 +26,7 @@ public:
     void seek(double positionSecs) override;
     void setVolume(double value) override;
     void setPlaybackRate(double rate) override;
+    void* getNativePlayer() const override;
 
     // Call this repeatedly from a UI event loop or timer to process events
     // In a real Qt app, we would use mpv_set_wakeup_callback and QMetaObject::invokeMethod.

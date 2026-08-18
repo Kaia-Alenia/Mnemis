@@ -54,10 +54,17 @@ void ViewerViewModel::setContext(MediaListContext* context) {
 QString ViewerViewModel::mediaId() const { return m_mediaId; }
 QString ViewerViewModel::canonicalPath() const { return m_canonicalPath; }
 QString ViewerViewModel::title() const { return m_title; }
+QString ViewerViewModel::currentType() const { return m_currentType; }
 qint64 ViewerViewModel::fileSize() const { return m_fileSize; }
 QSize ViewerViewModel::resolution() const { return m_resolution; }
 bool ViewerViewModel::isFavorite() const { return m_isFavorite; }
 AnimatedMediaController* ViewerViewModel::animatedController() const { return m_animatedController; }
+
+void ViewerViewModel::open(const QString& mediaId) {
+    if (m_context) {
+        m_context->open(mediaId, -1);
+    }
+}
 
 QString ViewerViewModel::imageState() const {
     switch (m_imageState) {
@@ -238,10 +245,29 @@ void ViewerViewModel::onMediaItemLoaded(int generation, bool isSuccess, std::opt
     m_isFavorite = mediaItem.favorite;
     emit isFavoriteChanged();
 
+    // Derive currentType from MediaType — critical for QML visibility binding
+    using core::models::MediaType;
+    switch (mediaItem.mediaType) {
+        case MediaType::Video:
+        case MediaType::Audio:
+            m_currentType = QStringLiteral("video");
+            break;
+        case MediaType::Gif:
+        case MediaType::AnimatedWebP:
+        case MediaType::APNG:
+            m_currentType = QStringLiteral("animated");
+            break;
+        case MediaType::Image:
+        default:
+            m_currentType = QStringLiteral("image");
+            break;
+    }
+    emit currentTypeChanged();
+
     m_imageState = ImageState::Ready;
     emit imageStateChanged();
-    
-    // Attempt to load as animated media
+
+    // Load animated media controller (no-op for static images)
     m_animatedController->loadMedia(m_canonicalPath);
 }
 

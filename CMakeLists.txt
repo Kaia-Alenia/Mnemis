@@ -16,7 +16,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick Sql)
 find_package(PkgConfig REQUIRED)
 find_package(SQLite3 REQUIRED)
 pkg_check_modules(MPV REQUIRED IMPORTED_TARGET mpv)
-pkg_check_modules(FFMPEG REQUIRED IMPORTED_TARGET libavformat libavcodec libavutil)
+pkg_check_modules(FFMPEG REQUIRED IMPORTED_TARGET libavformat libavcodec libavutil libswscale)
 
 # FetchContent for taglib
 include(FetchContent)

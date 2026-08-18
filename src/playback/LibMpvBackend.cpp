@@ -212,4 +212,8 @@ void LibMpvBackend::updateTracks() {
     m_delegate->onTracksChanged(audioTracks, subtitleTracks);
 }
 
+void* LibMpvBackend::getNativePlayer() const {
+    return m_mpv;
+}
+
 } // namespace mnemis::playback

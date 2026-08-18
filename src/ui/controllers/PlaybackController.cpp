@@ -61,6 +61,13 @@ bool PlaybackController::isBuffering() const { return m_isBuffering; }
 QString PlaybackController::currentMedia() const { return m_currentMedia; }
 QString PlaybackController::error() const { return m_error; }
 
+void* PlaybackController::getNativePlayer() const {
+    if (m_engine) {
+        return m_engine->getNativePlayer();
+    }
+    return nullptr;
+}
+
 QVariantList PlaybackController::audioTracks() const { return m_audioTracks; }
 QVariantList PlaybackController::subtitleTracks() const { return m_subtitleTracks; }
 

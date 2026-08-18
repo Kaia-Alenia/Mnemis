@@ -62,7 +62,7 @@ protected:
         migrator.runMigrations();
 
         repo = std::make_shared<SQLiteMediaRepository>(*conn);
-        fs = std::make_shared<StdFileSystem>(logger);
+        fs = std::make_shared<StdFileSystem>(logger.get());
 
         auto composite = std::make_unique<CompositeMetadataExtractor>();
         composite->addExtractor(std::make_unique<StbImageExtractor>());

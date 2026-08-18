@@ -19,6 +19,7 @@ class ViewerViewModel : public QObject {
     Q_PROPERTY(QString mediaId READ mediaId NOTIFY mediaIdChanged)
     Q_PROPERTY(QString canonicalPath READ canonicalPath NOTIFY canonicalPathChanged)
     Q_PROPERTY(QString title READ title NOTIFY titleChanged)
+    Q_PROPERTY(QString currentType READ currentType NOTIFY currentTypeChanged)
     Q_PROPERTY(qint64 fileSize READ fileSize NOTIFY fileSizeChanged)
     Q_PROPERTY(QSize resolution READ resolution NOTIFY resolutionChanged)
     Q_PROPERTY(bool isFavorite READ isFavorite NOTIFY isFavoriteChanged)
@@ -48,6 +49,7 @@ public:
     QString mediaId() const;
     QString canonicalPath() const;
     QString title() const;
+    QString currentType() const;
     qint64 fileSize() const;
     QSize resolution() const;
     bool isFavorite() const;
@@ -57,6 +59,7 @@ public:
     AnimatedMediaController* animatedController() const;
 
 public slots:
+    void open(const QString& mediaId);
     void rotate(int degrees);
     void toggleFavorite();
 
@@ -75,6 +78,7 @@ signals:
     void mediaIdChanged();
     void canonicalPathChanged();
     void titleChanged();
+    void currentTypeChanged();
     void fileSizeChanged();
     void resolutionChanged();
     void isFavoriteChanged();
@@ -104,6 +108,7 @@ private:
     QString m_mediaId;
     QString m_canonicalPath;
     QString m_title;
+    QString m_currentType;
     qint64 m_fileSize = 0;
     QSize m_resolution;
     bool m_isFavorite = false;

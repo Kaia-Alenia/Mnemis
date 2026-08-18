@@ -34,6 +34,7 @@ public:
     const std::vector<TrackInfo>& audioTracks() const;
     const std::vector<TrackInfo>& subtitleTracks() const;
     std::string currentMedia() const;
+    void* getNativePlayer() const;
 
     // Callbacks to controller
     using StateChangedCb = std::function<void(PlaybackState::Value)>;

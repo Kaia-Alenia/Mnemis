@@ -24,6 +24,7 @@ add_executable(mnemis_tests
     test_playback_engine.cpp
     test_playback_controller.cpp
     test_libmpv_backend.cpp
+    test_app_bootstrap.cpp
 )
 
 target_link_libraries(mnemis_tests PRIVATE

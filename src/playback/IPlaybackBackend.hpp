@@ -36,6 +36,7 @@ public:
     virtual void seek(double positionSecs) = 0;
     virtual void setVolume(double value) = 0;
     virtual void setPlaybackRate(double rate) = 0;
+    virtual void* getNativePlayer() const = 0;
 };
 
 } // namespace mnemis::playback

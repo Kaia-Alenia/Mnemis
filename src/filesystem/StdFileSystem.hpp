@@ -8,7 +8,7 @@ namespace mnemis::filesystem {
 
 class StdFileSystem : public core::filesystem::IFileSystem {
 public:
-    explicit StdFileSystem(std::shared_ptr<core::ILogger> logger);
+    explicit StdFileSystem(core::ILogger* logger = nullptr);
     ~StdFileSystem() override = default;
 
     core::Result<void> scanDirectory(
@@ -21,7 +21,7 @@ public:
     core::Result<bool> isAccessible(const std::string& path) override;
 
 private:
-    std::shared_ptr<core::ILogger> m_logger;
+    core::ILogger* m_logger;
 };
 
 } // namespace mnemis::filesystem

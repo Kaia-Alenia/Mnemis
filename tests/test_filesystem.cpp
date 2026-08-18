@@ -23,7 +23,7 @@ protected:
         testDir = fs::temp_directory_path() / ("mnemis_fs_test_" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count()));
         fs::create_directories(testDir);
         logger = std::make_shared<mnemis::tests::FakeLogger>();
-        fileSystem = std::make_unique<mnemis::filesystem::StdFileSystem>(logger);
+        fileSystem = std::make_unique<mnemis::filesystem::StdFileSystem>(logger.get());
     }
 
     void TearDown() override {

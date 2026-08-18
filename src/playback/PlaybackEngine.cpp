@@ -124,6 +124,14 @@ std::string PlaybackEngine::currentMedia() const {
     return m_currentMedia;
 }
 
+void* PlaybackEngine::getNativePlayer() const {
+    std::lock_guard<std::recursive_mutex> lock(m_mutex);
+    if (m_backend) {
+        return m_backend->getNativePlayer();
+    }
+    return nullptr;
+}
+
 void PlaybackEngine::setStateChangedCallback(StateChangedCb cb) {
     std::lock_guard<std::recursive_mutex> lock(m_mutex);
     m_stateCb = std::move(cb);

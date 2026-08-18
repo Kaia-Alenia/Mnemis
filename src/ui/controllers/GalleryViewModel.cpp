@@ -153,7 +153,7 @@ QVariant GalleryViewModel::data(const QModelIndex& index, int role) const {
         case ThumbnailUrlRole: {
             QUrl url;
             url.setScheme("image");
-            url.setHost("thumbnails");
+            url.setHost("async_thumbnails");
             url.setPath("/" + QString::fromStdString(item.mediaId));
             
             QUrlQuery query;

@@ -36,6 +36,7 @@ public:
     bool isBuffering() const;
     QString currentMedia() const;
     QString error() const;
+    void* getNativePlayer() const;
     
     QVariantList audioTracks() const;
     QVariantList subtitleTracks() const;

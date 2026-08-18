@@ -449,7 +449,7 @@ TEST(GalleryViewModelTest, EndToEndIntegration) {
     auto eventBus = std::make_shared<mnemis::core::events::LibraryEventBus>();
     repo->setEventBus(eventBus);
     
-    auto fs = std::make_shared<mnemis::filesystem::StdFileSystem>(logger);
+    auto fs = std::make_shared<mnemis::filesystem::StdFileSystem>(logger.get());
     auto composite = std::make_shared<mnemis::indexer::CompositeMetadataExtractor>();
     composite->addExtractor(std::make_shared<MockMetadataExtractor>());
     auto indexer = std::make_shared<mnemis::core::indexer::Indexer>(fs, repo, composite);

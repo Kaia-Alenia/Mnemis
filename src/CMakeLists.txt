@@ -76,11 +76,12 @@ add_library(mnemis_ui STATIC
     ui/controllers/AnimatedMediaController.cpp
     ui/controllers/PlaybackController.cpp
     ui/components/AnimatedFrameItem.cpp
+    ui/components/MpvVideoItem.cpp
     ui/providers/AsyncThumbnailProvider.cpp
 )
 set_target_properties(mnemis_ui PROPERTIES AUTOMOC ON)
 target_include_directories(mnemis_ui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/ui)
-target_link_libraries(mnemis_ui PUBLIC mnemis_core mnemis_thumbnails Qt6::Gui Qt6::Qml Qt6::Quick)
+target_link_libraries(mnemis_ui PUBLIC mnemis_core mnemis_thumbnails mnemis_media Qt6::Gui Qt6::Qml Qt6::Quick)
 
 # Mnemis App Executable
 add_executable(mnemis_app 

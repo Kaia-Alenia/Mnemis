@@ -9,8 +9,8 @@ namespace fs = std::filesystem;
 
 namespace mnemis::filesystem {
 
-StdFileSystem::StdFileSystem(std::shared_ptr<core::ILogger> logger)
-    : m_logger(std::move(logger)) {}
+StdFileSystem::StdFileSystem(core::ILogger* logger)
+    : m_logger(logger) {}
 
 static std::string toUtf8(const fs::path& p) {
     auto u8str = p.u8string();
