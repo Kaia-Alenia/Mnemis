@@ -1,5 +1,7 @@
 # Mnemis Playback API Surface
 
+<!-- HADS: EN Document -->
+
 This document provides a technical overview of the new Playback API surface introduced in Phase 14.
 
 ## Core Interfaces

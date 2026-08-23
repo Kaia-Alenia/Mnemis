@@ -1,20 +1,23 @@
 # Mnemis
 
+<!-- HADS: EN Document -->
+
 Mnemis — A high-performance, extensible multimedia library and media center for images, audio, and video.
 
-## Estado Actual
+---
 
-El proyecto se encuentra en la Fase 14 del desarrollo, con el núcleo de reproducción (Playback Core) consolidado y migrado a la nueva arquitectura.
+## 📌 Context
+> **TL;DR:** Mnemis is currently in Phase 14 of development, with a consolidated Playback Core.
 
-## Características Actuales
-- Base de datos en SQLite estructurada y versionada con migraciones.
-- Sistema de archivos agnóstico (actualmente StdFileSystem).
-- Indexador de metadatos multi-formato (TagLib, FFmpeg, StbImage).
-- Caché de miniaturas asíncrona optimizada.
-- Playback Core agnóstico a la UI, usando `libmpv` como backend por defecto.
-- Interfaz reactiva con Qt/QML y ViewModels en C++.
+## 🛠️ Features
+- **Database:** SQLite structured and versioned with migrations.
+- **File System:** Agnostic (currently StdFileSystem).
+- **Metadata Indexer:** Multi-format (TagLib, FFmpeg, StbImage).
+- **Cache:** Async optimized thumbnail cache.
+- **Playback Core:** UI-agnostic, using `libmpv` as default backend.
+- **UI:** Reactive interface with Qt/QML and C++ ViewModels.
 
-## Tecnologías
+## 🧰 Technologies
 - C++20
 - Qt 6 (Core, Gui, Qml, Quick)
 - CMake
@@ -24,7 +27,7 @@ El proyecto se encuentra en la Fase 14 del desarrollo, con el núcleo de reprodu
 - TagLib
 - GoogleTest / GoogleMock
 
-## Cómo Compilar
+## 🚀 Build Instructions
 
 ```bash
 mkdir build && cd build
@@ -32,11 +35,14 @@ cmake ..
 cmake --build . -j$(nproc)
 ```
 
-## Cómo Ejecutar Tests
+## 🧪 Testing
 
 ```bash
 cd build
 ctest --output-on-failure
-# O ejecutar el binario directamente:
+# Or run binary directly:
 ./bin/mnemis_tests
 ```
+
+## 📄 License
+This project is licensed under the **GNU GPL v3**.

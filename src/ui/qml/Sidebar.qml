@@ -142,12 +142,15 @@ Rectangle {
             Layout.fillWidth: true
             Label { text: "LIBRARY ROOTS"; color: "#5a5a66"; font.pixelSize: 10; font.bold: true; font.letterSpacing: 1; Layout.fillWidth: true }
             Button {
+                id: addRootBtn
                 text: "+"
+                Accessible.name: "Add Library Root"
+                Accessible.role: Accessible.Button
                 Layout.preferredWidth: 24
                 Layout.preferredHeight: 24
                 padding: 0
-                background: Rectangle { color: parent.hovered ? "#1c1c22" : "transparent"; radius: 4 }
-                contentItem: Label { text: parent.text; color: parent.parent.hovered ? "#fff" : "#888894"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; font.pixelSize: 16 }
+                background: Rectangle { color: addRootBtn.hovered ? "#1c1c22" : "transparent"; radius: 4 }
+                contentItem: Label { text: addRootBtn.text; color: addRootBtn.hovered ? "#fff" : "#888894"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; font.pixelSize: 16 }
                 onClicked: {
                     if (typeof systemPaths !== "undefined") {
                         var folder = systemPaths.openFolderDialog()
@@ -235,12 +238,15 @@ Rectangle {
                     }
                 }
                 Button {
+                    id: removeRootBtn
                     text: "×"
+                    Accessible.name: "Remove " + modelData
+                    Accessible.role: Accessible.Button
                     Layout.preferredWidth: 20
                     Layout.preferredHeight: 20
                     padding: 0
-                    background: Rectangle { color: parent.hovered ? "#4a1c1c" : "transparent"; radius: 4 }
-                    contentItem: Label { text: parent.text; color: parent.parent.hovered ? "#ff6b6b" : "#666"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; font.pixelSize: 14 }
+                    background: Rectangle { color: removeRootBtn.hovered ? "#4a1c1c" : "transparent"; radius: 4 }
+                    contentItem: Label { text: removeRootBtn.text; color: removeRootBtn.hovered ? "#ff6b6b" : "#666"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; font.pixelSize: 14 }
                     onClicked: {
                         settingsModel.removeRoot(modelData)
                     }

@@ -60,7 +60,7 @@ Rectangle {
             Text {
                 anchors.centerIn: parent
                 visible: photoImage.status === Image.Error
-                text: "No se pudo cargar la imagen\n" + (viewerModel.canonicalPath ?? "")
+                text: "Failed to load image\n" + (viewerModel.canonicalPath ?? "")
                 color: "#ff6666"
                 font.pixelSize: 14
                 horizontalAlignment: Text.AlignHCenter
@@ -126,7 +126,7 @@ Rectangle {
 
             // Back
             ToolButton {
-                text: "← Volver"
+                text: "← Back"
                 onClicked: {
                     console.log("[VIEWER] back clicked")
                     if (isVideo || isAudio) playbackController.stop()
@@ -155,7 +155,7 @@ Rectangle {
                     console.log("[VIEWER] favorite clicked")
                     viewerModel.toggleFavorite()
                 }
-                ToolTip.text: viewerModel.isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"
+                ToolTip.text: viewerModel.isFavorite ? "Remove from favorites" : "Add to favorites"
                 ToolTip.visible: hovered
             }
 
@@ -240,7 +240,7 @@ Rectangle {
                 text: "⊡"
                 font.pixelSize: 16
                 onClicked: root.currentScale = 1.0
-                ToolTip.text: "Ajustar a ventana"
+                ToolTip.text: "Fit to window"
                 ToolTip.visible: hovered
             }
 

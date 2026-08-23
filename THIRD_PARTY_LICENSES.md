@@ -1,5 +1,7 @@
 # Third-Party Licenses
 
+<!-- HADS: EN Document -->
+
 Mnemis utilizes the following third-party libraries for its Media Indexer and core functionality. We are committed to complying with open-source licenses and properly attributing the authors.
 
 ## FFmpeg
@@ -15,5 +17,5 @@ Mnemis utilizes the following third-party libraries for its Media Indexer and co
 ## stb_image
 - **Usage:** Image dimensions and basic header parsing.
 - **License:** **MIT / Public Domain**
-- **Configuration Policy:** Included as a header-only library (`stb_image.h`) in our `src/third_party/stb` directory. 
+- **Configuration Policy:** Included as a header-only library (`stb_image.h`) in our `src/third_party/stb` directory.
 - **Copyright:** (c) 2017 Sean Barrett
