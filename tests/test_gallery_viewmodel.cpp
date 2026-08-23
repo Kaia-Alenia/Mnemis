@@ -223,6 +223,79 @@ TEST(GalleryViewModelTest, SelectionAndFilteringAndSorting) {
     delete repo;
 }
 
+TEST(GalleryViewModelTest, AudioFilter) {
+    int argc = 0;
+    char* argv[] = {nullptr};
+    QCoreApplication app(argc, argv);
+    auto repo = new MockRepository();
+    GalleryViewModel vm(repo);
+    QThreadPool::globalInstance()->waitForDone(); // settle the constructor's initial query
+
+    QEventLoop loop;
+    QObject::connect(&vm, &GalleryViewModel::countChanged, &loop, &QEventLoop::quit);
+    vm.setFilter({}, static_cast<int>(MediaType::Audio));
+    loop.exec();
+
+    EXPECT_EQ(repo->lastOptions.filterMediaType, MediaType::Audio);
+    EXPECT_FALSE(repo->lastOptions.filterFavorite.has_value());
+    QThreadPool::globalInstance()->waitForDone();
+    delete repo;
+}
+
+TEST(GalleryViewModelTest, FavoritesFilter) {
+    int argc = 0;
+    char* argv[] = {nullptr};
+    QCoreApplication app(argc, argv);
+    auto repo = new MockRepository();
+    GalleryViewModel vm(repo);
+    QThreadPool::globalInstance()->waitForDone(); // settle the constructor's initial query
+
+    QEventLoop loop;
+    QObject::connect(&vm, &GalleryViewModel::countChanged, &loop, &QEventLoop::quit);
+    vm.setFavoriteFilter(true, "sunset");
+    loop.exec();
+
+    EXPECT_EQ(repo->lastOptions.filterFavorite, true);
+    EXPECT_FALSE(repo->lastOptions.filterMediaType.has_value());
+    EXPECT_EQ(repo->lastOptions.filterText.value_or(""), "sunset");
+    QThreadPool::globalInstance()->waitForDone();
+    delete repo;
+}
+
+class DelayedFilterRepository final : public MockRepository {
+public:
+    Result<int> count(const QueryOptions& options = {}) override {
+        if (options.filterMediaType == MediaType::Image) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(150));
+            return 11;
+        }
+        if (options.filterMediaType == MediaType::Audio) {
+            return 3;
+        }
+        return 0;
+    }
+};
+
+TEST(GalleryViewModelTest, FilterSwitchInvalidatesOldResults) {
+    int argc = 0;
+    char* argv[] = {nullptr};
+    QCoreApplication app(argc, argv);
+    auto repo = new DelayedFilterRepository();
+    GalleryViewModel vm(repo);
+
+    vm.setFilter({}, static_cast<int>(MediaType::Image));
+    vm.setFilter({}, static_cast<int>(MediaType::Audio));
+
+    QEventLoop loop;
+    QObject::connect(&vm, &GalleryViewModel::countChanged, &loop, &QEventLoop::quit);
+    QTimer::singleShot(1000, &loop, &QEventLoop::quit);
+    loop.exec();
+    QThreadPool::globalInstance()->waitForDone();
+
+    EXPECT_EQ(vm.rowCount(), 3);
+    delete repo;
+}
+
 TEST(GalleryViewModelTest, StressTest_10000_Items) {
     int argc = 0;
     char* argv[] = {nullptr};
@@ -456,7 +529,7 @@ TEST(GalleryViewModelTest, EndToEndIntegration) {
     
     mnemis::infrastructure::watcher::QtFileWatcher watcher(50);
     watcher.setCallback([indexer](const std::string& path) {
-        indexer->indexDirectory(path);
+        indexer->indexRoots({path});
     });
     
     GalleryViewModel vm(repo.get());
@@ -489,4 +562,3 @@ TEST(GalleryViewModelTest, EndToEndIntegration) {
     // Wait for any remaining background tasks before destroying test fixtures
     QThreadPool::globalInstance()->waitForDone();
 }
-

@@ -9,6 +9,8 @@ MediaListContext::MediaListContext(core::repositories::IMediaRepository* reposit
     , m_repository(repository)
     , m_isAlive(std::make_shared<bool>(true))
 {
+    m_loadTimer.setSingleShot(true);
+    connect(&m_loadTimer, &QTimer::timeout, this, &MediaListContext::doLoad);
     refreshTotalCount();
 }
 
@@ -90,58 +92,47 @@ void MediaListContext::open(const QString& mediaId, int indexHint) {
 
 void MediaListContext::next() {
     if (!hasNext()) return;
-    int targetIndex = m_currentIndex + 1;
-    int gen = ++m_navGeneration;
-    auto alive = m_isAlive;
-    auto repo = m_repository;
-    auto query = m_query;
     
-    std::thread([this, alive, repo, query, targetIndex, gen]() {
-        auto res = repo->list(targetIndex + 1, 1, query); // SQLite uses 1-based page
-        if (!*alive) return;
-        
-        if (res.isSuccess() && !res.value().empty()) {
-            auto item = res.value().front();
-            auto self = const_cast<MediaListContext*>(this);
-            QMetaObject::invokeMethod(self, [self, gen, targetIndex, item]() {
-                if (gen != self->m_navGeneration) return;
-                self->m_currentIndex = targetIndex;
-                self->m_currentMediaId = QString::fromStdString(item.mediaId);
-                emit self->currentIndexChanged();
-                emit self->currentMediaIdChanged();
-                emit self->hasNextChanged();
-                emit self->hasPreviousChanged();
-            }, Qt::QueuedConnection);
-        }
-    }).detach();
+    m_currentIndex++; // Optimistic update
+    emit currentIndexChanged();
+    emit hasNextChanged();
+    emit hasPreviousChanged();
+
+    m_loadTimer.start(50);
 }
 
 void MediaListContext::previous() {
     if (!hasPrevious()) return;
-    int targetIndex = m_currentIndex - 1;
+
+    m_currentIndex--; // Optimistic update
+    emit currentIndexChanged();
+    emit hasNextChanged();
+    emit hasPreviousChanged();
+
+    m_loadTimer.start(50);
+}
+
+void MediaListContext::doLoad() {
+    int targetIndex = m_currentIndex;
     int gen = ++m_navGeneration;
     auto alive = m_isAlive;
     auto repo = m_repository;
     auto query = m_query;
     
-    std::thread([this, alive, repo, query, targetIndex, gen]() {
+    QThreadPool::globalInstance()->start([this, alive, repo, query, targetIndex, gen]() {
         auto res = repo->list(targetIndex + 1, 1, query); // SQLite uses 1-based page
         if (!*alive) return;
         
         if (res.isSuccess() && !res.value().empty()) {
             auto item = res.value().front();
             auto self = const_cast<MediaListContext*>(this);
-            QMetaObject::invokeMethod(self, [self, gen, targetIndex, item]() {
+            QMetaObject::invokeMethod(self, [self, gen, item]() {
                 if (gen != self->m_navGeneration) return;
-                self->m_currentIndex = targetIndex;
                 self->m_currentMediaId = QString::fromStdString(item.mediaId);
-                emit self->currentIndexChanged();
                 emit self->currentMediaIdChanged();
-                emit self->hasNextChanged();
-                emit self->hasPreviousChanged();
             }, Qt::QueuedConnection);
         }
-    }).detach();
+    });
 }
 
 void MediaListContext::onLibraryEvent(const core::events::LibraryEvent& event) {

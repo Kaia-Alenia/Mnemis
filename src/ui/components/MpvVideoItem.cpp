@@ -25,8 +25,31 @@ public:
     MpvRenderer(MpvVideoItem* item) : m_item(item) { }
 
     void render() override {
+        if (!m_item->m_mpv) {
+            return;
+        }
+
         if (!m_item->m_mpv_gl) {
             m_item->window()->beginExternalCommands();
+            
+            mpv_opengl_init_params gl_init_params;
+            gl_init_params.get_proc_address = get_proc_address;
+            gl_init_params.get_proc_address_ctx = nullptr;
+
+            mpv_render_param params[] = {
+                {MPV_RENDER_PARAM_API_TYPE, const_cast<char*>(MPV_RENDER_API_TYPE_OPENGL)},
+                {MPV_RENDER_PARAM_OPENGL_INIT_PARAMS, &gl_init_params},
+                {MPV_RENDER_PARAM_INVALID, nullptr}
+            };
+
+            int err = mpv_render_context_create(&m_item->m_mpv_gl, m_item->m_mpv, params);
+            if (err < 0) {
+                std::cerr << "Failed to initialize mpv GL context: " << mpv_error_string(err) << std::endl;
+                m_item->window()->endExternalCommands();
+                return;
+            }
+            mpv_render_context_set_update_callback(m_item->m_mpv_gl, on_mpv_render_update, m_item);
+
             m_item->window()->endExternalCommands();
             return;
         }
@@ -94,32 +117,8 @@ void MpvVideoItem::initMpvContext() {
     m_mpv = static_cast<mpv_handle*>(m_controller->getNativePlayer());
     if (!m_mpv) return;
 
-    // Need a valid OpenGL context to initialize mpv_render_context
-    if (!window()) {
-        connect(this, &QQuickItem::windowChanged, this, [this](QQuickWindow* w) {
-            if (w) initMpvContext();
-        });
-        return;
-    }
-
-    if (!m_mpv_gl) {
-        mpv_opengl_init_params gl_init_params;
-        gl_init_params.get_proc_address = get_proc_address;
-        gl_init_params.get_proc_address_ctx = nullptr;
-
-        mpv_render_param params[] = {
-            {MPV_RENDER_PARAM_API_TYPE, const_cast<char*>(MPV_RENDER_API_TYPE_OPENGL)},
-            {MPV_RENDER_PARAM_OPENGL_INIT_PARAMS, &gl_init_params},
-            {MPV_RENDER_PARAM_INVALID, nullptr}
-        };
-
-        if (mpv_render_context_create(&m_mpv_gl, m_mpv, params) < 0) {
-            std::cerr << "Failed to initialize mpv GL context" << std::endl;
-            return;
-        }
-
-        mpv_render_context_set_update_callback(m_mpv_gl, on_mpv_render_update, this);
-    }
+    // Trigger an update to force the renderer to be created and initialize the GL context on the render thread.
+    update();
 }
 
 void MpvVideoItem::destroyMpvContext() {

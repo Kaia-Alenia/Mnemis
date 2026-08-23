@@ -16,6 +16,7 @@ Rectangle {
     property real maxScale: 16.0
 
     property bool isVideo:    viewerModel.currentType === "video"
+    property bool isAudio:    viewerModel.currentType === "audio"
     property bool isAnimated: viewerModel.currentType === "animated"
     property bool isImage:    viewerModel.currentType === "image" || viewerModel.currentType === ""
 
@@ -30,15 +31,15 @@ Rectangle {
         id: flickable
         anchors.fill: parent
         visible: isImage
-        contentWidth:  Math.max(width,  photoImage.width  * currentScale)
-        contentHeight: Math.max(height, photoImage.height * currentScale)
+        contentWidth:  Math.max(width, photoImage.width)
+        contentHeight: Math.max(height, photoImage.height)
         clip: true
         interactive: currentScale > 1.0
 
         Image {
             id: photoImage
-            width:  flickable.width
-            height: flickable.height
+            width:  flickable.width * root.currentScale
+            height: flickable.height * root.currentScale
             source: isImage && viewerModel.canonicalPath !== ""
                         ? ("file://" + viewerModel.canonicalPath)
                         : ""
@@ -92,6 +93,21 @@ Rectangle {
         controller: viewerModel.animatedController
     }
 
+    // ─── Audio Placeholder ─────────────────────────────────────────────────────
+    Rectangle {
+        anchors.fill: parent
+        color: "#050505"
+        visible: isAudio
+
+        Label {
+            anchors.centerIn: parent
+            text: "🎵\n\n" + (viewerModel.title !== undefined ? viewerModel.title : "Audio")
+            color: "white"
+            font.pixelSize: 48
+            horizontalAlignment: Text.AlignHCenter
+        }
+    }
+
     // ─── Top Bar ───────────────────────────────────────────────────────────────
     Rectangle {
         id: topBar
@@ -112,7 +128,8 @@ Rectangle {
             ToolButton {
                 text: "← Volver"
                 onClicked: {
-                    if (isVideo) playbackController.stop()
+                    console.log("[VIEWER] back clicked")
+                    if (isVideo || isAudio) playbackController.stop()
                     if (isAnimated) viewerModel.animatedController.stop()
                     root.currentScale = 1.0
                     root.backRequested()
@@ -134,7 +151,10 @@ Rectangle {
             ToolButton {
                 text: viewerModel.isFavorite ? "★" : "☆"
                 font.pixelSize: 18
-                onClicked: viewerModel.toggleFavorite()
+                onClicked: {
+                    console.log("[VIEWER] favorite clicked")
+                    viewerModel.toggleFavorite()
+                }
                 ToolTip.text: viewerModel.isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"
                 ToolTip.visible: hovered
             }
@@ -143,7 +163,10 @@ Rectangle {
             ToolButton {
                 text: "⛶"
                 font.pixelSize: 16
-                onClicked: viewerModel.toggleFullscreen()
+                onClicked: {
+                    console.log("[VIEWER] fullscreen clicked")
+                    viewerModel.toggleFullscreen()
+                }
                 ToolTip.text: "Pantalla completa"
                 ToolTip.visible: hovered
             }
@@ -152,14 +175,20 @@ Rectangle {
             ToolButton {
                 text: "‹"
                 font.pixelSize: 20
-                onClicked: viewerModel.previous()
+                onClicked: {
+                    console.log("[VIEWER] previous clicked")
+                    viewerModel.previous()
+                }
                 ToolTip.text: "Anterior"
                 ToolTip.visible: hovered
             }
             ToolButton {
                 text: "›"
                 font.pixelSize: 20
-                onClicked: viewerModel.next()
+                onClicked: {
+                    console.log("[VIEWER] next clicked")
+                    viewerModel.next()
+                }
                 ToolTip.text: "Siguiente"
                 ToolTip.visible: hovered
             }
@@ -259,15 +288,15 @@ Rectangle {
         }
     }
 
-    // ─── Video Controls Bar ───────────────────────────────────────────────────
+    // ─── Video/Audio Controls Bar ─────────────────────────────────────────────
     Rectangle {
-        id: videoControls
+        id: mediaControls
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         height: 56
         color: "#d0000000"
-        visible: isVideo
+        visible: isVideo || isAudio
         z: 10
 
         ColumnLayout {
@@ -333,19 +362,26 @@ Rectangle {
     }
 
     // Keyboard shortcuts
-    Keys.onLeftPressed: viewerModel.previous()
-    Keys.onRightPressed: viewerModel.next()
     Keys.onPressed: function(event) {
-        if (event.key === Qt.Key_F) viewerModel.toggleFullscreen()
-        if (event.key === Qt.Key_Plus || event.key === Qt.Key_Equal)
+        if (event.key === Qt.Key_Left) {
+            console.log("[VIEWER] previous via left arrow")
+            viewerModel.previous()
+            event.accepted = true
+        } else if (event.key === Qt.Key_Right) {
+            console.log("[VIEWER] next via right arrow")
+            viewerModel.next()
+            event.accepted = true
+        } else if (event.key === Qt.Key_F) viewerModel.toggleFullscreen()
+        else if (event.key === Qt.Key_Plus || event.key === Qt.Key_Equal)
             root.currentScale = Math.min(root.maxScale, root.currentScale * 1.25)
-        if (event.key === Qt.Key_Minus)
+        else if (event.key === Qt.Key_Minus)
             root.currentScale = Math.max(root.minScale, root.currentScale / 1.25)
-        if (event.key === Qt.Key_0 || event.key === Qt.Key_Home)
+        else if (event.key === Qt.Key_0 || event.key === Qt.Key_Home)
             root.currentScale = 1.0
-        if (event.key === Qt.Key_R) viewerModel.rotate(90)
-        if (event.key === Qt.Key_L) viewerModel.rotate(-90)
-        if (event.key === Qt.Key_Escape) root.backRequested()
+        else if (event.key === Qt.Key_R) viewerModel.rotate(90)
+        else if (event.key === Qt.Key_L) viewerModel.rotate(-90)
+        else if (event.key === Qt.Key_Escape) root.backRequested()
     }
     focus: true
+    Component.onCompleted: forceActiveFocus()
 }

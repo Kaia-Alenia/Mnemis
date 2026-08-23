@@ -4,83 +4,97 @@ import QtQuick.Layouts
 
 Rectangle {
     id: root
-    color: "#111111"
+    color: "#0a0a0c" // Deeper dark
+
+    property int currentTypeFilter: -1
+    property bool currentFavoriteFilter: false
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 12
-        spacing: 4
+        anchors.margins: 16
+        spacing: 6
 
         // App header
         Label {
-            text: "Mnemis"
-            font.pixelSize: 22
+            text: "MNEMIS"
+            font.pixelSize: 14
             font.bold: true
-            color: "#4a9eff"
+            font.letterSpacing: 2
+            color: "#e2e2e2"
             Layout.alignment: Qt.AlignHCenter
-            Layout.bottomMargin: 8
+            Layout.bottomMargin: 12
+            Layout.topMargin: 4
         }
 
         // Search box
         TextField {
             id: searchField
             Layout.fillWidth: true
-            placeholderText: "Buscar..."
-            color: "white"
+            placeholderText: "Search..."
+            color: "#e2e2e2"
+            font.pixelSize: 12
+            leftPadding: 12
+            rightPadding: 12
+            topPadding: 8
+            bottomPadding: 8
             background: Rectangle {
-                color: "#252525"
-                radius: 6
-                border.color: searchField.activeFocus ? "#4a9eff" : "#333"
+                color: searchField.activeFocus ? "#1a1a1f" : "#141418"
+                radius: 4
+                border.color: searchField.activeFocus ? "#3a7bd5" : "transparent"
+                border.width: 1
             }
-            onTextChanged: galleryModel.setFilter(text, currentTypeFilter)
+            onTextChanged: {
+                if (root.currentFavoriteFilter) {
+                    galleryModel.setFavoriteFilter(true, text)
+                } else {
+                    galleryModel.setFilter(text, currentTypeFilter)
+                }
+            }
         }
 
         // Separator
-        Rectangle { Layout.fillWidth: true; height: 1; color: "#2a2a2a"; Layout.topMargin: 8; Layout.bottomMargin: 4 }
+        Rectangle { Layout.fillWidth: true; height: 1; color: "#1c1c22"; Layout.topMargin: 12; Layout.bottomMargin: 8 }
 
-        Label { text: "FILTROS"; color: "#666"; font.pixelSize: 10; font.bold: true }
-
-        property int currentTypeFilter: -1
+        Label { text: "VIEWS"; color: "#5a5a66"; font.pixelSize: 10; font.bold: true; font.letterSpacing: 1; Layout.bottomMargin: 4 }
 
         // Filter buttons
         Repeater {
             model: [
-                { label: "Todos",     icon: "⬛", typeId: -1 },
-                { label: "Imágenes",  icon: "🖼",  typeId: 1  },
-                { label: "Videos",    icon: "▶",   typeId: 2  },
-                { label: "GIFs",      icon: "GIF", typeId: 4  },
-                { label: "Favoritos", icon: "★",   typeId: -2 },
+                { label: "All Media", typeId: -1,  isFavorite: false },
+                { label: "Images",    typeId: 1,   isFavorite: false },
+                { label: "Videos",    typeId: 2,   isFavorite: false },
+                { label: "Audio",     typeId: 3,   isFavorite: false },
+                { label: "GIFs",      typeId: 4,   isFavorite: false },
+                { label: "Favorites", typeId: -1,  isFavorite: true  },
             ]
 
             delegate: ItemDelegate {
                 Layout.fillWidth: true
-                highlighted: root.currentTypeFilter === modelData.typeId
+                Layout.preferredHeight: 32
+                highlighted: modelData.isFavorite
+                    ? root.currentFavoriteFilter
+                    : (!root.currentFavoriteFilter && root.currentTypeFilter === modelData.typeId)
                 background: Rectangle {
-                    color: parent.highlighted ? "#1e3a5f" : (parent.hovered ? "#1e1e1e" : "transparent")
-                    radius: 6
-                    border.color: parent.highlighted ? "#4a9eff" : "transparent"
-                    border.width: 1
+                    color: parent.highlighted ? "#162436" : (parent.hovered ? "#141418" : "transparent")
+                    radius: 4
                 }
 
-                contentItem: RowLayout {
-                    spacing: 10
-                    Label {
-                        text: modelData.icon
-                        font.pixelSize: 14
-                        color: parent.parent.highlighted ? "#4a9eff" : "#aaa"
-                    }
-                    Label {
-                        text: modelData.label
-                        color: parent.parent.highlighted ? "white" : "#ccc"
-                        font.pixelSize: 13
-                    }
+                contentItem: Label {
+                    text: modelData.label
+                    color: parent.highlighted ? "#5ba4fc" : (parent.hovered ? "#e2e2e2" : "#9999a3")
+                    font.pixelSize: 12
+                    font.weight: parent.highlighted ? Font.DemiBold : Font.Normal
+                    verticalAlignment: Text.AlignVCenter
                 }
 
                 onClicked: {
-                    root.currentTypeFilter = modelData.typeId
-                    if (modelData.typeId === -2) {
-                        galleryModel.setFilter(searchField.text, -1)  // favorites: filtered separately
+                    if (modelData.isFavorite) {
+                        root.currentFavoriteFilter = true
+                        root.currentTypeFilter = -1
+                        galleryModel.setFavoriteFilter(true, searchField.text)
                     } else {
+                        root.currentFavoriteFilter = false
+                        root.currentTypeFilter = modelData.typeId
                         galleryModel.setFilter(searchField.text, modelData.typeId)
                     }
                 }
@@ -88,32 +102,190 @@ Rectangle {
         }
 
         // Separator
-        Rectangle { Layout.fillWidth: true; height: 1; color: "#2a2a2a"; Layout.topMargin: 8; Layout.bottomMargin: 4 }
+        Rectangle { Layout.fillWidth: true; height: 1; color: "#1c1c22"; Layout.topMargin: 12; Layout.bottomMargin: 8 }
 
-        Label { text: "ORDENAR"; color: "#666"; font.pixelSize: 10; font.bold: true }
+        Label { text: "SORT BY"; color: "#5a5a66"; font.pixelSize: 10; font.bold: true; font.letterSpacing: 1; Layout.bottomMargin: 4 }
 
         Repeater {
             model: [
-                { label: "Nombre ↑",   sortBy: "fileName",     asc: true  },
-                { label: "Nombre ↓",   sortBy: "fileName",     asc: false },
-                { label: "Fecha ↑",    sortBy: "modifiedTime", asc: true  },
-                { label: "Fecha ↓",    sortBy: "modifiedTime", asc: false },
-                { label: "Tamaño ↑",   sortBy: "fileSize",     asc: true  },
-                { label: "Tamaño ↓",   sortBy: "fileSize",     asc: false },
+                { label: "Name (A-Z)",   sortBy: "fileName",     asc: true  },
+                { label: "Name (Z-A)",   sortBy: "fileName",     asc: false },
+                { label: "Newest First", sortBy: "modifiedTime", asc: false },
+                { label: "Oldest First", sortBy: "modifiedTime", asc: true  },
+                { label: "Size (Large)", sortBy: "fileSize",     asc: false },
+                { label: "Size (Small)", sortBy: "fileSize",     asc: true  },
             ]
 
             delegate: ItemDelegate {
                 Layout.fillWidth: true
+                Layout.preferredHeight: 28
                 contentItem: Label {
                     text: modelData.label
-                    color: "#bbb"
-                    font.pixelSize: 12
+                    color: parent.hovered ? "#e2e2e2" : "#888894"
+                    font.pixelSize: 11
+                    verticalAlignment: Text.AlignVCenter
                 }
                 background: Rectangle {
-                    color: parent.hovered ? "#1e1e1e" : "transparent"
-                    radius: 6
+                    color: parent.hovered ? "#141418" : "transparent"
+                    radius: 4
                 }
-                onClicked: galleryModel.setSortOptions(modelData.sortBy, modelData.asc)
+                onClicked: {
+                    galleryModel.setSortOptions(modelData.sortBy, modelData.asc)
+                }
+            }
+        }
+
+        // Separator
+        Rectangle { Layout.fillWidth: true; height: 1; color: "#1c1c22"; Layout.topMargin: 12; Layout.bottomMargin: 8 }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Label { text: "LIBRARY ROOTS"; color: "#5a5a66"; font.pixelSize: 10; font.bold: true; font.letterSpacing: 1; Layout.fillWidth: true }
+            Button {
+                text: "+"
+                Layout.preferredWidth: 24
+                Layout.preferredHeight: 24
+                padding: 0
+                background: Rectangle { color: parent.hovered ? "#1c1c22" : "transparent"; radius: 4 }
+                contentItem: Label { text: parent.text; color: parent.parent.hovered ? "#fff" : "#888894"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; font.pixelSize: 16 }
+                onClicked: {
+                    if (typeof systemPaths !== "undefined") {
+                        var folder = systemPaths.openFolderDialog()
+                        if (folder !== "" && typeof settingsModel !== "undefined") {
+                            settingsModel.addRoot(folder)
+                        }
+                    } else {
+                        console.error("systemPaths is not available.")
+                    }
+                }
+            }
+        }
+
+        // Quick Add buttons for empty state
+        ColumnLayout {
+            Layout.fillWidth: true
+            visible: settingsModel && settingsModel.libraryRoots.length === 0
+            spacing: 4
+
+            Label {
+                text: "No directories added."
+                color: "#777782"
+                font.pixelSize: 11
+                font.italic: true
+                Layout.bottomMargin: 4
+            }
+
+            Button {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 28
+                background: Rectangle { color: parent.hovered ? "#1c1c22" : "#141418"; radius: 4; border.color: "#22222a" }
+                contentItem: Label { text: "Add ~/Pictures"; color: "#aaddff"; font.pixelSize: 11; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
+                onClicked: {
+                    if (settingsModel && typeof systemPaths !== "undefined") settingsModel.addRoot("file://" + systemPaths.picturesLocation())
+                }
+            }
+            Button {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 28
+                background: Rectangle { color: parent.hovered ? "#1c1c22" : "#141418"; radius: 4; border.color: "#22222a" }
+                contentItem: Label { text: "Add ~/Videos"; color: "#aaddff"; font.pixelSize: 11; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
+                onClicked: {
+                    if (settingsModel && typeof systemPaths !== "undefined") settingsModel.addRoot("file://" + systemPaths.moviesLocation())
+                }
+            }
+            Button {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 28
+                background: Rectangle { color: parent.hovered ? "#1c1c22" : "#141418"; radius: 4; border.color: "#22222a" }
+                contentItem: Label { text: "Add ~/Music"; color: "#aaddff"; font.pixelSize: 11; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
+                onClicked: {
+                    if (settingsModel && typeof systemPaths !== "undefined") settingsModel.addRoot("file://" + systemPaths.musicLocation())
+                }
+            }
+            Button {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 28
+                background: Rectangle { color: parent.hovered ? "#1c1c22" : "#141418"; radius: 4; border.color: "#22222a" }
+                contentItem: Label { text: "Add ~/Downloads"; color: "#aaddff"; font.pixelSize: 11; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
+                onClicked: {
+                    if (settingsModel && typeof systemPaths !== "undefined") settingsModel.addRoot("file://" + systemPaths.downloadLocation())
+                }
+            }
+        }
+
+        Repeater {
+            model: settingsModel ? settingsModel.libraryRoots : []
+            delegate: RowLayout {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 24
+                Label {
+                    text: modelData.toString().substring(modelData.toString().lastIndexOf("/") + 1)
+                    color: "#a0a0ab"
+                    font.pixelSize: 11
+                    Layout.fillWidth: true
+                    elide: Text.ElideRight
+                    ToolTip.text: modelData
+                    ToolTip.visible: hoverArea.containsMouse
+                    ToolTip.delay: 500
+
+                    MouseArea {
+                        id: hoverArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
+                }
+                Button {
+                    text: "×"
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    padding: 0
+                    background: Rectangle { color: parent.hovered ? "#4a1c1c" : "transparent"; radius: 4 }
+                    contentItem: Label { text: parent.text; color: parent.parent.hovered ? "#ff6b6b" : "#666"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; font.pixelSize: 14 }
+                    onClicked: {
+                        settingsModel.removeRoot(modelData)
+                    }
+                }
+            }
+        }
+
+        // Separator
+        Rectangle { Layout.fillWidth: true; height: 1; color: "#1c1c22"; Layout.topMargin: 12; Layout.bottomMargin: 8 }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Label {
+                text: "Show Hidden Files"
+                color: "#888894"
+                font.pixelSize: 11
+                Layout.fillWidth: true
+            }
+            Switch {
+                checked: settingsModel ? settingsModel.includeHidden : false
+                // Custom, smaller switch design
+                indicator: Rectangle {
+                    implicitWidth: 32
+                    implicitHeight: 18
+                    x: parent.leftPadding
+                    y: parent.height / 2 - height / 2
+                    radius: 9
+                    color: parent.checked ? "#3a7bd5" : "#22222a"
+                    border.color: parent.checked ? "#3a7bd5" : "#33333a"
+
+                    Rectangle {
+                        x: parent.checked ? parent.width - width - 2 : 2
+                        y: 2
+                        width: 14
+                        height: 14
+                        radius: 7
+                        color: "white"
+                        Behavior on x { NumberAnimation { duration: 150 } }
+                    }
+                }
+                onToggled: {
+                    if (settingsModel) {
+                        settingsModel.setIncludeHidden(checked)
+                    }
+                }
             }
         }
 
@@ -121,9 +293,10 @@ Rectangle {
 
         // Count label
         Label {
-            text: galleryModel.count + " elementos"
-            color: "#555"
-            font.pixelSize: 11
+            text: galleryModel.count + " items"
+            color: "#44444d"
+            font.pixelSize: 10
+            font.letterSpacing: 1
             Layout.alignment: Qt.AlignHCenter
         }
     }

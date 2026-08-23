@@ -25,6 +25,8 @@ target_link_libraries(mnemis_database PUBLIC mnemis_core Qt6::Sql SQLite::SQLite
 add_library(mnemis_filesystem STATIC 
     filesystem/StdFileSystem.cpp
     infrastructure/watcher/QtFileWatcher.cpp
+    infrastructure/config/QtConfig.cpp
+    infrastructure/bootstrap/DefaultLibraryRoots.cpp
 )
 set_target_properties(mnemis_filesystem PROPERTIES AUTOMOC ON)
 target_include_directories(mnemis_filesystem PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -75,6 +77,7 @@ add_library(mnemis_ui STATIC
     ui/controllers/ViewerViewModel.cpp
     ui/controllers/AnimatedMediaController.cpp
     ui/controllers/PlaybackController.cpp
+    ui/controllers/SettingsViewModel.cpp
     ui/components/AnimatedFrameItem.cpp
     ui/components/MpvVideoItem.cpp
     ui/providers/AsyncThumbnailProvider.cpp
@@ -109,6 +112,7 @@ target_link_libraries(mnemis_app PRIVATE
     Qt6::Gui
     Qt6::Qml
     Qt6::Quick
+    Qt6::Widgets
 )
 
 # Optionally output to root bin

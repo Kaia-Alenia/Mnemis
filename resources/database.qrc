@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="/database">
     <file alias="migrations/V001_initial.sql">database/migrations/V001_initial.sql</file>
+    <file alias="migrations/V002_add_path_index.sql">database/migrations/V002_add_path_index.sql</file>
 </qresource>
 </RCC>

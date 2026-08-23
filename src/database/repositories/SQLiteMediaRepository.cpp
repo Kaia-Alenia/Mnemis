@@ -332,6 +332,9 @@ core::Result<std::vector<MediaItem>> SQLiteMediaRepository::list(int page, int p
     if (options.filterMediaType.has_value()) {
         conditions.push_back("media_type = ?");
     }
+    if (options.filterFavorite.has_value() && options.filterFavorite.value()) {
+        conditions.push_back("favorite = 1");
+    }
 
     if (!conditions.empty()) {
         sql += " WHERE " + conditions[0];
@@ -394,6 +397,9 @@ core::Result<int> SQLiteMediaRepository::count(const core::repositories::QueryOp
     }
     if (options.filterMediaType.has_value()) {
         conditions.push_back("media_type = ?");
+    }
+    if (options.filterFavorite.has_value() && options.filterFavorite.value()) {
+        conditions.push_back("favorite = 1");
     }
 
     if (!conditions.empty()) {

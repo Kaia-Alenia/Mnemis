@@ -15,6 +15,7 @@
 #include <filesystem>
 #include <memory>
 #include <vector>
+#include <fstream>
 
 using namespace mnemis::core;
 using namespace mnemis::core::indexer;
@@ -38,6 +39,12 @@ public:
     bool onProcessed(const MediaItem& item) override { return true; }
     bool onSkipped(const std::string& path) override { return true; }
     bool onError(const std::string& path, const std::string& err) override { return true; }
+};
+
+class PassthroughMetadataExtractor final : public IMetadataExtractor {
+public:
+    bool supports(MediaType, const std::string&) const override { return true; }
+    Result<Metadata> extract(const std::string&, MediaType) override { return Metadata{}; }
 };
 
 class IndexerIntegrationTest : public ::testing::Test {
@@ -85,7 +92,7 @@ protected:
 
 TEST_F(IndexerIntegrationTest, New_Modified_Lifecycle) {
     // 1. Initial Indexing
-    auto res = indexer->indexDirectory(MEDIA_DIR);
+    auto res = indexer->indexRoots({MEDIA_DIR});
     if(!res.isSuccess()) std::cout << "ERROR: " << res.error().message << std::endl; ASSERT_TRUE(res.isSuccess());
     
     auto all_media_res = repo->list(0, 100);
@@ -105,7 +112,7 @@ TEST_F(IndexerIntegrationTest, New_Modified_Lifecycle) {
     EXPECT_TRUE(found_audio);
 
     // 2. Unchanged 
-    auto scan2_res = indexer->indexDirectory(MEDIA_DIR);
+    auto scan2_res = indexer->indexRoots({MEDIA_DIR});
     ASSERT_TRUE(scan2_res.isSuccess());
     
     auto all_media_res2 = repo->list(0, 100);
@@ -117,7 +124,7 @@ TEST_F(IndexerIntegrationTest, New_Modified_Lifecycle) {
     auto ftime = std::filesystem::last_write_time(p);
     std::filesystem::last_write_time(p, ftime + std::chrono::hours(1));
 
-    auto scan3_res = indexer->indexDirectory(MEDIA_DIR);
+    auto scan3_res = indexer->indexRoots({MEDIA_DIR});
     ASSERT_TRUE(scan3_res.isSuccess());
 
     auto all_media_res3 = repo->list(0, 100);
@@ -136,7 +143,7 @@ public:
 
 TEST_F(IndexerIntegrationTest, Cancellation) {
     CancelObserver observer;
-    auto res = indexer->indexDirectory(MEDIA_DIR, &observer);
+    auto res = indexer->indexRoots({MEDIA_DIR}, &observer);
     
     auto all_media_res = repo->list(0, 100);
     if(!all_media_res.isSuccess()) std::cout << "ERROR: " << all_media_res.error().message << std::endl; ASSERT_TRUE(all_media_res.isSuccess());
@@ -155,7 +162,7 @@ TEST_F(IndexerIntegrationTest, MissingFileHandling) {
     
     repo->add(item);
     
-    indexer->indexDirectory(MEDIA_DIR);
+    indexer->indexRoots({MEDIA_DIR});
     
     auto all_items = repo->list(0, 100);
     bool found = false;
@@ -177,7 +184,7 @@ TEST_F(IndexerIntegrationTest, StressTest_1000Files) {
         }
     }
     
-    auto res = indexer->indexDirectory(stress_dir);
+    auto res = indexer->indexRoots({stress_dir});
     if(!res.isSuccess()) std::cout << "ERROR: " << res.error().message << std::endl; ASSERT_TRUE(res.isSuccess());
     
     auto count_res = repo->list(0, 2000);
@@ -219,7 +226,7 @@ TEST_F(IndexerIntegrationTest, PathBoundaryReconciliation) {
     repo->add(itemBackup);
 
     // Index /Music
-    auto res = indexer->indexDirectory(rootDir);
+    auto res = indexer->indexRoots({rootDir});
     if(!res.isSuccess()) std::cout << "ERROR: " << res.error().message << std::endl; ASSERT_TRUE(res.isSuccess());
 
     // Verify
@@ -253,7 +260,7 @@ TEST_F(IndexerIntegrationTest, CancelledScanReconciliation) {
     repo->add(item);
     
     CancelObserver observer;
-    auto res = indexer->indexDirectory(MEDIA_DIR, &observer);
+    auto res = indexer->indexRoots({MEDIA_DIR}, &observer);
     
     auto all_items = repo->list(0, 100);
     bool found = false;
@@ -263,3 +270,35 @@ TEST_F(IndexerIntegrationTest, CancelledScanReconciliation) {
     EXPECT_TRUE(found) << "Missing file should NOT be removed because scan was cancelled";
 }
 
+TEST_F(IndexerIntegrationTest, DiscoveryHonorsHiddenFilesAndNestedDirectories) {
+    const auto root = std::filesystem::temp_directory_path() / "mnemis-phase15-discovery";
+    std::filesystem::remove_all(root);
+    std::filesystem::create_directories(root / "Pictures");
+    std::filesystem::create_directories(root / "Videos");
+    std::filesystem::create_directories(root / "Music");
+    std::filesystem::create_directories(root / "Downloads");
+    std::filesystem::create_directories(root / "Hidden");
+    std::filesystem::create_directories(root / "Nested" / "A" / "B");
+
+    for (const auto& file : {root / "Pictures/photo.jpg", root / "Videos/video.mp4",
+                             root / "Music/song.mp3", root / "Downloads/download.jpg",
+                             root / "Hidden/.hidden.jpg", root / "Nested/A/B/nested.png"}) {
+        std::ofstream(file).put('x');
+    }
+
+    auto phaseIndexer = std::make_unique<Indexer>(
+        fs, repo, std::make_unique<PassthroughMetadataExtractor>(), logger.get(),
+        IndexerConfig{100, false});
+    ASSERT_TRUE(phaseIndexer->indexRoots({root.string()}).isSuccess());
+    auto hiddenOff = repo->list(1, 100);
+    ASSERT_TRUE(hiddenOff.isSuccess());
+    EXPECT_EQ(hiddenOff.value().size(), 5U);
+
+    phaseIndexer->setConfig(IndexerConfig{100, true});
+    ASSERT_TRUE(phaseIndexer->indexRoots({root.string()}).isSuccess());
+    auto hiddenOn = repo->list(1, 100);
+    ASSERT_TRUE(hiddenOn.isSuccess());
+    EXPECT_EQ(hiddenOn.value().size(), 6U);
+
+    std::filesystem::remove_all(root);
+}

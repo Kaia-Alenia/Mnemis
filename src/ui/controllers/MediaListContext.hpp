@@ -5,6 +5,7 @@
 #include <memory>
 #include <atomic>
 #include <optional>
+#include <QTimer>
 #include "core/repositories/IMediaRepository.hpp"
 #include "core/events/ILibraryEventBus.hpp"
 
@@ -49,6 +50,7 @@ signals:
 
 private slots:
     void onLibraryEvent(const core::events::LibraryEvent& event);
+    void doLoad();
 
 private:
     core::repositories::IMediaRepository* m_repository;
@@ -61,6 +63,8 @@ private:
     
     std::shared_ptr<core::events::ILibraryEventBus> m_eventBus;
     core::events::ILibraryEventBus::SubscriptionToken m_eventSubToken = 0;
+    
+    QTimer m_loadTimer;
 };
 
 } // namespace mnemis::ui::controllers

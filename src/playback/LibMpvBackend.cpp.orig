@@ -32,7 +32,6 @@ LibMpvBackend::LibMpvBackend(core::ILogger& logger)
             mpv_observe_property(m_mpv, 0, "eof-reached", MPV_FORMAT_FLAG);
             mpv_observe_property(m_mpv, 0, "track-list", MPV_FORMAT_NODE);
             mpv_observe_property(m_mpv, 0, "paused-for-cache", MPV_FORMAT_FLAG);
-            mpv_request_log_messages(m_mpv, "debug");
         }
     }
 }
@@ -132,11 +131,6 @@ void LibMpvBackend::handleMpvEvent(mpv_event* event) {
         case MPV_EVENT_SEEK:
             m_delegate->onStateChanged(PlaybackState::Seeking);
             break;
-        case MPV_EVENT_LOG_MESSAGE: {
-            mpv_event_log_message* msg = (mpv_event_log_message*)event->data;
-            std::cout << "[MPV] " << msg->prefix << ": " << msg->text;
-            break;
-        }
         default:
             break;
     }

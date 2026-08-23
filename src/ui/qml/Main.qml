@@ -9,10 +9,15 @@ ApplicationWindow {
     visible: true
     title: qsTr("Mnemis")
 
+    onVisibilityChanged: {
+        console.log("[WINDOW_STATE] visibility changed to: " + window.visibility)
+    }
+
     // Handle fullscreen from ViewerViewModel
     Connections {
         target: viewerModel
         function onFullscreenRequested(on) {
+            console.log("[WINDOW_STATE] viewerModel.onFullscreenRequested(" + on + ") called. Current visibility: " + window.visibility);
             if (on) window.showFullScreen()
             else window.showNormal()
         }
@@ -55,15 +60,17 @@ ApplicationWindow {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
 
-                    // Single click — select
+                    // Single click — open in viewer
                     onMediaSelected: function(idx, id, type) {
-                        galleryModel.toggleSelection(id)
+                        console.log("[NAVIGATION] open viewer id=" + id + " index=" + idx)
+                        viewerModel.open(id, idx)
+                        stack.push(viewerPage)
                     }
 
-                    // Double click — open in viewer
+                    // Double click — select exclusively
                     onMediaOpened: function(idx, id, type) {
-                        viewerModel.open(id)
-                        stack.push(viewerPage)
+                        console.log("[NAVIGATION] gallery selection id=" + id + " index=" + idx)
+                        galleryModel.selectOne(id)
                     }
                 }
             }
@@ -74,8 +81,14 @@ ApplicationWindow {
         id: viewerPage
         MediaViewer {
             onBackRequested: {
-                window.showNormal()
-                stack.pop()
+                console.log("[WINDOW_STATE] onBackRequested fired. Current visibility: " + window.visibility);
+                if (window.visibility === Window.FullScreen) {
+                    console.log("[WINDOW_STATE] Window is FullScreen, restoring to previous state.");
+                    window.showNormal();
+                } else {
+                    console.log("[WINDOW_STATE] Window is NOT FullScreen (visibility=" + window.visibility + "), doing nothing to avoid minimizing/un-maximizing.");
+                }
+                stack.pop();
             }
         }
     }

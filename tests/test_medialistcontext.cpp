@@ -19,6 +19,9 @@ using namespace mnemis::ui::controllers;
 class MockContextRepository : public IMediaRepository {
 public:
     std::vector<std::string> orderedIds;
+    int listCallCount = 0;
+    int countCallCount = 0;
+    QueryOptions lastOptions;
 
     void setEventBus(std::shared_ptr<events::ILibraryEventBus> eventBus) override {}
 
@@ -31,6 +34,8 @@ public:
     }
     
     Result<std::vector<MediaItem>> list(int page, int pageSize, const QueryOptions& options = {}) override {
+        listCallCount++;
+        lastOptions = options;
         std::vector<MediaItem> result;
         int start = std::max(0, page - 1) * pageSize;
         for (int i = 0; i < pageSize && start + i < orderedIds.size(); ++i) {
@@ -42,6 +47,8 @@ public:
     }
     
     Result<int> count(const QueryOptions& options = {}) override { 
+        countCallCount++;
+        lastOptions = options;
         return orderedIds.size(); 
     }
     
@@ -132,3 +139,71 @@ TEST(MediaListContextTest, NextAndPreviousNavigateCorrectly) {
     QThreadPool::globalInstance()->waitForDone();
     delete repo;
 }
+
+TEST(MediaListContextTest, DebounceReducesRepoCalls) {
+    int argc = 0;
+    char* argv[] = {nullptr};
+    QCoreApplication app(argc, argv);
+
+    auto repo = new MockContextRepository();
+    for (int i = 0; i < 20; ++i) {
+        repo->orderedIds.push_back("id_" + std::to_string(i));
+    }
+
+    MediaListContext context(repo);
+    context.open("id_0", 0);
+
+    QEventLoop loop;
+    QTimer::singleShot(100, &loop, &QEventLoop::quit);
+    loop.exec();
+    
+    int initialCalls = repo->listCallCount;
+
+    for (int i = 0; i < 15; ++i) {
+        context.next();
+    }
+    
+    QTimer::singleShot(100, &loop, &QEventLoop::quit);
+    loop.exec();
+    
+    EXPECT_EQ(repo->listCallCount, initialCalls + 1);
+    EXPECT_EQ(context.currentIndex(), 15);
+    EXPECT_EQ(context.currentMediaId(), "id_15");
+
+    QThreadPool::globalInstance()->waitForDone();
+    delete repo;
+}
+
+TEST(MediaListContextTest, NavigationRespectsFilters) {
+    int argc = 0;
+    char* argv[] = {nullptr};
+    QCoreApplication app(argc, argv);
+
+    auto repo = new MockContextRepository();
+    for (int i = 0; i < 5; ++i) {
+        repo->orderedIds.push_back("id_" + std::to_string(i));
+    }
+
+    MediaListContext context(repo);
+    
+    QueryOptions opts;
+    opts.filterText = "test_filter";
+    context.setQueryOptions(opts);
+    
+    context.open("id_0", 0);
+    
+    QEventLoop loop;
+    QTimer::singleShot(100, &loop, &QEventLoop::quit);
+    loop.exec();
+    
+    context.next();
+    
+    QTimer::singleShot(100, &loop, &QEventLoop::quit);
+    loop.exec();
+    
+    EXPECT_EQ(repo->lastOptions.filterText, std::optional<std::string>("test_filter"));
+
+    QThreadPool::globalInstance()->waitForDone();
+    delete repo;
+}
+

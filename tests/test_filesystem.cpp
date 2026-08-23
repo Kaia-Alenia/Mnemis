@@ -215,3 +215,18 @@ TEST_F(FileSystemTest, IsAccessible) {
     EXPECT_TRUE(fileSystem->isAccessible((testDir / "acc.mp3").string()).value());
     EXPECT_FALSE(fileSystem->isAccessible((testDir / "nonexistent.mp3").string()).value());
 }
+
+TEST_F(FileSystemTest, ExternalDriveAvailability) {
+    fs::path mountPoint = testDir / "mock_mount";
+    fs::path driveFile = mountPoint / "drive_file.mp3";
+    
+    // Simulate drive mounted
+    fs::create_directories(mountPoint);
+    createFile(driveFile);
+    EXPECT_TRUE(fileSystem->isAccessible(driveFile.string()).value());
+    
+    // Simulate drive unmounted
+    fs::remove(driveFile);
+    fs::remove(mountPoint);
+    EXPECT_FALSE(fileSystem->isAccessible(driveFile.string()).value());
+}

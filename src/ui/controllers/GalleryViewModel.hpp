@@ -8,6 +8,7 @@
 #include <unordered_set>
 #include <atomic>
 
+#include "MediaListContext.hpp"
 #include "core/models/MediaItem.hpp"
 #include "core/repositories/IMediaRepository.hpp"
 #include "core/thumbnails/IThumbnailEngine.hpp"
@@ -43,6 +44,7 @@ public:
 
     void setEventBus(std::shared_ptr<core::events::ILibraryEventBus> eventBus);
     void setThumbnailEngine(core::thumbnails::IThumbnailEngine* engine);
+    void setMediaListContext(MediaListContext* context);
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
@@ -52,11 +54,14 @@ public slots:
     void reload();
     void setSortOptions(const QString& sortBy, bool ascending);
     void setFilter(const QString& filterText, int filterMediaType = -1);
+    void setFavoriteFilter(bool onlyFavorites, const QString& filterText = {});
 
     Q_INVOKABLE void toggleSelection(const QString& mediaId);
+    Q_INVOKABLE void selectOne(const QString& mediaId);
     Q_INVOKABLE void clearSelection();
     Q_INVOKABLE void selectAll();
     Q_INVOKABLE bool isSelected(const QString& mediaId) const;
+    Q_INVOKABLE QStringList getSelectedMediaIds() const;
 
 signals:
     void countChanged();
@@ -97,6 +102,8 @@ private:
     core::thumbnails::IThumbnailEngine* m_thumbnailEngine = nullptr;
     mutable QHash<QString, core::thumbnails::ThumbnailStatus> m_thumbnailStates;
     mutable QHash<QString, core::thumbnails::ThumbnailTaskId> m_thumbnailTasks;
+
+    MediaListContext* m_listContext = nullptr;
 
     std::shared_ptr<bool> m_isAlive;
 };

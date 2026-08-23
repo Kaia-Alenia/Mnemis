@@ -14,7 +14,8 @@ public:
     core::Result<void> scanDirectory(
         const std::string& directoryPath, 
         std::function<bool(const core::filesystem::FileInfo&)> callback,
-        std::function<void(const std::string& path, const std::string& error)> errorCallback = nullptr) override;
+        std::function<void(const std::string& path, const std::string& error)> errorCallback = nullptr,
+        bool includeHidden = false) override;
 
     core::Result<core::filesystem::FileIdentity> getFileIdentity(const std::string& path) override;
     

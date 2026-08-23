@@ -2,8 +2,10 @@
 #include <QQmlEngine>
 #include <QQmlComponent>
 #include <QGuiApplication>
+#include <QTemporaryDir>
 
 #include "ui/components/MpvVideoItem.hpp"
+#include "infrastructure/bootstrap/DefaultLibraryRoots.hpp"
 
 using namespace mnemis;
 
@@ -32,4 +34,16 @@ TEST_F(AppBootstrapTest, RegistersMpvVideoItem) {
     ASSERT_TRUE(item != nullptr) << "Created object is not of type MpvVideoItem";
     
     delete object;
+}
+
+TEST_F(AppBootstrapTest, DefaultLibraryRoots) {
+    QTemporaryDir temporary;
+    ASSERT_TRUE(temporary.isValid());
+    const QString existing = temporary.path() + "/Pictures";
+    ASSERT_TRUE(QDir().mkpath(existing));
+    const QString missing = temporary.path() + "/Missing";
+
+    const QStringList roots = infrastructure::bootstrap::existingDefaultLibraryRoots(
+        {existing, missing, existing});
+    EXPECT_EQ(roots, QStringList({existing}));
 }

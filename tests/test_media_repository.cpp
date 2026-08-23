@@ -6,6 +6,7 @@
 
 using namespace mnemis::database;
 using namespace mnemis::core::models;
+using namespace mnemis::core::repositories;
 
 class MediaRepositoryTest : public ::testing::Test {
 protected:
@@ -111,4 +112,59 @@ TEST_F(MediaRepositoryTest, DuplicateCanonicalPathFails) {
     item2.mediaId = "id2";
     auto addRes2 = repo->add(item2);
     EXPECT_TRUE(addRes2.isError()); // Constraint violation
+}
+
+using SQLiteMediaRepositoryTest = MediaRepositoryTest;
+
+TEST_F(SQLiteMediaRepositoryTest, AudioFilter) {
+    MediaItem audio;
+    audio.mediaId = "audio";
+    audio.path = audio.canonicalPath = "/library/song.mp3";
+    audio.fileName = "song.mp3";
+    audio.mediaType = MediaType::Audio;
+    ASSERT_TRUE(repo->add(audio).isSuccess());
+
+    MediaItem image = audio;
+    image.mediaId = "image";
+    image.path = image.canonicalPath = "/library/photo.jpg";
+    image.fileName = "photo.jpg";
+    image.mediaType = MediaType::Image;
+    ASSERT_TRUE(repo->add(image).isSuccess());
+
+    QueryOptions options;
+    options.filterMediaType = MediaType::Audio;
+    auto listed = repo->list(1, 100, options);
+    auto counted = repo->count(options);
+    ASSERT_TRUE(listed.isSuccess());
+    ASSERT_TRUE(counted.isSuccess());
+    ASSERT_EQ(listed.value().size(), 1U);
+    EXPECT_EQ(listed.value().front().mediaId, "audio");
+    EXPECT_EQ(counted.value(), static_cast<int>(listed.value().size()));
+}
+
+TEST_F(SQLiteMediaRepositoryTest, FavoritesFilter) {
+    MediaItem favorite;
+    favorite.mediaId = "favorite";
+    favorite.path = favorite.canonicalPath = "/library/favorite.jpg";
+    favorite.fileName = "favorite.jpg";
+    favorite.mediaType = MediaType::Image;
+    favorite.favorite = true;
+    ASSERT_TRUE(repo->add(favorite).isSuccess());
+
+    MediaItem ordinary = favorite;
+    ordinary.mediaId = "ordinary";
+    ordinary.path = ordinary.canonicalPath = "/library/ordinary.jpg";
+    ordinary.fileName = "ordinary.jpg";
+    ordinary.favorite = false;
+    ASSERT_TRUE(repo->add(ordinary).isSuccess());
+
+    QueryOptions options;
+    options.filterFavorite = true;
+    auto listed = repo->list(1, 100, options);
+    auto counted = repo->count(options);
+    ASSERT_TRUE(listed.isSuccess());
+    ASSERT_TRUE(counted.isSuccess());
+    ASSERT_EQ(listed.value().size(), 1U);
+    EXPECT_EQ(listed.value().front().mediaId, "favorite");
+    EXPECT_EQ(counted.value(), static_cast<int>(listed.value().size()));
 }

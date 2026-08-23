@@ -60,9 +60,9 @@ QSize ViewerViewModel::resolution() const { return m_resolution; }
 bool ViewerViewModel::isFavorite() const { return m_isFavorite; }
 AnimatedMediaController* ViewerViewModel::animatedController() const { return m_animatedController; }
 
-void ViewerViewModel::open(const QString& mediaId) {
+void ViewerViewModel::open(const QString& mediaId, int indexHint) {
     if (m_context) {
-        m_context->open(mediaId, -1);
+        m_context->open(mediaId, indexHint);
     }
 }
 
@@ -249,8 +249,10 @@ void ViewerViewModel::onMediaItemLoaded(int generation, bool isSuccess, std::opt
     using core::models::MediaType;
     switch (mediaItem.mediaType) {
         case MediaType::Video:
-        case MediaType::Audio:
             m_currentType = QStringLiteral("video");
+            break;
+        case MediaType::Audio:
+            m_currentType = QStringLiteral("audio");
             break;
         case MediaType::Gif:
         case MediaType::AnimatedWebP:

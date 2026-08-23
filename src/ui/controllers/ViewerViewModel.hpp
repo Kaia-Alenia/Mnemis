@@ -59,7 +59,7 @@ public:
     AnimatedMediaController* animatedController() const;
 
 public slots:
-    void open(const QString& mediaId);
+    void open(const QString& mediaId, int indexHint = -1);
     void rotate(int degrees);
     void toggleFavorite();
 

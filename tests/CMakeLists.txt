@@ -13,6 +13,7 @@ add_executable(mnemis_tests
     test_filesystem.cpp
     test_extractors.cpp
     test_indexer.cpp
+    test_media_classifier.cpp
     test_qt_watcher.cpp
     test_thumbnail_cache.cpp
     test_thumbnails.cpp
@@ -25,6 +26,7 @@ add_executable(mnemis_tests
     test_playback_controller.cpp
     test_libmpv_backend.cpp
     test_app_bootstrap.cpp
+    test_settings_viewmodel.cpp
 )
 
 target_link_libraries(mnemis_tests PRIVATE

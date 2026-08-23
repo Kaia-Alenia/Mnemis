@@ -1,7 +1,5 @@
 #include <QApplication>
 #include <QFileDialog>
-#include <QQuickWindow>
-#include <QSGRendererInterface>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QStandardPaths>
@@ -14,6 +12,8 @@
 #include <string>
 #include <thread>
 #include <clocale>
+#include <QQuickWindow>
+#include <QSGRendererInterface>
 
 // Core & Interfaces
 #include "core/ApplicationContext.hpp"
@@ -290,18 +290,6 @@ int main(int argc, char *argv[]) {
             }
         }
     });
-
-    if (!qEnvironmentVariableIsEmpty("MNEMIS_TEST_AUTO_CLICK")) {
-        QTimer::singleShot(2000, [viewerModel, repository]() {
-            qInfo() << "[TEST] Loading video to test MPV initialization...";
-            core::models::MediaItem dummy;
-            dummy.mediaId = "dummy_video";
-            dummy.canonicalPath = "/tmp/sample.webm";
-            dummy.mediaType = core::models::MediaType::Video;
-            repository->add(dummy);
-            viewerModel->open("dummy_video", -1);
-        });
-    }
 
     // 8. QML Setup
     qmlRegisterType<ui::components::AnimatedFrameItem>("mnemis.ui", 1, 0, "AnimatedFrameItem");

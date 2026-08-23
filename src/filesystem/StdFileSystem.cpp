@@ -4,6 +4,11 @@
 #include <algorithm>
 #include <vector>
 #include <fstream>
+#include <set>
+
+#if defined(__unix__) || defined(__APPLE__)
+#include <sys/stat.h>
+#endif
 
 namespace fs = std::filesystem;
 
@@ -22,9 +27,10 @@ static fs::path fromUtf8(const std::string& s) {
 }
 
 core::Result<void> StdFileSystem::scanDirectory(
-    const std::string& directoryPath, 
+    const std::string& directoryPath,
     std::function<bool(const core::filesystem::FileInfo&)> callback,
-    std::function<void(const std::string&, const std::string&)> errorCallback) 
+    std::function<void(const std::string&, const std::string&)> errorCallback,
+    bool includeHidden)
 {
     fs::path rootPath = fromUtf8(directoryPath);
     std::error_code ec;
@@ -48,9 +54,27 @@ core::Result<void> StdFileSystem::scanDirectory(
     std::vector<fs::path> dirsToProcess;
     dirsToProcess.push_back(rootPath);
 
+#if defined(__unix__) || defined(__APPLE__)
+    std::set<std::pair<dev_t, ino_t>> visitedDirs;
+#endif
+
     while (!dirsToProcess.empty()) {
         fs::path currentDir = dirsToProcess.back();
         dirsToProcess.pop_back();
+
+#if defined(__unix__) || defined(__APPLE__)
+        struct stat st;
+        if (stat(currentDir.c_str(), &st) == 0) {
+            auto id = std::make_pair(st.st_dev, st.st_ino);
+            if (!visitedDirs.insert(id).second) {
+                // Cycle detected or directory already visited via symlink/mount
+                if (m_logger) {
+                    m_logger->log(core::LogLevel::Warning, "Cycle detected, skipping directory: " + currentDir.string());
+                }
+                continue;
+            }
+        }
+#endif
 
         fs::directory_iterator it(currentDir, fs::directory_options::skip_permission_denied, ec);
         if (ec) {
@@ -60,6 +84,11 @@ core::Result<void> StdFileSystem::scanDirectory(
 
         bool cancelled = false;
         for (const auto& entry : it) {
+            std::string filenameStr = toUtf8(entry.path().filename());
+            if (!includeHidden && !filenameStr.empty() && filenameStr[0] == '.') {
+                continue;
+            }
+
             std::error_code symlinkEc;
             if (entry.is_symlink(symlinkEc)) {
                 handleError(toUtf8(entry.path()), "Symlink ignored");
@@ -158,7 +187,7 @@ core::Result<core::filesystem::FileIdentity> StdFileSystem::getFileIdentity(cons
     if (ec) {
         return core::Result<core::filesystem::FileIdentity>(core::Error{4, "Failed to get file size: " + ec.message()});
     }
-    
+
     if (rawSize > static_cast<uintmax_t>(std::numeric_limits<int64_t>::max())) {
         return core::Result<core::filesystem::FileIdentity>(core::Error{5, "File size exceeds int64_t capacity"});
     }
@@ -185,24 +214,24 @@ core::Result<core::filesystem::FileIdentity> StdFileSystem::getFileIdentity(cons
 core::Result<bool> StdFileSystem::isAccessible(const std::string& path) {
     fs::path p = fromUtf8(path);
     std::error_code ec;
-    
+
     // Check existence first
     if (!fs::exists(p, ec) || ec) {
         return core::Result<bool>(false);
     }
-    
+
     // Check permissions
     auto status = fs::status(p, ec);
     if (ec) {
         return core::Result<bool>(false);
     }
-    
+
     if ((status.permissions() & fs::perms::owner_read) == fs::perms::none &&
         (status.permissions() & fs::perms::group_read) == fs::perms::none &&
         (status.permissions() & fs::perms::others_read) == fs::perms::none) {
         return core::Result<bool>(false);
     }
-    
+
     // Double check by attempting to open if it's a file
     if (fs::is_regular_file(status)) {
         std::ifstream file(p, std::ios::binary);
@@ -210,7 +239,7 @@ core::Result<bool> StdFileSystem::isAccessible(const std::string& path) {
             return core::Result<bool>(false);
         }
     }
-    
+
     return core::Result<bool>(true);
 }
 
