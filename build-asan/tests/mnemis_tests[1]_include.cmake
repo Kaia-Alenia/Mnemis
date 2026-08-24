@@ -1,0 +1,5 @@
+if(EXISTS "/home/alejandro/Escritorio/Mnemis/build-asan/tests/mnemis_tests[1]_tests.cmake")
+  include("/home/alejandro/Escritorio/Mnemis/build-asan/tests/mnemis_tests[1]_tests.cmake")
+else()
+  add_test(mnemis_tests_NOT_BUILT mnemis_tests_NOT_BUILT)
+endif()

@@ -1,0 +1,14 @@
+{
+    "id": "com.mnemis.koalasync",
+    "name": "KoalaSync Plugin",
+    "version": "1.0.0",
+    "vendor": "Alenia Studios",
+    "description": "Official plugin for KoalaSync protocol support",
+    "apiVersion": "1.0",
+    "entryPoint": "libmnemis_koalasync.so",
+    "platform": "linux",
+    "architecture": "x86_64",
+    "permissions": ["network", "playback_sync"],
+    "capabilities": ["sync", "lobby", "chat"],
+    "dependencies": []
+}

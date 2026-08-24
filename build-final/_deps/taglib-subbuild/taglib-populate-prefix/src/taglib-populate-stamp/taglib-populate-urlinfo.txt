@@ -1,0 +1,12 @@
+# This is a generated file and its contents are an internal implementation detail.
+# The download step will be re-executed if anything in this file changes.
+# No other meaning or use of this file is supported.
+
+method=url
+command=/usr/bin/cmake;-P;/home/alejandro/Escritorio/Mnemis/build-final/_deps/taglib-subbuild/taglib-populate-prefix/src/taglib-populate-stamp/download-taglib-populate.cmake;COMMAND;/usr/bin/cmake;-P;/home/alejandro/Escritorio/Mnemis/build-final/_deps/taglib-subbuild/taglib-populate-prefix/src/taglib-populate-stamp/verify-taglib-populate.cmake;COMMAND;/usr/bin/cmake;-P;/home/alejandro/Escritorio/Mnemis/build-final/_deps/taglib-subbuild/taglib-populate-prefix/src/taglib-populate-stamp/extract-taglib-populate.cmake
+source_dir=/home/alejandro/Escritorio/Mnemis/build-final/_deps/taglib-src
+work_dir=/home/alejandro/Escritorio/Mnemis/build-final/_deps
+url(s)=https://github.com/taglib/taglib/releases/download/v1.13.1/taglib-1.13.1.tar.gz
+hash=
+no_extract=
+

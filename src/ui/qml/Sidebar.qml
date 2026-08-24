@@ -10,6 +10,8 @@ Rectangle {
     property bool currentFavoriteFilter: false
     property bool currentRecentFilter: false
 
+    signal navigationRequested(string page)
+
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: Theme.spacingMd
