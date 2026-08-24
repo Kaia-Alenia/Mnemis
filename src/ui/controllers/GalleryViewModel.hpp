@@ -55,6 +55,7 @@ public slots:
     void setSortOptions(const QString& sortBy, bool ascending);
     void setFilter(const QString& filterText, int filterMediaType = -1);
     void setFavoriteFilter(bool onlyFavorites, const QString& filterText = {});
+    void setRecentFilter(bool onlyRecent, const QString& filterText = {});
 
     Q_INVOKABLE void toggleSelection(const QString& mediaId);
     Q_INVOKABLE void selectOne(const QString& mediaId);

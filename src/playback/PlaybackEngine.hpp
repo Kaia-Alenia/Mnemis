@@ -24,6 +24,8 @@ public:
     void seek(double positionSecs, PlaybackOrigin::Value origin);
     void setVolume(double value);
     void setPlaybackRate(double rate);
+    void setAudioTrack(int id);
+    void setSubtitleTrack(int id);
 
     // Queries
     PlaybackState::Value state() const;

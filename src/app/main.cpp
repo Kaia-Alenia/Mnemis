@@ -5,6 +5,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QStandardPaths>
+#include <QTranslator>
+#include <QLocale>
 #include <QEvent>
 #include <QKeyEvent>
 #include <QMouseEvent>
@@ -25,6 +27,7 @@
 #include "database/repositories/SQLiteMediaRepository.hpp"
 #include "filesystem/StdFileSystem.hpp"
 #include "infrastructure/watcher/QtFileWatcher.hpp"
+#include "plugins/core/PluginManager.hpp"
 
 // Indexer
 #include "core/indexer/Indexer.hpp"
@@ -51,6 +54,7 @@
 #include "ui/controllers/ViewerViewModel.hpp"
 #include "ui/controllers/AnimatedMediaController.hpp"
 #include "ui/controllers/PlaybackController.hpp"
+#include "ui/controllers/PlaylistController.hpp"
 #include "ui/controllers/SettingsViewModel.hpp"
 #include "ui/providers/AsyncThumbnailProvider.hpp"
 
@@ -184,6 +188,16 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     app.installEventFilter(new MnemisInputTrace());
 
+    QTranslator translator;
+    const QStringList uiLanguages = QLocale::system().uiLanguages();
+    for (const QString &locale : uiLanguages) {
+        const QString baseName = "mnemis_" + QLocale(locale).name().left(2);
+        if (translator.load(":/i18n/translations/" + baseName + ".qm")) {
+            app.installTranslator(&translator);
+            break;
+        }
+    }
+
     // Fix MPV locale requirement before QGuiApplication changes it
     std::setlocale(LC_NUMERIC, "C");
 
@@ -245,6 +259,11 @@ int main(int argc, char *argv[]) {
         &context->getLogger()
     );
 
+    // 5.5 Plugins
+    auto pluginManager = std::make_shared<plugins::PluginManager>();
+    pluginManager->loadPlugins(QCoreApplication::applicationDirPath() + "/plugins");
+    pluginManager->notifyStartup();
+
     // 6. Media and Playback
     auto mpvBackend = std::make_unique<playback::LibMpvBackend>(context->getLogger());
     auto playbackEngine = std::make_unique<playback::PlaybackEngine>(std::move(mpvBackend));
@@ -256,8 +275,9 @@ int main(int argc, char *argv[]) {
     galleryModel->setMediaListContext(mediaListContext.get());
     auto viewerModel = std::make_shared<ui::controllers::ViewerViewModel>(repository.get());
     viewerModel->setContext(mediaListContext.get());
-    auto animatedController = std::make_shared<ui::controllers::AnimatedMediaController>();
+    // animatedController is owned by ViewerViewModel — do NOT create a separate one
     auto playbackController = std::make_shared<ui::controllers::PlaybackController>(std::move(playbackEngine));
+    auto playlistController = std::make_shared<ui::controllers::PlaylistController>(context->getDatabase().getPlaylistRepository(), context->getLogger());
 
     auto settingsModel = std::make_shared<ui::controllers::SettingsViewModel>(&context->getConfig());
 
@@ -275,20 +295,35 @@ int main(int argc, char *argv[]) {
         }
     };
 
-    // Wire Viewer selections to specialized controllers
+    // Wire media load to playback controller
+    // GIFs/animated are handled internally by ViewerViewModel's animatedController.
+    // Video and Audio are loaded and played via PlaybackController.
+    // MPV will auto-play via the unpause triggered in MPV_EVENT_FILE_LOADED.
     QObject::connect(viewerModel.get(), &ui::controllers::ViewerViewModel::canonicalPathChanged, [&]() {
-        QString uri = "file://" + viewerModel->canonicalPath();
-        auto result = repository->getById(viewerModel->mediaId().toStdString());
-        if (result.isSuccess() && result.value().has_value()) {
-            auto type = result.value()->mediaType;
-            if (type == core::models::MediaType::Gif || type == core::models::MediaType::AnimatedWebP || type == core::models::MediaType::APNG) {
-                animatedController->loadMedia(uri);
-                animatedController->play();
-            } else if (type == core::models::MediaType::Video || type == core::models::MediaType::Audio) {
-                playbackController->load(uri);
-                playbackController->play();
-            }
+        QString path = viewerModel->canonicalPath();
+        QString mediaId = viewerModel->mediaId();
+        if (path.isEmpty() || mediaId.isEmpty()) return;
+
+        auto result = repository->getById(mediaId.toStdString());
+        if (!result.isSuccess() || !result.value().has_value()) return;
+
+        auto type = result.value()->mediaType;
+        QString uri = QStringLiteral("file://") + path;
+
+        if (type == core::models::MediaType::Video || type == core::models::MediaType::Audio) {
+            qInfo() << "[PLAYBACK] Loading" << (type == core::models::MediaType::Video ? "video" : "audio") << uri;
+            playbackController->load(uri);
+            // Also call play() explicitly — the state machine may reject the auto-unpause
+            // from FILE_LOADED if the Loading->Playing transition isn't handled in time.
+            // Calling play() after load() is safe: PlaybackEngine queues it if needed.
+            playbackController->play();
+        } else if (type == core::models::MediaType::Gif || type == core::models::MediaType::AnimatedWebP || type == core::models::MediaType::APNG) {
+            qInfo() << "[ANIMATED] GIF/WebP/APNG will be handled by ViewerViewModel.animatedController";
+        } else {
+            // Static image — stop any ongoing playback
+            playbackController->stop();
         }
+        pluginManager->notifyMediaLoaded(mediaId);
     });
 
     if (!qEnvironmentVariableIsEmpty("MNEMIS_TEST_AUTO_CLICK")) {
@@ -317,8 +352,9 @@ int main(int argc, char *argv[]) {
     engine.rootContext()->setContextProperty("systemPaths", &systemPaths);
     engine.rootContext()->setContextProperty("galleryModel", galleryModel.get());
     engine.rootContext()->setContextProperty("viewerModel", viewerModel.get());
-    engine.rootContext()->setContextProperty("animatedController", animatedController.get());
+    engine.rootContext()->setContextProperty("animatedController", viewerModel->animatedController());
     engine.rootContext()->setContextProperty("playbackController", playbackController.get());
+    engine.rootContext()->setContextProperty("playlistController", playlistController.get());
     engine.rootContext()->setContextProperty("settingsModel", settingsModel.get());
 
     const QUrl url(QStringLiteral("qrc:/qml/Main.qml"));

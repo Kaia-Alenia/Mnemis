@@ -26,6 +26,8 @@ public:
     void seek(double positionSecs) override;
     void setVolume(double value) override;
     void setPlaybackRate(double rate) override;
+    void setAudioTrack(int id) override;
+    void setSubtitleTrack(int id) override;
     void* getNativePlayer() const override;
 
     // Call this repeatedly from a UI event loop or timer to process events

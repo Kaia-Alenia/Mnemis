@@ -125,6 +125,18 @@ void PlaybackController::setPlaybackRate(double rate) {
     }
 }
 
+void PlaybackController::setAudioTrack(int id) {
+    if (m_engine) {
+        m_engine->setAudioTrack(id);
+    }
+}
+
+void PlaybackController::setSubtitleTrack(int id) {
+    if (m_engine) {
+        m_engine->setSubtitleTrack(id);
+    }
+}
+
 void PlaybackController::updateState(playback::PlaybackState::Value state) {
     QString newStr;
     switch (state) {

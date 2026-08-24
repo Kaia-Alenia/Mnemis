@@ -68,6 +68,14 @@ public:
         return nullptr;
     }
 
+    void setAudioTrack(int id) override {
+        m_audioTrack = id;
+    }
+
+    void setSubtitleTrack(int id) override {
+        m_subtitleTrack = id;
+    }
+
     // Simulation controls
     void setShouldFailLoad(bool fail) { m_shouldFailLoad = fail; }
     void setSimulatedDuration(double duration) { m_simulatedDuration = duration; }
@@ -91,6 +99,8 @@ private:
     double m_simulatedDuration = 0.0;
     double m_volume = 1.0;
     double m_playbackRate = 1.0;
+    int m_audioTrack = -1;
+    int m_subtitleTrack = -1;
 };
 
 } // namespace mnemis::tests::fakes

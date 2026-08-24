@@ -8,6 +8,7 @@ Rectangle {
 
     property int currentTypeFilter: -1
     property bool currentFavoriteFilter: false
+    property bool currentRecentFilter: false
 
     ColumnLayout {
         anchors.fill: parent
@@ -16,7 +17,7 @@ Rectangle {
 
         // App header
         Label {
-            text: "MNEMIS"
+            text: qsTr("MNEMIS")
             font.pixelSize: 14
             font.bold: true
             font.letterSpacing: 2
@@ -30,7 +31,9 @@ Rectangle {
         TextField {
             id: searchField
             Layout.fillWidth: true
-            placeholderText: "Search..."
+            placeholderText: qsTr("Search...")
+            Accessible.name: qsTr("Search field")
+            Accessible.role: Accessible.EditableText
             color: "#e2e2e2"
             font.pixelSize: 12
             leftPadding: 12
@@ -44,7 +47,9 @@ Rectangle {
                 border.width: 1
             }
             onTextChanged: {
-                if (root.currentFavoriteFilter) {
+                if (root.currentRecentFilter) {
+                    galleryModel.setRecentFilter(true, text)
+                } else if (root.currentFavoriteFilter) {
                     galleryModel.setFavoriteFilter(true, text)
                 } else {
                     galleryModel.setFilter(text, currentTypeFilter)
@@ -55,28 +60,36 @@ Rectangle {
         // Separator
         Rectangle { Layout.fillWidth: true; height: 1; color: "#1c1c22"; Layout.topMargin: 12; Layout.bottomMargin: 8 }
 
-        Label { text: "VIEWS"; color: "#5a5a66"; font.pixelSize: 10; font.bold: true; font.letterSpacing: 1; Layout.bottomMargin: 4 }
+        Label { text: qsTr("VIEWS"); color: "#5a5a66"; font.pixelSize: 10; font.bold: true; font.letterSpacing: 1; Layout.bottomMargin: 4; Accessible.ignored: true }
 
         // Filter buttons
         Repeater {
             model: [
-                { label: "All Media", typeId: -1,  isFavorite: false },
-                { label: "Images",    typeId: 1,   isFavorite: false },
-                { label: "Videos",    typeId: 2,   isFavorite: false },
-                { label: "Audio",     typeId: 3,   isFavorite: false },
-                { label: "GIFs",      typeId: 4,   isFavorite: false },
-                { label: "Favorites", typeId: -1,  isFavorite: true  },
+                { label: qsTr("Home"),      typeId: -1,  isFavorite: false, isRecent: false, isAction: false },
+                { label: qsTr("Photos"),    typeId: 1,   isFavorite: false, isRecent: false, isAction: false },
+                { label: qsTr("Videos"),    typeId: 2,   isFavorite: false, isRecent: false, isAction: false },
+                { label: qsTr("Music"),     typeId: 3,   isFavorite: false, isRecent: false, isAction: false },
+                { label: qsTr("Folders"),   typeId: -2,  isFavorite: false, isRecent: false, isAction: true },
+                { label: qsTr("Favorites"), typeId: -1,  isFavorite: true,  isRecent: false, isAction: false },
+                { label: qsTr("Recent"),    typeId: -1,  isFavorite: false, isRecent: true,  isAction: false },
+                { label: qsTr("Playlists"), typeId: -3,  isFavorite: false, isRecent: false, isAction: true },
+                { label: qsTr("Plugins"),   typeId: -4,  isFavorite: false, isRecent: false, isAction: true },
+                { label: qsTr("Settings"),  typeId: -5,  isFavorite: false, isRecent: false, isAction: true },
             ]
 
             delegate: ItemDelegate {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 32
-                highlighted: modelData.isFavorite
-                    ? root.currentFavoriteFilter
-                    : (!root.currentFavoriteFilter && root.currentTypeFilter === modelData.typeId)
+                Accessible.name: modelData.label
+                Accessible.role: Accessible.Button
+                highlighted: !modelData.isAction && (modelData.isRecent ? root.currentRecentFilter :
+                             (modelData.isFavorite ? root.currentFavoriteFilter :
+                             (!root.currentFavoriteFilter && !root.currentRecentFilter && root.currentTypeFilter === modelData.typeId)))
                 background: Rectangle {
                     color: parent.highlighted ? "#162436" : (parent.hovered ? "#141418" : "transparent")
                     radius: 4
+                    border.color: parent.activeFocus ? "#3a7bd5" : "transparent"
+                    border.width: parent.activeFocus ? 1 : 0
                 }
 
                 contentItem: Label {
@@ -88,12 +101,24 @@ Rectangle {
                 }
 
                 onClicked: {
-                    if (modelData.isFavorite) {
+                    if (modelData.isAction) {
+                        console.log("Action clicked:", modelData.label)
+                        // TODO: Implement navigation for Folders, Playlists, Plugins, Settings
+                        return;
+                    }
+                    if (modelData.isRecent) {
+                        root.currentRecentFilter = true
+                        root.currentFavoriteFilter = false
+                        root.currentTypeFilter = -1
+                        galleryModel.setRecentFilter(true, searchField.text)
+                    } else if (modelData.isFavorite) {
                         root.currentFavoriteFilter = true
+                        root.currentRecentFilter = false
                         root.currentTypeFilter = -1
                         galleryModel.setFavoriteFilter(true, searchField.text)
                     } else {
                         root.currentFavoriteFilter = false
+                        root.currentRecentFilter = false
                         root.currentTypeFilter = modelData.typeId
                         galleryModel.setFilter(searchField.text, modelData.typeId)
                     }
@@ -104,21 +129,23 @@ Rectangle {
         // Separator
         Rectangle { Layout.fillWidth: true; height: 1; color: "#1c1c22"; Layout.topMargin: 12; Layout.bottomMargin: 8 }
 
-        Label { text: "SORT BY"; color: "#5a5a66"; font.pixelSize: 10; font.bold: true; font.letterSpacing: 1; Layout.bottomMargin: 4 }
+        Label { text: qsTr("SORT BY"); color: "#5a5a66"; font.pixelSize: 10; font.bold: true; font.letterSpacing: 1; Layout.bottomMargin: 4; Accessible.ignored: true }
 
         Repeater {
             model: [
-                { label: "Name (A-Z)",   sortBy: "fileName",     asc: true  },
-                { label: "Name (Z-A)",   sortBy: "fileName",     asc: false },
-                { label: "Newest First", sortBy: "modifiedTime", asc: false },
-                { label: "Oldest First", sortBy: "modifiedTime", asc: true  },
-                { label: "Size (Large)", sortBy: "fileSize",     asc: false },
-                { label: "Size (Small)", sortBy: "fileSize",     asc: true  },
+                { label: qsTr("Name (A-Z)"),   sortBy: "fileName",     asc: true  },
+                { label: qsTr("Name (Z-A)"),   sortBy: "fileName",     asc: false },
+                { label: qsTr("Newest First"), sortBy: "modifiedTime", asc: false },
+                { label: qsTr("Oldest First"), sortBy: "modifiedTime", asc: true  },
+                { label: qsTr("Size (Large)"), sortBy: "fileSize",     asc: false },
+                { label: qsTr("Size (Small)"), sortBy: "fileSize",     asc: true  },
             ]
 
             delegate: ItemDelegate {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 28
+                Accessible.name: qsTr("Sort by ") + modelData.label
+                Accessible.role: Accessible.Button
                 contentItem: Label {
                     text: modelData.label
                     color: parent.hovered ? "#e2e2e2" : "#888894"
@@ -128,6 +155,8 @@ Rectangle {
                 background: Rectangle {
                     color: parent.hovered ? "#141418" : "transparent"
                     radius: 4
+                    border.color: parent.activeFocus ? "#3a7bd5" : "transparent"
+                    border.width: parent.activeFocus ? 1 : 0
                 }
                 onClicked: {
                     galleryModel.setSortOptions(modelData.sortBy, modelData.asc)
@@ -140,16 +169,16 @@ Rectangle {
 
         RowLayout {
             Layout.fillWidth: true
-            Label { text: "LIBRARY ROOTS"; color: "#5a5a66"; font.pixelSize: 10; font.bold: true; font.letterSpacing: 1; Layout.fillWidth: true }
+            Label { text: qsTr("LIBRARY ROOTS"); color: "#5a5a66"; font.pixelSize: 10; font.bold: true; font.letterSpacing: 1; Layout.fillWidth: true; Accessible.ignored: true }
             Button {
                 id: addRootBtn
                 text: "+"
-                Accessible.name: "Add Library Root"
+                Accessible.name: qsTr("Add Library Root")
                 Accessible.role: Accessible.Button
                 Layout.preferredWidth: 24
                 Layout.preferredHeight: 24
                 padding: 0
-                background: Rectangle { color: addRootBtn.hovered ? "#1c1c22" : "transparent"; radius: 4 }
+                background: Rectangle { color: addRootBtn.hovered ? "#1c1c22" : "transparent"; radius: 4; border.color: addRootBtn.activeFocus ? "#3a7bd5" : "transparent"; border.width: addRootBtn.activeFocus ? 1 : 0 }
                 contentItem: Label { text: addRootBtn.text; color: addRootBtn.hovered ? "#fff" : "#888894"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; font.pixelSize: 16 }
                 onClicked: {
                     if (typeof systemPaths !== "undefined") {
@@ -171,7 +200,7 @@ Rectangle {
             spacing: 4
 
             Label {
-                text: "No directories added."
+                text: qsTr("No directories added.")
                 color: "#777782"
                 font.pixelSize: 11
                 font.italic: true
@@ -181,8 +210,10 @@ Rectangle {
             Button {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 28
-                background: Rectangle { color: parent.hovered ? "#1c1c22" : "#141418"; radius: 4; border.color: "#22222a" }
-                contentItem: Label { text: "Add ~/Pictures"; color: "#aaddff"; font.pixelSize: 11; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
+                Accessible.name: qsTr("Add Pictures Directory")
+                Accessible.role: Accessible.Button
+                background: Rectangle { color: parent.hovered ? "#1c1c22" : "#141418"; radius: 4; border.color: parent.activeFocus ? "#3a7bd5" : "#22222a" }
+                contentItem: Label { text: qsTr("Add ~/Pictures"); color: "#aaddff"; font.pixelSize: 11; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
                 onClicked: {
                     if (settingsModel && typeof systemPaths !== "undefined") settingsModel.addRoot("file://" + systemPaths.picturesLocation())
                 }
@@ -190,8 +221,10 @@ Rectangle {
             Button {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 28
-                background: Rectangle { color: parent.hovered ? "#1c1c22" : "#141418"; radius: 4; border.color: "#22222a" }
-                contentItem: Label { text: "Add ~/Videos"; color: "#aaddff"; font.pixelSize: 11; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
+                Accessible.name: qsTr("Add Videos Directory")
+                Accessible.role: Accessible.Button
+                background: Rectangle { color: parent.hovered ? "#1c1c22" : "#141418"; radius: 4; border.color: parent.activeFocus ? "#3a7bd5" : "#22222a" }
+                contentItem: Label { text: qsTr("Add ~/Videos"); color: "#aaddff"; font.pixelSize: 11; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
                 onClicked: {
                     if (settingsModel && typeof systemPaths !== "undefined") settingsModel.addRoot("file://" + systemPaths.moviesLocation())
                 }
@@ -199,8 +232,10 @@ Rectangle {
             Button {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 28
-                background: Rectangle { color: parent.hovered ? "#1c1c22" : "#141418"; radius: 4; border.color: "#22222a" }
-                contentItem: Label { text: "Add ~/Music"; color: "#aaddff"; font.pixelSize: 11; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
+                Accessible.name: qsTr("Add Music Directory")
+                Accessible.role: Accessible.Button
+                background: Rectangle { color: parent.hovered ? "#1c1c22" : "#141418"; radius: 4; border.color: parent.activeFocus ? "#3a7bd5" : "#22222a" }
+                contentItem: Label { text: qsTr("Add ~/Music"); color: "#aaddff"; font.pixelSize: 11; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
                 onClicked: {
                     if (settingsModel && typeof systemPaths !== "undefined") settingsModel.addRoot("file://" + systemPaths.musicLocation())
                 }
@@ -208,8 +243,10 @@ Rectangle {
             Button {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 28
-                background: Rectangle { color: parent.hovered ? "#1c1c22" : "#141418"; radius: 4; border.color: "#22222a" }
-                contentItem: Label { text: "Add ~/Downloads"; color: "#aaddff"; font.pixelSize: 11; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
+                Accessible.name: qsTr("Add Downloads Directory")
+                Accessible.role: Accessible.Button
+                background: Rectangle { color: parent.hovered ? "#1c1c22" : "#141418"; radius: 4; border.color: parent.activeFocus ? "#3a7bd5" : "#22222a" }
+                contentItem: Label { text: qsTr("Add ~/Downloads"); color: "#aaddff"; font.pixelSize: 11; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
                 onClicked: {
                     if (settingsModel && typeof systemPaths !== "undefined") settingsModel.addRoot("file://" + systemPaths.downloadLocation())
                 }
@@ -240,12 +277,12 @@ Rectangle {
                 Button {
                     id: removeRootBtn
                     text: "×"
-                    Accessible.name: "Remove " + modelData
+                    Accessible.name: qsTr("Remove ") + modelData
                     Accessible.role: Accessible.Button
                     Layout.preferredWidth: 20
                     Layout.preferredHeight: 20
                     padding: 0
-                    background: Rectangle { color: removeRootBtn.hovered ? "#4a1c1c" : "transparent"; radius: 4 }
+                    background: Rectangle { color: removeRootBtn.hovered ? "#4a1c1c" : "transparent"; radius: 4; border.color: removeRootBtn.activeFocus ? "#3a7bd5" : "transparent"; border.width: removeRootBtn.activeFocus ? 1 : 0 }
                     contentItem: Label { text: removeRootBtn.text; color: removeRootBtn.hovered ? "#ff6b6b" : "#666"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; font.pixelSize: 14 }
                     onClicked: {
                         settingsModel.removeRoot(modelData)
@@ -260,7 +297,7 @@ Rectangle {
         RowLayout {
             Layout.fillWidth: true
             Label {
-                text: "Show Hidden Files"
+                text: qsTr("Show Hidden Files")
                 color: "#888894"
                 font.pixelSize: 11
                 Layout.fillWidth: true
@@ -292,6 +329,8 @@ Rectangle {
                         settingsModel.setIncludeHidden(checked)
                     }
                 }
+                Accessible.name: qsTr("Show Hidden Files")
+                Accessible.role: Accessible.CheckBox
             }
         }
 
@@ -299,7 +338,8 @@ Rectangle {
 
         // Count label
         Label {
-            text: galleryModel.count + " items"
+            text: galleryModel.count + qsTr(" items")
+            Accessible.name: galleryModel.count + qsTr(" items total")
             color: "#44444d"
             font.pixelSize: 10
             font.letterSpacing: 1

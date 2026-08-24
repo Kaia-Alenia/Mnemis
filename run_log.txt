@@ -1,0 +1,1485 @@
+[DEBUG] [Qt] checking directory path "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforms" ... (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqminimal.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqminimal.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "minimal"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QMinimalIntegrationPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("minimal") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqwayland-egl.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqwayland-egl.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "wayland-egl"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QWaylandEglPlatformIntegrationPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("wayland-egl") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqxcb.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqxcb.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "xcb"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QXcbIntegrationPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("xcb") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqoffscreen.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqoffscreen.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "offscreen"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QOffscreenIntegrationPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("offscreen") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqeglfs.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqeglfs.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "eglfs"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QEglFSIntegrationPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("eglfs") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqvkkhrdisplay.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqvkkhrdisplay.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "vkkhrdisplay"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QVkKhrDisplayIntegrationPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("vkkhrdisplay") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqlinuxfb.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqlinuxfb.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "linuxfb"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QLinuxFbIntegrationPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("linuxfb") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqvnc.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqvnc.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "vnc"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QVncIntegrationPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("vnc") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqwayland-generic.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqwayland-generic.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "wayland"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QWaylandIntegrationPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("wayland") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqminimalegl.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqminimalegl.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "minimalegl"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QMinimalEglIntegrationPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("minimalegl") (:0, )
+[DEBUG] [Qt] checking directory path "/home/alejandro/Escritorio/Mnemis/build/bin/platforms" ... (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/libqxcb.so" loaded library (:0, )
+[DEBUG] [Qt] "Xcursor" loaded library (:0, )
+[DEBUG] [Qt] checking directory path "/usr/lib/x86_64-linux-gnu/qt6/plugins/platformthemes" ... (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platformthemes/libqgtk3.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platformthemes/libqgtk3.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformThemeFactoryInterface.5.1",
+    "MetaData": {
+        "Keys": [
+            "gtk3"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QGtk3ThemePlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("gtk3") (:0, )
+[DEBUG] [Qt] checking directory path "/home/alejandro/Escritorio/Mnemis/build/bin/platformthemes" ... (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/plugins/platformthemes/libqgtk3.so" loaded library (:0, )
+[DEBUG] [Qt] checking directory path "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts" ... (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPlatformInputContextFactoryInterface.5.1",
+    "MetaData": {
+        "Keys": [
+            "compose",
+            "xim"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QComposePlatformInputContextPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("compose", "xim") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPlatformInputContextFactoryInterface.5.1",
+    "MetaData": {
+        "Keys": [
+            "ibus"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QIbusPlatformInputContextPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("ibus") (:0, )
+[DEBUG] [Qt] checking directory path "/home/alejandro/Escritorio/Mnemis/build/bin/platforminputcontexts" ... (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so" loaded library (:0, )
+[DEBUG] [Qt] checking directory path "/usr/lib/x86_64-linux-gnu/qt6/plugins/styles" ... (:0, )
+[DEBUG] [Qt] checking directory path "/home/alejandro/Escritorio/Mnemis/build/bin/styles" ... (:0, )
+[INFO] [Qt] [DIAGNOSTICS] Ultra-verbose input tracing enabled.
+[INFO] Initializing ApplicationContext
+[INFO] [Database] Connected to SQLite db: /home/alejandro/.local/share/Alenia Studios/Mnemis/mnemis.db
+[INFO] [MigrationManager] Current database version: 4
+[DEBUG] [Qt] Found metadata in lib /home/alejandro/Escritorio/Mnemis/build/bin/plugins/com.mnemis.koalasync/libmnemis_koalasync.so, metadata=
+{
+    "IID": "com.aleniastudios.Mnemis.IPlugin/1.0",
+    "archlevel": 1,
+    "className": "KoalaSyncPlugin",
+    "debug": true,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] "/home/alejandro/Escritorio/Mnemis/build/bin/plugins/com.mnemis.koalasync/libmnemis_koalasync.so" loaded library (:0, )
+[DEBUG] [Qt] checking directory path "/usr/lib/x86_64-linux-gnu/qt6/plugins/tls" ... (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/tls/libqopensslbackend.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/tls/libqopensslbackend.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QTlsBackend",
+    "archlevel": 1,
+    "className": "QTlsBackendOpenSSL",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList() (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/tls/libqcertonlybackend.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/tls/libqcertonlybackend.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QTlsBackend",
+    "archlevel": 1,
+    "className": "QTlsBackendCertOnly",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList() (:0, )
+[DEBUG] [Qt] checking directory path "/home/alejandro/Escritorio/Mnemis/build/bin/tls" ... (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/plugins/tls/libqopensslbackend.so" loaded library (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/plugins/tls/libqcertonlybackend.so" loaded library (:0, )
+[DEBUG] [Qt] "crypto" loaded library (:0, )
+[DEBUG] [Qt] "ssl" loaded library (:0, )
+[INFO] [Qt] Loaded plugin: "KoalaSync"
+[DEBUG] [Qt] Found metadata in lib /home/alejandro/Escritorio/Mnemis/build/bin/plugins/test_plugin/libmnemis_test_plugin.so, metadata=
+{
+    "IID": "com.aleniastudios.Mnemis.IPlugin/1.0",
+    "archlevel": 1,
+    "className": "TestPlugin",
+    "debug": true,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] "/home/alejandro/Escritorio/Mnemis/build/bin/plugins/test_plugin/libmnemis_test_plugin.so" loaded library (:0, )
+[INFO] [Qt] Loaded plugin: "TestPlugin"
+[INFO] [Qt] [KoalaSyncPlugin] Starting up...
+[INFO] [Qt] [TestPlugin] Plugin started up!
+[INFO] MPV context initialized
+[INFO] [Qt] GalleryViewModel: Reloading gallery data...
+[DEBUG] [Qt] addImportPath: "/usr/lib/x86_64-linux-gnu/qt6/qml" (:0, )
+[DEBUG] [Qt] addImportPath: "qrc:/qt-project.org/imports" (:0, )
+[DEBUG] [Qt] addImportPath: "/home/alejandro/Escritorio/Mnemis/build/bin" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Main.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Main.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] resolvePlugin Could not resolve dynamic plugin with base name "qtquick2plugin" in ":/qt-project.org/imports/QtQuick"  file does not exist (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Main.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Main.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] resolvePlugin Could not resolve dynamic plugin with base name "qmlplugin" in ":/qt-project.org/imports/QtQml"  file does not exist (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Main.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Main.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] resolvePlugin Could not resolve dynamic plugin with base name "modelsplugin" in ":/qt-project.org/imports/QtQml/Models"  file does not exist (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQml.Models module's qmldir found at "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Main.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Main.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/libworkerscriptplugin.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QQmlEngineExtensionInterface",
+    "archlevel": 1,
+    "className": "QtQmlWorkerScriptPlugin",
+    "debug": false,
+    "uri": [
+        "QtQml.WorkerScript"
+    ],
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/libworkerscriptplugin.so" loaded library (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQml.WorkerScript module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQml module's qmldir found at "" (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Main.qml "QtQuick.Controls" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Main.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/qmldir" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/libqtquickcontrols2plugin.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QQmlExtensionInterface/1.0",
+    "archlevel": 1,
+    "className": "QtQuickControls2Plugin",
+    "debug": false,
+    "uri": [
+        "QtQuick.Controls"
+    ],
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/libqtquickcontrols2plugin.so" loaded library (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Fusion" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Main.qml "QtQuick.Controls.Fusion" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Main.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/libqtquickcontrols2fusionstyleplugin.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QQmlExtensionInterface/1.0",
+    "archlevel": 1,
+    "className": "QtQuickControls2FusionStylePlugin",
+    "debug": false,
+    "uri": [
+        "QtQuick.Controls.Fusion"
+    ],
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/libqtquickcontrols2fusionstyleplugin.so" loaded library (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Main.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Main.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/libqtquickcontrols2basicstyleplugin.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QQmlExtensionInterface/1.0",
+    "archlevel": 1,
+    "className": "QtQuickControls2BasicStylePlugin",
+    "debug": false,
+    "uri": [
+        "QtQuick.Controls.Basic"
+    ],
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/libqtquickcontrols2basicstyleplugin.so" loaded library (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick.Controls.Basic module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick.Controls.Fusion module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Main.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Main.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.impl" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Main.qml "QtQuick.Controls.impl" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Main.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/impl/libqtquickcontrols2implplugin.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QQmlEngineExtensionInterface",
+    "archlevel": 1,
+    "className": "QtQuickControls2ImplPlugin",
+    "debug": false,
+    "uri": [
+        "QtQuick.Controls.impl"
+    ],
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/impl/libqtquickcontrols2implplugin.so" loaded library (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick.Controls.impl module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick.Controls module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Main.qml "QtQuick.Layouts" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Main.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Layouts/qmldir" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Layouts/libqquicklayoutsplugin.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QQmlEngineExtensionInterface",
+    "archlevel": 1,
+    "className": "QtQuickLayoutsPlugin",
+    "debug": false,
+    "uri": [
+        "QtQuick.Layouts"
+    ],
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Layouts/libqquicklayoutsplugin.so" loaded library (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick.Layouts module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Layouts/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] resolvePlugin Could not resolve dynamic plugin with base name "qtquicktemplates2plugin" in ":/qt-project.org/imports/QtQuick/Templates"  file does not exist (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Templates/libqtquicktemplates2plugin.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QQmlExtensionInterface/1.0",
+    "archlevel": 1,
+    "className": "QtQuickTemplates2Plugin",
+    "debug": false,
+    "uri": [
+        "QtQuick.Templates"
+    ],
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Templates/libqtquicktemplates2plugin.so" loaded library (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick.Templates module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml "T.Calendar"  =>  "QQuickCalendar"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "Component"  =>  "QQmlComponent"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "Connections"  =>  "QQmlConnections"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "Layout"  =>  "QQuickLayout"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "Item"  =>  "QQuickItem"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "RowLayout"  =>  "QQuickRowLayout"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "ApplicationWindow"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQuick.Window" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Window/qmldir" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Window/libquickwindowplugin.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QQmlEngineExtensionInterface",
+    "archlevel": 1,
+    "className": "QtQuick_WindowPlugin",
+    "debug": false,
+    "uri": [
+        "QtQuick.Window"
+    ],
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Window/libquickwindowplugin.so" loaded library (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQuick" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick.Window module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Window/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick.Controls.Fusion module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/libqtquickcontrols2fusionstyleimplplugin.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QQmlEngineExtensionInterface",
+    "archlevel": 1,
+    "className": "QtQuickControls2FusionStyleImplPlugin",
+    "debug": false,
+    "uri": [
+        "QtQuick.Controls.Fusion.impl"
+    ],
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/libqtquickcontrols2fusionstyleimplplugin.so" loaded library (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick.Controls.Fusion.impl module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "T.ApplicationWindow"  =>  "QQuickApplicationWindow"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ApplicationWindow.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick.Controls.Basic module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qml/Main.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qml/Main.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "Sidebar"  =>  ""   QUrl("qrc:/qml/Sidebar.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Sidebar.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Sidebar.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Sidebar.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Sidebar.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Sidebar.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Sidebar.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Sidebar.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Sidebar.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Sidebar.qml "QtQuick.Controls" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Sidebar.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Fusion" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Sidebar.qml "QtQuick.Controls.Fusion" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Sidebar.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Sidebar.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Sidebar.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Sidebar.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Sidebar.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.impl" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Sidebar.qml "QtQuick.Controls.impl" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Sidebar.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Sidebar.qml "QtQuick.Layouts" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/Sidebar.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Layouts/qmldir" (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QML module's qmldir file not found (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/Sidebar.qml "QML" version ' 1.0 ' as "QML" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] locateLocalQmldir: QtQuick.Controls.impl module's qmldir found at "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "Text"  =>  "QQuickText"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "T.ToolTip"  =>  "QQuickToolTip"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "Switch"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "Text"  =>  "QQuickText"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "SwitchIndicator"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "GradientStop"  =>  "QQuickGradientStop"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "Gradient"  =>  "QQuickGradient"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "Behavior"  =>  "QQuickBehavior"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "color"  =>  ""  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "NumberAnimation"  =>  "QQuickNumberAnimation"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "T.AbstractButton"  =>  "QQuickAbstractButton"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "SmoothedAnimation"  =>  "QQuickSmoothedAnimation"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "T.AbstractButton"  =>  "QQuickAbstractButton"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "color"  =>  ""  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SwitchIndicator.qml "color"  =>  ""  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "T.Switch"  =>  "QQuickSwitch"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Switch.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "NumberAnimation"  =>  "QQuickNumberAnimation"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "Button"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "T.Button"  =>  "QQuickButton"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "IconLabel"  =>  "QQuickIconLabel"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "ButtonPanel"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "Item"  =>  "QQuickItem"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "GradientStop"  =>  "QQuickGradientStop"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "Gradient"  =>  "QQuickGradient"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml "Item"  =>  "QQuickItem"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Button.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "ColumnLayout"  =>  "QQuickColumnLayout"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "Behavior"  =>  "QQuickBehavior"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "ItemDelegate"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "T.ItemDelegate"  =>  "QQuickItemDelegate"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "IconLabel"  =>  "QQuickIconLabel"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ItemDelegate.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "RowLayout"  =>  "QQuickRowLayout"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "MouseArea"  =>  "QQuickMouseArea"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "Label"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "T.Label"  =>  "QQuickLabel"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "Repeater"  =>  "QQuickRepeater"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "TextField"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "PlaceholderText"  =>  "QQuickPlaceholderText"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "T.TextField"  =>  "QQuickTextField"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/TextField.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "Item"  =>  "QQuickItem"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "QML.Component"  =>  "QQmlComponent"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "Layout"  =>  "QQuickLayout"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qml/Sidebar.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qml/Sidebar.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "MediaViewer"  =>  ""   QUrl("qrc:/qml/MediaViewer.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/MediaViewer.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/MediaViewer.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/MediaViewer.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/MediaViewer.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/MediaViewer.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/MediaViewer.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/MediaViewer.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/MediaViewer.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/MediaViewer.qml "QtQuick.Controls" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/MediaViewer.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Fusion" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/MediaViewer.qml "QtQuick.Controls.Fusion" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/MediaViewer.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/MediaViewer.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/MediaViewer.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/MediaViewer.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/MediaViewer.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.impl" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/MediaViewer.qml "QtQuick.Controls.impl" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/MediaViewer.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/MediaViewer.qml "QtQuick.Layouts" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/MediaViewer.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Layouts/qmldir" (:0, )
+[DEBUG] [Qt] locateLocalQmldir: mnemis.ui module's qmldir file not found (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/MediaViewer.qml "mnemis.ui" version ' 1.0 ' as "" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolButton"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "T.ToolButton"  =>  "QQuickToolButton"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "IconLabel"  =>  "QQuickIconLabel"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "ButtonPanel"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolButton.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "MouseArea"  =>  "QQuickMouseArea"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "WheelHandler"  =>  "QQuickWheelHandler"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Component"  =>  "QQmlComponent"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "NumberAnimation"  =>  "QQuickNumberAnimation"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Item"  =>  "QQuickItem"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Flickable"  =>  "QQuickFlickable"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "MpvVideoItem"  =>  "mnemis::ui::components::MpvVideoItem"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Keys"  =>  "QQuickKeysAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Label"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Label.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Layout"  =>  "QQuickLayout"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "BusyIndicator"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "OpacityAnimator"  =>  "QQuickOpacityAnimator"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "Behavior"  =>  "QQuickBehavior"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "RotationAnimator"  =>  "QQuickRotationAnimator"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "T.BusyIndicator"  =>  "QQuickBusyIndicator"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "BusyIndicatorImpl"  =>  "QQuickFusionBusyIndicator"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Connections"  =>  "QQmlConnections"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Behavior"  =>  "QQuickBehavior"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Timer"  =>  "QQmlTimer"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ColumnLayout"  =>  "QQuickColumnLayout"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ComboBox"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQuick.Window" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Window/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQuick" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "T.ComboBox"  =>  "QQuickComboBox"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "ColorImage"  =>  "QQuickColorImage"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "ButtonPanel"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/ButtonPanel.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "T.ScrollBar"  =>  "QQuickScrollBar"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "T.TextField"  =>  "QQuickTextField"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "ListView"  =>  "QQuickListView"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "MenuItem"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "T.MenuItem"  =>  "QQuickMenuItem"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "IconLabel"  =>  "QQuickIconLabel"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "CheckIndicator"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "Gradient"  =>  "QQuickGradient"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "Item"  =>  "QQuickItem"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "color"  =>  ""  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "GradientStop"  =>  "QQuickGradientStop"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "ColorImage"  =>  "QQuickColorImage"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "Item"  =>  "QQuickItem"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "color"  =>  ""  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/CheckIndicator.qml "color"  =>  ""  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "ColorImage"  =>  "QQuickColorImage"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/MenuItem.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "T.Popup"  =>  "QQuickPopup"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "PaddedRectangle"  =>  "QQuickPaddedRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "ScrollBar"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "NumberAnimation"  =>  "QQuickNumberAnimation"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "State"  =>  "QQuickState"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "SequentialAnimation"  =>  "QQuickSequentialAnimation"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "PauseAnimation"  =>  "QQuickPauseAnimation"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "T.ScrollBar"  =>  "QQuickScrollBar"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "PropertyChanges"  =>  "QQuickPropertyChanges"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "Transition"  =>  "QQuickTransition"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ComboBox.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Text"  =>  "QQuickText"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Slider"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "SliderHandle"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "GradientStop"  =>  "QQuickGradientStop"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "Gradient"  =>  "QQuickGradient"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderHandle.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "T.Slider"  =>  "QQuickSlider"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "SliderGroove"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "QtQuick.Controls.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml loaded ":/qt-project.org/imports/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "QtQuick.Controls.Fusion" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "QtQuick.Controls.Fusion.impl" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/impl/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "GradientStop"  =>  "QQuickGradientStop"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "Item"  =>  "QQuickItem"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "Gradient"  =>  "QQuickGradient"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/impl/SliderGroove.qml "Item"  =>  "QQuickItem"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version invalid as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml "QtQuick.Controls.Basic" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/Slider.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Image"  =>  "QQuickImage"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "RowLayout"  =>  "QQuickRowLayout"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "AnimatedFrameItem"  =>  "mnemis::ui::components::AnimatedFrameItem"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qml/MediaViewer.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qml/MediaViewer.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Qt"  =>  "Qt"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Image"  =>  "QQuickImage"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Text"  =>  "QQuickText"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Text"  =>  "QQuickText"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Text"  =>  "QQuickText"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Text"  =>  "QQuickText"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Text"  =>  "QQuickText"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/MediaViewer.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "StackView"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml "QtQuick.Templates" version ' invalid ' as "T" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml loaded ":/qt-project.org/imports/QtQuick/Templates/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml "Transition"  =>  "QQuickTransition"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml "XAnimator"  =>  "QQuickXAnimator"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml "T.StackView"  =>  "QQuickStackView"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qt-project.org/imports/QtQuick/Controls/Basic/StackView.qml loaded ":/qt-project.org/imports/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "Shortcut"  =>  "QQuickShortcut"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Main.qml "GalleryView"  =>  ""   QUrl("qrc:/qml/GalleryView.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/GalleryView.qml "QtQuick" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/GalleryView.qml loaded ":/qt-project.org/imports/QtQuick/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/GalleryView.qml "QtQml" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/GalleryView.qml loaded ":/qt-project.org/imports/QtQml/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.Models" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/GalleryView.qml "QtQml.Models" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/GalleryView.qml loaded ":/qt-project.org/imports/QtQml/Models/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQml.WorkerScript" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/GalleryView.qml "QtQml.WorkerScript" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/GalleryView.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQml/WorkerScript/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/GalleryView.qml "QtQuick.Controls" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/GalleryView.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Fusion" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/GalleryView.qml "QtQuick.Controls.Fusion" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/GalleryView.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Fusion/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/GalleryView.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/GalleryView.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.Basic" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/GalleryView.qml "QtQuick.Controls.Basic" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/GalleryView.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/Basic/qmldir" (:0, )
+[DEBUG] [Qt] loading dependent import "QtQuick.Controls.impl" version 6.4 as "" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/GalleryView.qml "QtQuick.Controls.impl" version ' 6.4 ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/GalleryView.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Controls/impl/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/GalleryView.qml "QtQuick.Layouts" version ' invalid ' as "" (:0, )
+[DEBUG] [Qt] importExtension: qrc:/qml/GalleryView.qml loaded "/usr/lib/x86_64-linux-gnu/qt6/qml/QtQuick/Layouts/qmldir" (:0, )
+[DEBUG] [Qt] addLibraryImport: qrc:/qml/GalleryView.qml "QML" version ' 1.0 ' as "QML" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "Calendar"  =>  "Calendar"   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Basic/Calendar.qml")  TYPE/URL-SINGLETON (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "Gradient"  =>  "QQuickGradient"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "Item"  =>  "QQuickItem"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "Behavior"  =>  "QQuickBehavior"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "Timer"  =>  "QQmlTimer"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "GridView"  =>  "QQuickGridView"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "Accessible"  =>  "QQuickAccessibleAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "BusyIndicator"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/BusyIndicator.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "MouseArea"  =>  "QQuickMouseArea"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "Rectangle"  =>  "QQuickRectangle"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "Column"  =>  "QQuickColumn"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "Keys"  =>  "QQuickKeysAttached"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "ColorAnimation"  =>  "QQuickColorAnimation"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "QML.Component"  =>  "QQmlComponent"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "GradientStop"  =>  "QQuickGradientStop"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "Text"  =>  "QQuickText"  TYPE (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "ScrollBar"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "Image"  =>  "QQuickImage"  TYPE (:0, )
+[DEBUG] [Qt] addImplicitImport: qrc:/qml/GalleryView.qml (:0, )
+[DEBUG] [Qt] addFileImport: qrc:/qml/GalleryView.qml "." invalid as "" (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "ScrollBar"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] checking directory path "/usr/lib/x86_64-linux-gnu/qt6/plugins/xcbglintegrations" ... (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/xcbglintegrations/libqxcb-glx-integration.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/xcbglintegrations/libqxcb-glx-integration.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.Xcb.QXcbGlIntegrationFactoryInterface.5.5",
+    "MetaData": {
+        "Keys": [
+            "xcb_glx"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QXcbGlxIntegrationPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("xcb_glx") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/xcbglintegrations/libqxcb-egl-integration.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/xcbglintegrations/libqxcb-egl-integration.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.Xcb.QXcbGlIntegrationFactoryInterface.5.5",
+    "MetaData": {
+        "Keys": [
+            "xcb_egl"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QXcbEglIntegrationPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("xcb_egl") (:0, )
+[DEBUG] [Qt] checking directory path "/home/alejandro/Escritorio/Mnemis/build/bin/xcbglintegrations" ... (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/plugins/xcbglintegrations/libqxcb-glx-integration.so" loaded library (:0, )
+[DEBUG] [Qt] checking directory path "/usr/lib/x86_64-linux-gnu/qt6/plugins/accessible" ... (:0, )
+[DEBUG] [Qt] checking directory path "/home/alejandro/Escritorio/Mnemis/build/bin/accessible" ... (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/GalleryView.qml "ScrollBar"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ScrollBar.qml")  TYPE/URL (:0, )
+[DEBUG] [Qt] resolveType: qrc:/qml/Sidebar.qml "ToolTip"  =>  ""   QUrl("qrc:/qt-project.org/imports/QtQuick/Controls/Fusion/ToolTip.qml")  TYPE/URL (:0, )
+[INFO] Indexer: Starting index for 1 roots.
+[DEBUG] [Qt] checking directory path "/usr/lib/x86_64-linux-gnu/qt6/plugins/accessiblebridge" ... (:0, )
+[DEBUG] [Qt] checking directory path "/home/alejandro/Escritorio/Mnemis/build/bin/accessiblebridge" ... (:0, )
+[INFO] Indexer: Scan complete. Breakdown:
+  - Total seen files: 6
+  - Non-media files skipped: 0
+  - Media candidates found: 6
+    * Hidden candidates: 0
+    * Visible candidates: 6
+  - Final accepted into Repository: 6
+[INFO] [Qt] GalleryViewModel: Loaded total count: 4960
+[INFO] [Qt] GalleryViewModel: Requesting chunk 0 (generation 1 )
+[DEBUG] [Qt] [WINDOW_STATE] visibility changed to: 2 (qrc:/qml/Main.qml:15, expression for onVisibilityChanged)
+[INFO] Indexer: Indexing finished successfully.
+[DEBUG] [Qt] checking directory path "/usr/lib/x86_64-linux-gnu/qt6/plugins/imageformats" ... (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/imageformats/libqico.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/imageformats/libqico.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QImageIOHandlerFactoryInterface",
+    "MetaData": {
+        "Keys": [
+            "ico",
+            "cur"
+        ],
+        "MimeTypes": [
+            "image/vnd.microsoft.icon",
+            "image/vnd.microsoft.icon"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QICOPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("ico", "cur") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/imageformats/libqgif.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/imageformats/libqgif.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QImageIOHandlerFactoryInterface",
+    "MetaData": {
+        "Keys": [
+            "gif"
+        ],
+        "MimeTypes": [
+            "image/gif"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QGifPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("gif") (:0, )
+[DEBUG] [Qt] looking at "/usr/lib/x86_64-linux-gnu/qt6/plugins/imageformats/libqjpeg.so" (:0, )
+[DEBUG] [Qt] Found metadata in lib /usr/lib/x86_64-linux-gnu/qt6/plugins/imageformats/libqjpeg.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QImageIOHandlerFactoryInterface",
+    "MetaData": {
+        "Keys": [
+            "jpg",
+            "jpeg"
+        ],
+        "MimeTypes": [
+            "image/jpeg",
+            "image/jpeg"
+        ]
+    },
+    "archlevel": 1,
+    "className": "QJpegPlugin",
+    "debug": false,
+    "version": 394240
+}
+
+ (:0, )
+[DEBUG] [Qt] Got keys from plugin meta data QList("jpg", "jpeg") (:0, )
+[DEBUG] [Qt] checking directory path "/home/alejandro/Escritorio/Mnemis/build/bin/imageformats" ... (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/plugins/imageformats/libqico.so" loaded library (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/plugins/imageformats/libqgif.so" loaded library (:0, )
+[DEBUG] [Qt] "/usr/lib/x86_64-linux-gnu/qt6/plugins/imageformats/libqjpeg.so" loaded library (:0, )
+[INFO] [Qt] [INPUT] wheel target= Main_QMLTYPE_42 angleDelta= QPoint(0,-120) position= QPointF(793,435)
+[INFO] [Qt] [INPUT] wheel target= QQuickMouseArea angleDelta= QPoint(0,-120) position= QPointF(43,76.3333)
+[INFO] [Qt] [INPUT] wheel target= QQuickImage angleDelta= QPoint(0,-120) position= QPointF(43,76.3333)
+[INFO] [Qt] [INPUT] wheel target= QQuickRectangle_QML_40 angleDelta= QPoint(0,-120) position= QPointF(43,76.3333)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem_QML_39 angleDelta= QPoint(0,-120) position= QPointF(43,76.3333)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem angleDelta= QPoint(0,-120) position= QPointF(557,419)
+[INFO] [Qt] [INPUT] wheel target= QQuickGridView_QML_37 angleDelta= QPoint(0,-120) position= QPointF(557,419)
+[INFO] [Qt] [INPUT] wheel target= Main_QMLTYPE_42 angleDelta= QPoint(0,-120) position= QPointF(793,435)
+[INFO] [Qt] [INPUT] wheel target= QQuickMouseArea angleDelta= QPoint(0,-120) position= QPointF(43,83.5775)
+[INFO] [Qt] [INPUT] wheel target= QQuickImage angleDelta= QPoint(0,-120) position= QPointF(43,83.5775)
+[INFO] [Qt] [INPUT] wheel target= QQuickRectangle_QML_40 angleDelta= QPoint(0,-120) position= QPointF(43,83.5775)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem_QML_39 angleDelta= QPoint(0,-120) position= QPointF(43,83.5775)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem angleDelta= QPoint(0,-120) position= QPointF(557,426.244)
+[INFO] [Qt] [INPUT] wheel target= QQuickGridView_QML_37 angleDelta= QPoint(0,-120) position= QPointF(557,419)
+[INFO] [Qt] [INPUT] wheel target= Main_QMLTYPE_42 angleDelta= QPoint(0,-120) position= QPointF(793,435)
+[INFO] [Qt] [INPUT] wheel target= QQuickMouseArea angleDelta= QPoint(0,-120) position= QPointF(43,131.68)
+[INFO] [Qt] [INPUT] wheel target= QQuickText angleDelta= QPoint(0,-120) position= QPointF(35,0.34619)
+[INFO] [Qt] [INPUT] wheel target= QQuickRectangle angleDelta= QPoint(0,-120) position= QPointF(43,0.34619)
+[INFO] [Qt] [INPUT] wheel target= QQuickImage angleDelta= QPoint(0,-120) position= QPointF(43,131.68)
+[INFO] [Qt] [INPUT] wheel target= QQuickRectangle_QML_40 angleDelta= QPoint(0,-120) position= QPointF(43,131.68)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem_QML_39 angleDelta= QPoint(0,-120) position= QPointF(43,131.68)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem angleDelta= QPoint(0,-120) position= QPointF(557,474.346)
+[INFO] [Qt] [INPUT] wheel target= QQuickGridView_QML_37 angleDelta= QPoint(0,-120) position= QPointF(557,419)
+[INFO] [Qt] [INPUT] wheel target= Main_QMLTYPE_42 angleDelta= QPoint(0,-120) position= QPointF(793,435)
+[INFO] [Qt] [INPUT] wheel target= QQuickMouseArea angleDelta= QPoint(0,-120) position= QPointF(43,21.4128)
+[INFO] [Qt] [INPUT] wheel target= QQuickImage angleDelta= QPoint(0,-120) position= QPointF(43,21.4128)
+[INFO] [Qt] [INPUT] wheel target= QQuickRectangle_QML_40 angleDelta= QPoint(0,-120) position= QPointF(43,21.4128)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem_QML_39 angleDelta= QPoint(0,-120) position= QPointF(43,21.4128)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem angleDelta= QPoint(0,-120) position= QPointF(557,535.413)
+[INFO] [Qt] [INPUT] wheel target= QQuickGridView_QML_37 angleDelta= QPoint(0,-120) position= QPointF(557,419)
+[INFO] [Qt] [INPUT] wheel target= Main_QMLTYPE_42 angleDelta= QPoint(0,-120) position= QPointF(793,435)
+[INFO] [Qt] [INPUT] wheel target= QQuickMouseArea angleDelta= QPoint(0,-120) position= QPointF(43,154.853)
+[INFO] [Qt] [INPUT] wheel target= QQuickRectangle angleDelta= QPoint(0,-120) position= QPointF(43,23.52)
+[INFO] [Qt] [INPUT] wheel target= QQuickImage angleDelta= QPoint(0,-120) position= QPointF(43,154.853)
+[INFO] [Qt] [INPUT] wheel target= QQuickRectangle_QML_40 angleDelta= QPoint(0,-120) position= QPointF(43,154.853)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem_QML_39 angleDelta= QPoint(0,-120) position= QPointF(43,154.853)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem angleDelta= QPoint(0,-120) position= QPointF(557,1182.85)
+[INFO] [Qt] [INPUT] wheel target= QQuickGridView_QML_37 angleDelta= QPoint(0,-120) position= QPointF(557,419)
+[INFO] [Qt] GalleryViewModel: Requesting chunk 1 (generation 1 )
+[INFO] [Qt] [INPUT] wheel target= Main_QMLTYPE_42 angleDelta= QPoint(0,120) position= QPointF(793,442)
+[INFO] [Qt] [INPUT] wheel target= QQuickMouseArea angleDelta= QPoint(0,120) position= QPointF(43,101.335)
+[INFO] [Qt] [INPUT] wheel target= QQuickImage angleDelta= QPoint(0,120) position= QPointF(43,101.335)
+[INFO] [Qt] [INPUT] wheel target= QQuickRectangle_QML_40 angleDelta= QPoint(0,120) position= QPointF(43,101.335)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem_QML_39 angleDelta= QPoint(0,120) position= QPointF(43,101.335)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem angleDelta= QPoint(0,120) position= QPointF(557,2157.34)
+[INFO] [Qt] [INPUT] wheel target= QQuickGridView_QML_37 angleDelta= QPoint(0,120) position= QPointF(557,426)
+[INFO] [Qt] [INPUT] wheel target= Main_QMLTYPE_42 angleDelta= QPoint(0,120) position= QPointF(793,442)
+[INFO] [Qt] [INPUT] wheel target= QQuickMouseArea angleDelta= QPoint(0,120) position= QPointF(43,94)
+[INFO] [Qt] [INPUT] wheel target= QQuickImage angleDelta= QPoint(0,120) position= QPointF(43,94)
+[INFO] [Qt] [INPUT] wheel target= QQuickRectangle_QML_40 angleDelta= QPoint(0,120) position= QPointF(43,94)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem_QML_39 angleDelta= QPoint(0,120) position= QPointF(43,94)
+[INFO] [Qt] [INPUT] wheel target= QQuickItem angleDelta= QPoint(0,120) position= QPointF(557,2150)
+[INFO] [Qt] [INPUT] wheel target= QQuickGridView_QML_37 angleDelta= QPoint(0,120) position= QPointF(557,426)
+[INFO] [Qt] [INPUT] wheel target= Main_QMLTYPE_42 angleDelta= QPoint(0,120) position= QPointF(793,442)
+[INFO] [Qt] [INPUT] wheel target= QQuickMouseArea angleDelta= QPoint(0,120) position= QPointF(43,71.0374)
+[INFO] [Qt] [INPUT] wheel target= QQuickImage angleDelta

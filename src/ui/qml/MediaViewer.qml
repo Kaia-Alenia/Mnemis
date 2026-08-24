@@ -10,6 +10,31 @@ Rectangle {
     signal backRequested()
     signal fullscreenToggleRequested(bool on)
 
+    // === UI auto-hide logic ===
+    property bool controlsVisible: true
+    
+    Timer {
+        id: hideControlsTimer
+        interval: 3000
+        running: true
+        repeat: false
+        onTriggered: {
+            if (isVideo || isImage || isAnimated) {
+                controlsVisible = false;
+            }
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.NoButton
+        onPositionChanged: {
+            controlsVisible = true;
+            hideControlsTimer.restart();
+        }
+    }
+
     // === Image zoom/pan state ===
     property real currentScale: 1.0
     property real minScale: 0.1
@@ -45,7 +70,8 @@ Rectangle {
                         : ""
             fillMode: Image.PreserveAspectFit
             asynchronous: true
-            smooth: true
+            smooth: false
+            antialiasing: false
             cache: false
             rotation: viewerModel.rotation
 
@@ -60,10 +86,12 @@ Rectangle {
             Text {
                 anchors.centerIn: parent
                 visible: photoImage.status === Image.Error
-                text: "Failed to load image\n" + (viewerModel.canonicalPath ?? "")
+                text: qsTr("Failed to load image\n") + (viewerModel.canonicalPath ?? "")
                 color: "#ff6666"
                 font.pixelSize: 14
                 horizontalAlignment: Text.AlignHCenter
+                Accessible.name: text
+                Accessible.role: Accessible.StaticText
             }
         }
 
@@ -90,6 +118,8 @@ Rectangle {
         id: animatedView
         anchors.fill: parent
         visible: isAnimated
+        smooth: false
+        antialiasing: false
         controller: viewerModel.animatedController
     }
 
@@ -101,10 +131,12 @@ Rectangle {
 
         Label {
             anchors.centerIn: parent
-            text: "🎵\n\n" + (viewerModel.title !== undefined ? viewerModel.title : "Audio")
+            text: "🎵\n\n" + (viewerModel.title !== undefined ? viewerModel.title : qsTr("Audio"))
             color: "white"
             font.pixelSize: 48
             horizontalAlignment: Text.AlignHCenter
+            Accessible.name: qsTr("Audio Placeholder")
+            Accessible.role: Accessible.StaticText
         }
     }
 
@@ -117,6 +149,8 @@ Rectangle {
         height: 52
         color: "#e0000000"
         z: 10
+        opacity: root.controlsVisible ? 1.0 : 0.0
+        Behavior on opacity { NumberAnimation { duration: 250 } }
 
         RowLayout {
             anchors.fill: parent
@@ -126,12 +160,23 @@ Rectangle {
 
             // Back
             ToolButton {
-                text: "← Back"
+                text: "← " + qsTr("Back")
+                Accessible.name: qsTr("Back")
+                Accessible.role: Accessible.Button
+                Accessible.description: qsTr("Go back to previous view")
                 onClicked: {
-                    console.log("[VIEWER] back clicked")
-                    if (isVideo || isAudio) playbackController.stop()
-                    if (isAnimated) viewerModel.animatedController.stop()
+                    console.log("[VIEWER] back clicked — type=" + viewerModel.currentType
+                        + " isVideo=" + isVideo + " isAudio=" + isAudio + " isAnimated=" + isAnimated)
+                    if (isVideo || isAudio) {
+                        console.log("[VIEWER] stopping playback controller")
+                        playbackController.stop()
+                    }
+                    if (isAnimated) {
+                        console.log("[VIEWER] stopping animated controller")
+                        viewerModel.animatedController.stop()
+                    }
                     root.currentScale = 1.0
+                    console.log("[VIEWER] emitting backRequested")
                     root.backRequested()
                 }
             }
@@ -151,11 +196,13 @@ Rectangle {
             ToolButton {
                 text: viewerModel.isFavorite ? "★" : "☆"
                 font.pixelSize: 18
+                Accessible.name: viewerModel.isFavorite ? qsTr("Remove from favorites") : qsTr("Add to favorites")
+                Accessible.role: Accessible.Button
                 onClicked: {
                     console.log("[VIEWER] favorite clicked")
                     viewerModel.toggleFavorite()
                 }
-                ToolTip.text: viewerModel.isFavorite ? "Remove from favorites" : "Add to favorites"
+                ToolTip.text: viewerModel.isFavorite ? qsTr("Remove from favorites") : qsTr("Add to favorites")
                 ToolTip.visible: hovered
             }
 
@@ -163,11 +210,13 @@ Rectangle {
             ToolButton {
                 text: "⛶"
                 font.pixelSize: 16
+                Accessible.name: qsTr("Toggle Fullscreen")
+                Accessible.role: Accessible.Button
                 onClicked: {
                     console.log("[VIEWER] fullscreen clicked")
                     viewerModel.toggleFullscreen()
                 }
-                ToolTip.text: "Pantalla completa"
+                ToolTip.text: qsTr("Toggle Fullscreen")
                 ToolTip.visible: hovered
             }
 
@@ -175,21 +224,25 @@ Rectangle {
             ToolButton {
                 text: "‹"
                 font.pixelSize: 20
+                Accessible.name: qsTr("Previous")
+                Accessible.role: Accessible.Button
                 onClicked: {
                     console.log("[VIEWER] previous clicked")
                     viewerModel.previous()
                 }
-                ToolTip.text: "Anterior"
+                ToolTip.text: qsTr("Previous")
                 ToolTip.visible: hovered
             }
             ToolButton {
                 text: "›"
                 font.pixelSize: 20
+                Accessible.name: qsTr("Next")
+                Accessible.role: Accessible.Button
                 onClicked: {
                     console.log("[VIEWER] next clicked")
                     viewerModel.next()
                 }
-                ToolTip.text: "Siguiente"
+                ToolTip.text: qsTr("Next")
                 ToolTip.visible: hovered
             }
         }
@@ -205,6 +258,8 @@ Rectangle {
         color: "#d0000000"
         visible: isImage
         z: 10
+        opacity: root.controlsVisible ? 1.0 : 0.0
+        Behavior on opacity { NumberAnimation { duration: 250 } }
 
         RowLayout {
             anchors.fill: parent
@@ -216,6 +271,8 @@ Rectangle {
             ToolButton {
                 text: "−"
                 font.pixelSize: 18
+                Accessible.name: qsTr("Zoom Out")
+                Accessible.role: Accessible.Button
                 onClicked: root.currentScale = Math.max(root.minScale, root.currentScale / 1.25)
             }
 
@@ -232,6 +289,8 @@ Rectangle {
             ToolButton {
                 text: "+"
                 font.pixelSize: 18
+                Accessible.name: qsTr("Zoom In")
+                Accessible.role: Accessible.Button
                 onClicked: root.currentScale = Math.min(root.maxScale, root.currentScale * 1.25)
             }
 
@@ -239,8 +298,10 @@ Rectangle {
             ToolButton {
                 text: "⊡"
                 font.pixelSize: 16
+                Accessible.name: qsTr("Fit to window")
+                Accessible.role: Accessible.Button
                 onClicked: root.currentScale = 1.0
-                ToolTip.text: "Fit to window"
+                ToolTip.text: qsTr("Fit to window")
                 ToolTip.visible: hovered
             }
 
@@ -248,12 +309,14 @@ Rectangle {
             ToolButton {
                 text: "1:1"
                 font.pixelSize: 12
+                Accessible.name: qsTr("Original size")
+                Accessible.role: Accessible.Button
                 onClicked: {
                     if (photoImage.sourceSize.width > 0) {
                         root.currentScale = photoImage.sourceSize.width / flickable.width
                     }
                 }
-                ToolTip.text: "Tamaño original"
+                ToolTip.text: qsTr("Original size")
                 ToolTip.visible: hovered
             }
 
@@ -263,8 +326,10 @@ Rectangle {
             ToolButton {
                 text: "↺"
                 font.pixelSize: 16
+                Accessible.name: qsTr("Rotate counter-clockwise")
+                Accessible.role: Accessible.Button
                 onClicked: viewerModel.rotate(-90)
-                ToolTip.text: "Rotar 90° izquierda"
+                ToolTip.text: qsTr("Rotate counter-clockwise")
                 ToolTip.visible: hovered
             }
 
@@ -272,8 +337,10 @@ Rectangle {
             ToolButton {
                 text: "↻"
                 font.pixelSize: 16
+                Accessible.name: qsTr("Rotate clockwise")
+                Accessible.role: Accessible.Button
                 onClicked: viewerModel.rotate(90)
-                ToolTip.text: "Rotar 90° derecha"
+                ToolTip.text: qsTr("Rotate clockwise")
                 ToolTip.visible: hovered
             }
 
@@ -298,6 +365,8 @@ Rectangle {
         color: "#d0000000"
         visible: isVideo || isAudio
         z: 10
+        opacity: root.controlsVisible ? 1.0 : 0.0
+        Behavior on opacity { NumberAnimation { duration: 250 } }
 
         ColumnLayout {
             anchors.fill: parent
@@ -319,6 +388,8 @@ Rectangle {
                 ToolButton {
                     text: playbackController.state === "Playing" ? "⏸" : "▶"
                     font.pixelSize: 16
+                    Accessible.name: playbackController.state === "Playing" ? qsTr("Pause") : qsTr("Play")
+                    Accessible.role: Accessible.Button
                     onClicked: {
                         if (playbackController.state === "Playing") playbackController.pause()
                         else playbackController.play()
@@ -328,6 +399,8 @@ Rectangle {
                 ToolButton {
                     text: "⏹"
                     font.pixelSize: 16
+                    Accessible.name: qsTr("Stop")
+                    Accessible.role: Accessible.Button
                     onClicked: playbackController.stop()
                 }
 
@@ -347,7 +420,7 @@ Rectangle {
                 Item { Layout.fillWidth: true }
 
                 Label {
-                    text: "Vol:"
+                    text: qsTr("Vol:")
                     color: "#aaa"
                     font.pixelSize: 12
                 }
@@ -356,7 +429,89 @@ Rectangle {
                     value: playbackController.volume ?? 100
                     onMoved: playbackController.volume = value
                     implicitWidth: 80
+                    Accessible.name: qsTr("Volume")
+                    Accessible.role: Accessible.Slider
                 }
+
+                Label {
+                    text: qsTr("Speed: ") + playbackController.playbackRate.toFixed(1) + "x"
+                    color: "#aaa"
+                    font.pixelSize: 12
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            if (playbackController.playbackRate < 2.0)
+                                playbackController.playbackRate += 0.25;
+                            else
+                                playbackController.playbackRate = 0.25;
+                        }
+                    }
+                    Accessible.name: qsTr("Playback Speed")
+                    Accessible.role: Accessible.StaticText
+                }
+
+                Label {
+                    text: qsTr("Audio:")
+                    color: "#aaa"
+                    font.pixelSize: 12
+                    visible: playbackController.audioTracks && playbackController.audioTracks.length > 0
+                }
+                ComboBox {
+                    id: audioTrackCombo
+                    model: playbackController.audioTracks
+                    textRole: "title"
+                    valueRole: "id"
+                    implicitWidth: 100
+                    visible: playbackController.audioTracks && playbackController.audioTracks.length > 0
+                    onActivated: (index) => {
+                        var trackId = model[index].id;
+                        playbackController.setAudioTrack(trackId);
+                    }
+                    Connections {
+                        target: playbackController
+                        function onTracksChanged() {
+                            if (!audioTrackCombo.model) return;
+                            for (var i = 0; i < audioTrackCombo.model.length; ++i) {
+                                if (audioTrackCombo.model[i].selected) {
+                                    audioTrackCombo.currentIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Label {
+                    text: qsTr("Subs:")
+                    color: "#aaa"
+                    font.pixelSize: 12
+                    visible: playbackController.subtitleTracks && playbackController.subtitleTracks.length > 0
+                }
+                ComboBox {
+                    id: subTrackCombo
+                    model: playbackController.subtitleTracks
+                    textRole: "title"
+                    valueRole: "id"
+                    implicitWidth: 100
+                    visible: playbackController.subtitleTracks && playbackController.subtitleTracks.length > 0
+                    onActivated: (index) => {
+                        var trackId = model[index].id;
+                        playbackController.setSubtitleTrack(trackId);
+                    }
+                    Connections {
+                        target: playbackController
+                        function onTracksChanged() {
+                            if (!subTrackCombo.model) return;
+                            for (var i = 0; i < subTrackCombo.model.length; ++i) {
+                                if (subTrackCombo.model[i].selected) {
+                                    subTrackCombo.currentIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
         }
     }

@@ -2,5 +2,7 @@
 <qresource prefix="/database">
     <file alias="migrations/V001_initial.sql">database/migrations/V001_initial.sql</file>
     <file alias="migrations/V002_add_path_index.sql">database/migrations/V002_add_path_index.sql</file>
+    <file alias="migrations/V003_add_playlists.sql">database/migrations/V003_add_playlists.sql</file>
+    <file alias="migrations/V004_add_playback_position.sql">database/migrations/V004_add_playback_position.sql</file>
 </qresource>
 </RCC>

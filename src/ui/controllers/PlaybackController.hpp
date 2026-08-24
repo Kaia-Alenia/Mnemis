@@ -49,6 +49,8 @@ public:
     void seek(double positionSecs);
     void setVolume(double value);
     void setPlaybackRate(double rate);
+    Q_INVOKABLE void setAudioTrack(int id);
+    Q_INVOKABLE void setSubtitleTrack(int id);
 
 signals:
     void stateChanged();

@@ -12,7 +12,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # Dependencies
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick Sql Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick Sql Widgets WebSockets Network)
 find_package(PkgConfig REQUIRED)
 find_package(SQLite3 REQUIRED)
 pkg_check_modules(MPV REQUIRED IMPORTED_TARGET mpv)

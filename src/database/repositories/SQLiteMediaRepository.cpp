@@ -84,9 +84,9 @@ core::Result<void> SQLiteMediaRepository::add(const MediaItem& item) {
             file_size, modified_time, created_time, width, height, duration, frame_rate,
             audio_channels, audio_sample_rate, title, artist, album, album_artist, genre,
             track_number, disc_number, year, has_thumbnail, thumbnail_version, favorite,
-            last_played, play_count, index_state, error_state
+            last_played, play_count, index_state, error_state, playback_position
         ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
         )
     )";
 
@@ -129,6 +129,7 @@ core::Result<void> SQLiteMediaRepository::add(const MediaItem& item) {
     sqlite3_bind_int(stmt, 29, item.playCount);
     sqlite3_bind_int(stmt, 30, static_cast<int>(item.indexState));
     bindStringOptional(stmt, 31, item.errorState);
+    bindDoubleOptional(stmt, 32, item.playbackPosition);
 
     rc = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
@@ -156,7 +157,7 @@ core::Result<void> SQLiteMediaRepository::update(const MediaItem& item) {
             file_size = ?, modified_time = ?, created_time = ?, width = ?, height = ?, duration = ?, frame_rate = ?,
             audio_channels = ?, audio_sample_rate = ?, title = ?, artist = ?, album = ?, album_artist = ?, genre = ?,
             track_number = ?, disc_number = ?, year = ?, has_thumbnail = ?, thumbnail_version = ?, favorite = ?,
-            last_played = ?, play_count = ?, index_state = ?, error_state = ?
+            last_played = ?, play_count = ?, index_state = ?, error_state = ?, playback_position = ?
         WHERE media_id = ?
     )";
 
@@ -198,8 +199,9 @@ core::Result<void> SQLiteMediaRepository::update(const MediaItem& item) {
     sqlite3_bind_int(stmt, 28, item.playCount);
     sqlite3_bind_int(stmt, 29, static_cast<int>(item.indexState));
     bindStringOptional(stmt, 30, item.errorState);
+    bindDoubleOptional(stmt, 31, item.playbackPosition);
 
-    sqlite3_bind_text(stmt, 31, item.mediaId.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 32, item.mediaId.c_str(), -1, SQLITE_TRANSIENT);
 
     rc = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
@@ -282,6 +284,7 @@ static MediaItem populateItemFromRow(sqlite3_stmt* stmt) {
     item.playCount = sqlite3_column_int(stmt, 28);
     item.indexState = static_cast<IndexState>(sqlite3_column_int(stmt, 29));
     item.errorState = getColumnStringOptional(stmt, 30);
+    item.playbackPosition = getColumnDoubleOptional(stmt, 31);
 
     return item;
 }
@@ -294,7 +297,7 @@ core::Result<std::optional<MediaItem>> SQLiteMediaRepository::getById(const std:
                file_size, modified_time, created_time, width, height, duration, frame_rate,
                audio_channels, audio_sample_rate, title, artist, album, album_artist, genre,
                track_number, disc_number, year, has_thumbnail, thumbnail_version, favorite,
-               last_played, play_count, index_state, error_state
+               last_played, play_count, index_state, error_state, playback_position
         FROM media WHERE media_id = ?
     )";
 
@@ -321,19 +324,22 @@ core::Result<std::vector<MediaItem>> SQLiteMediaRepository::list(int page, int p
                file_size, modified_time, created_time, width, height, duration, frame_rate,
                audio_channels, audio_sample_rate, title, artist, album, album_artist, genre,
                track_number, disc_number, year, has_thumbnail, thumbnail_version, favorite,
-               last_played, play_count, index_state, error_state
+               last_played, play_count, index_state, error_state, playback_position
         FROM media
     )";
 
     std::vector<std::string> conditions;
     if (options.filterText.has_value() && !options.filterText->empty()) {
-        conditions.push_back("(file_name LIKE ? OR title LIKE ? OR artist LIKE ? OR album LIKE ?)");
+        conditions.push_back("(file_name LIKE ? OR canonical_path LIKE ? OR title LIKE ? OR artist LIKE ? OR album LIKE ? OR genre LIKE ?)");
     }
     if (options.filterMediaType.has_value()) {
         conditions.push_back("media_type = ?");
     }
     if (options.filterFavorite.has_value() && options.filterFavorite.value()) {
         conditions.push_back("favorite = 1");
+    }
+    if (options.filterRecent.has_value() && options.filterRecent.value()) {
+        conditions.push_back("last_played IS NOT NULL AND last_played > 0");
     }
 
     if (!conditions.empty()) {
@@ -347,7 +353,8 @@ core::Result<std::vector<MediaItem>> SQLiteMediaRepository::list(int page, int p
     std::string sortCol = "created_time"; // Default
     if (options.sortBy == "file_name" || options.sortBy == "title" || 
         options.sortBy == "created_time" || options.sortBy == "modified_time" || 
-        options.sortBy == "file_size" || options.sortBy == "duration") {
+        options.sortBy == "file_size" || options.sortBy == "duration" ||
+        options.sortBy == "last_played") {
         sortCol = options.sortBy;
     }
 
@@ -362,6 +369,8 @@ core::Result<std::vector<MediaItem>> SQLiteMediaRepository::list(int page, int p
     std::string likeText;
     if (options.filterText.has_value() && !options.filterText->empty()) {
         likeText = "%" + options.filterText.value() + "%";
+        sqlite3_bind_text(stmt, bindIdx++, likeText.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, bindIdx++, likeText.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(stmt, bindIdx++, likeText.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(stmt, bindIdx++, likeText.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(stmt, bindIdx++, likeText.c_str(), -1, SQLITE_TRANSIENT);
@@ -393,13 +402,16 @@ core::Result<int> SQLiteMediaRepository::count(const core::repositories::QueryOp
 
     std::vector<std::string> conditions;
     if (options.filterText.has_value() && !options.filterText->empty()) {
-        conditions.push_back("(file_name LIKE ? OR title LIKE ? OR artist LIKE ? OR album LIKE ?)");
+        conditions.push_back("(file_name LIKE ? OR canonical_path LIKE ? OR title LIKE ? OR artist LIKE ? OR album LIKE ? OR genre LIKE ?)");
     }
     if (options.filterMediaType.has_value()) {
         conditions.push_back("media_type = ?");
     }
     if (options.filterFavorite.has_value() && options.filterFavorite.value()) {
         conditions.push_back("favorite = 1");
+    }
+    if (options.filterRecent.has_value() && options.filterRecent.value()) {
+        conditions.push_back("last_played IS NOT NULL AND last_played > 0");
     }
 
     if (!conditions.empty()) {
@@ -417,6 +429,8 @@ core::Result<int> SQLiteMediaRepository::count(const core::repositories::QueryOp
     std::string likeText;
     if (options.filterText.has_value() && !options.filterText->empty()) {
         likeText = "%" + options.filterText.value() + "%";
+        sqlite3_bind_text(stmt, bindIdx++, likeText.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, bindIdx++, likeText.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(stmt, bindIdx++, likeText.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(stmt, bindIdx++, likeText.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(stmt, bindIdx++, likeText.c_str(), -1, SQLITE_TRANSIENT);
@@ -443,7 +457,7 @@ core::Result<std::optional<MediaItem>> SQLiteMediaRepository::getByCanonicalPath
                file_size, modified_time, created_time, width, height, duration, frame_rate,
                audio_channels, audio_sample_rate, title, artist, album, album_artist, genre,
                track_number, disc_number, year, has_thumbnail, thumbnail_version, favorite,
-               last_played, play_count, index_state, error_state
+               last_played, play_count, index_state, error_state, playback_position
         FROM media WHERE canonical_path = ?
     )";
 

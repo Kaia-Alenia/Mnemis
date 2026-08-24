@@ -105,12 +105,14 @@ void ViewerViewModel::toggleFavorite() {
     emit isFavoriteChanged();
 
     std::weak_ptr<bool> alive = m_isAlive;
-    QThreadPool::globalInstance()->start([this, alive, id, newFavorite]() {
-        auto result = m_repository->getById(id);
+    auto repo = m_repository;
+    QThreadPool::globalInstance()->start([alive, repo, id, newFavorite]() {
+        if (!alive.lock()) return;
+        auto result = repo->getById(id);
         if (result.isSuccess() && result.value().has_value()) {
             auto item = result.value().value();
             item.favorite = newFavorite;
-            m_repository->update(item);
+            repo->update(item);
         }
     });
 }
@@ -270,7 +272,16 @@ void ViewerViewModel::onMediaItemLoaded(int generation, bool isSuccess, std::opt
     emit imageStateChanged();
 
     // Load animated media controller (no-op for static images)
-    m_animatedController->loadMedia(m_canonicalPath);
+    // IMPORTANT: QImageReader needs an absolute path without file:// prefix
+    // but AnimatedMediaController::loadMedia expects the same format as the file
+    // system path (no URL scheme). Pass the canonicalPath directly.
+    if (m_currentType == QStringLiteral("animated")) {
+        qInfo() << "[VIEWER] Loading animated media:" << m_canonicalPath;
+        m_animatedController->loadMedia(m_canonicalPath);
+    } else {
+        // Stop any running animation when switching to non-animated media
+        m_animatedController->clear();
+    }
 }
 
 void ViewerViewModel::onLibraryEvent(const core::events::LibraryEvent& event) {

@@ -44,8 +44,10 @@ public:
     Q_INVOKABLE void loadMedia(const QString& filePath);
     Q_INVOKABLE void play();
     Q_INVOKABLE void pause();
+    Q_INVOKABLE void stop();    // Stops animation and clears decoder state
     Q_INVOKABLE void restart();
     Q_INVOKABLE void goToFrame(int index);
+    void clear();               // Full reset — also callable from C++ (e.g. ViewerViewModel)
 
 signals:
     void animationStateChanged();
@@ -75,7 +77,6 @@ private:
     void scheduleNextFrame(int delayMs);
     void setState(AnimationState newState);
     void stopTimer();
-    void clear();
 
     int clampDelay(int delayMs) const;
 };

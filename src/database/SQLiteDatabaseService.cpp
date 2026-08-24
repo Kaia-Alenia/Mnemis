@@ -34,12 +34,14 @@ core::Result<void> SQLiteDatabaseService::connect(std::string_view path) {
     }
 
     m_mediaRepository = std::make_unique<repositories::SQLiteMediaRepository>(m_conn);
+    m_playlistRepository = std::make_unique<repositories::SQLitePlaylistRepository>(m_conn, m_logger);
 
     return core::Result<void>();
 }
 
 void SQLiteDatabaseService::disconnect() {
     m_mediaRepository.reset();
+    m_playlistRepository.reset();
     if (m_conn.isOpen()) {
         m_conn.close();
         m_logger.log(core::LogLevel::Info, "[Database] Disconnected from SQLite db");
@@ -51,6 +53,13 @@ core::repositories::IMediaRepository& SQLiteDatabaseService::getMediaRepository(
         throw std::runtime_error("MediaRepository is not initialized. Call connect() first.");
     }
     return *m_mediaRepository;
+}
+
+core::repositories::IPlaylistRepository& SQLiteDatabaseService::getPlaylistRepository() {
+    if (!m_playlistRepository) {
+        throw std::runtime_error("PlaylistRepository is not initialized. Call connect() first.");
+    }
+    return *m_playlistRepository;
 }
 
 } // namespace mnemis::database

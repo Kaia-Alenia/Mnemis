@@ -275,6 +275,7 @@ void GalleryViewModel::setFilter(const QString& filterText, int filterMediaType)
         m_currentQuery.filterMediaType = static_cast<core::models::MediaType>(filterMediaType);
     }
     m_currentQuery.filterFavorite = std::nullopt;
+    m_currentQuery.filterRecent = std::nullopt;
     if (!m_selectedIds.empty()) {
         m_selectedIds.clear();
         emit selectionChanged();
@@ -292,7 +293,36 @@ void GalleryViewModel::setFavoriteFilter(bool onlyFavorites, const QString& filt
         m_currentQuery.filterText = filterText.toStdString();
     }
     m_currentQuery.filterFavorite = onlyFavorites ? std::optional<bool>(true) : std::nullopt;
+    m_currentQuery.filterRecent = std::nullopt;
     m_currentQuery.filterMediaType = std::nullopt;
+    if (!m_selectedIds.empty()) {
+        m_selectedIds.clear();
+        emit selectionChanged();
+    }
+    if (m_listContext) m_listContext->setQueryOptions(m_currentQuery);
+    reload();
+}
+
+void GalleryViewModel::setRecentFilter(bool onlyRecent, const QString& filterText) {
+    qInfo() << "GalleryViewModel: Recent filter changed:" << onlyRecent
+            << "text=" << filterText;
+    if (filterText.isEmpty()) {
+        m_currentQuery.filterText = std::nullopt;
+    } else {
+        m_currentQuery.filterText = filterText.toStdString();
+    }
+    m_currentQuery.filterRecent = onlyRecent ? std::optional<bool>(true) : std::nullopt;
+    m_currentQuery.filterFavorite = std::nullopt;
+    m_currentQuery.filterMediaType = std::nullopt;
+    
+    if (onlyRecent) {
+        m_currentQuery.sortBy = "last_played";
+        m_currentQuery.ascending = false;
+    } else {
+        m_currentQuery.sortBy = "created_time";
+        m_currentQuery.ascending = false;
+    }
+    
     if (!m_selectedIds.empty()) {
         m_selectedIds.clear();
         emit selectionChanged();

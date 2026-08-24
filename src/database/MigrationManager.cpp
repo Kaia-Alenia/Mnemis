@@ -62,7 +62,9 @@ core::Result<void> MigrationManager::runMigrations() {
 
     std::vector<Migration> migrations = {
         {1, ":/database/migrations/V001_initial.sql"},
-        {2, ":/database/migrations/V002_add_path_index.sql"}
+        {2, ":/database/migrations/V002_add_path_index.sql"},
+        {3, ":/database/migrations/V003_add_playlists.sql"},
+        {4, ":/database/migrations/V004_add_playback_position.sql"}
     };
 
     for (const auto& migration : migrations) {

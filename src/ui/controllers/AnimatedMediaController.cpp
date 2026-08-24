@@ -103,6 +103,11 @@ void AnimatedMediaController::pause() {
     setState(AnimationState::Paused);
 }
 
+void AnimatedMediaController::stop() {
+    qInfo() << "[ANIMATED] stop() called \u2014 clearing animation state";
+    clear();
+}
+
 void AnimatedMediaController::restart() {
     if (!m_decoder) return;
     stopTimer();

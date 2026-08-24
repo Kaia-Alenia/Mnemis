@@ -10,11 +10,13 @@ AnimatedFrameItem::AnimatedFrameItem(QQuickItem* parent)
 
 void AnimatedFrameItem::paint(QPainter* painter) {
     if (!m_currentFrame.isNull()) {
-        // Draw the image scaled to fit the item's size while maintaining aspect ratio
+        // Use FastTransformation (nearest-neighbor) for pixel-perfect rendering.
+        // SmoothTransformation blurs pixel art — always use Fast for animated sprites.
+        Qt::TransformationMode mode = m_smooth ? Qt::SmoothTransformation : Qt::FastTransformation;
         QImage scaledImage = m_currentFrame.scaled(
             boundingRect().size().toSize(),
             Qt::KeepAspectRatio,
-            Qt::SmoothTransformation
+            mode
         );
 
         // Center the image

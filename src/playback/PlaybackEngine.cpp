@@ -84,6 +84,20 @@ void PlaybackEngine::setPlaybackRate(double rate) {
     }
 }
 
+void PlaybackEngine::setAudioTrack(int id) {
+    std::lock_guard<std::recursive_mutex> lock(m_mutex);
+    if (m_backend) {
+        m_backend->setAudioTrack(id);
+    }
+}
+
+void PlaybackEngine::setSubtitleTrack(int id) {
+    std::lock_guard<std::recursive_mutex> lock(m_mutex);
+    if (m_backend) {
+        m_backend->setSubtitleTrack(id);
+    }
+}
+
 PlaybackState::Value PlaybackEngine::state() const {
     std::lock_guard<std::recursive_mutex> lock(m_mutex);
     return m_state;
@@ -235,7 +249,7 @@ bool PlaybackEngine::isValidTransition(PlaybackState::Value from, PlaybackState:
         case PlaybackState::Idle:
             return to == PlaybackState::Loading;
         case PlaybackState::Loading:
-            return to == PlaybackState::Ready || to == PlaybackState::Error || to == PlaybackState::Idle || to == PlaybackState::Stopping;
+            return to == PlaybackState::Ready || to == PlaybackState::Playing || to == PlaybackState::Error || to == PlaybackState::Idle || to == PlaybackState::Stopping;
         case PlaybackState::Ready:
             return to == PlaybackState::Playing || to == PlaybackState::Paused || to == PlaybackState::Stopping || to == PlaybackState::Loading;
         case PlaybackState::Playing:

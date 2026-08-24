@@ -112,7 +112,7 @@ Rectangle {
 
                         Text {
                             anchors.centerIn: parent
-                            text: "ERROR"
+                            text: qsTr("ERROR")
                             color: "#aa5555"
                             font.pixelSize: 10
                             font.bold: true
@@ -131,7 +131,7 @@ Rectangle {
                             spacing: 4
                             Text {
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                text: "OFFLINE"
+                                text: qsTr("OFFLINE")
                                 color: "#888894"
                                 font.pixelSize: 10
                                 font.bold: true
@@ -185,9 +185,24 @@ Rectangle {
                     }
                 }
 
+                // Keyboard focus indicator
+                Rectangle {
+                    anchors.fill: parent
+                    color: "transparent"
+                    border.color: "white"
+                    border.width: 2
+                    visible: cell.GridView.isCurrentItem && grid.activeFocus
+                    radius: 4
+                }
+
                 Behavior on color { ColorAnimation { duration: 100 } }
                 Behavior on border.color { ColorAnimation { duration: 100 } }
             }
+
+            Accessible.role: Accessible.ListItem
+            Accessible.name: model.fileName !== undefined ? model.fileName : qsTr("Media item")
+            Accessible.description: cell.selected ? qsTr("Selected") : ""
+
 
             MouseArea {
                 anchors.fill: parent

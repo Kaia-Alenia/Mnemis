@@ -6,6 +6,8 @@ ApplicationWindow {
     id: window
     width: 1280
     height: 800
+    minimumWidth: 800
+    minimumHeight: 600
     visible: true
     title: qsTr("Mnemis")
 
@@ -81,14 +83,15 @@ ApplicationWindow {
         id: viewerPage
         MediaViewer {
             onBackRequested: {
-                console.log("[WINDOW_STATE] onBackRequested fired. Current visibility: " + window.visibility);
+                console.log("[WINDOW_STATE] onBackRequested fired. visibility=" + window.visibility
+                    + " stackDepth=" + stack.depth);
                 if (window.visibility === Window.FullScreen) {
-                    console.log("[WINDOW_STATE] Window is FullScreen, restoring to previous state.");
+                    console.log("[WINDOW_STATE] Fullscreen -> restoring to normal before pop");
                     window.showNormal();
-                } else {
-                    console.log("[WINDOW_STATE] Window is NOT FullScreen (visibility=" + window.visibility + "), doing nothing to avoid minimizing/un-maximizing.");
                 }
+                console.log("[WINDOW_STATE] Popping viewer from stack. depth before pop=" + stack.depth);
                 stack.pop();
+                console.log("[WINDOW_STATE] Stack popped. depth after pop=" + stack.depth);
             }
         }
     }
