@@ -53,7 +53,7 @@ std::optional<core::thumbnails::ImageBuffer> StbThumbnailDecoder::decode(const s
     
     // Scale image
     QImage scaledImg = origImg.scaled(spec.targetWidth, spec.targetHeight, 
-                                      Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                                      Qt::KeepAspectRatio, Qt::FastTransformation);
     
     // Prepare the final ImageBuffer (raw pixels)
     core::thumbnails::ImageBuffer buffer;

@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include "playback/LibMpvBackend.hpp"
 #include "fakes/FakeLogger.hpp"
+#include <thread>
+#include <chrono>
 
 using namespace mnemis;
 
@@ -18,13 +20,31 @@ public:
 TEST(LibMpvBackendTest, Instantiation) {
     auto delegate = std::make_shared<DummyDelegate>();
     tests::FakeLogger logger;
-    // If mpv is available, this will succeed. If not, we don't want to crash.
     try {
         playback::LibMpvBackend backend(logger);
         backend.setDelegate(delegate.get());
-        EXPECT_TRUE(true); // Successfully created
+        EXPECT_TRUE(true);
     } catch (...) {
-        // If libmpv fails to initialize (e.g. CI without mpv), skip the test
         GTEST_SKIP() << "libmpv failed to initialize. Skipping test.";
+    }
+}
+
+TEST(LibMpvBackendTest, Bug4sReproduction) {
+    auto delegate = std::make_shared<DummyDelegate>();
+    tests::FakeLogger logger;
+    setlocale(LC_NUMERIC, "C");
+    try {
+        playback::LibMpvBackend backend(logger);
+        backend.setDelegate(delegate.get());
+        
+        backend.load("/home/alejandro/Escritorio/Mnemis/tests/fixtures/diag/test_30s.mp4");
+        
+        for (int i = 0; i < 60; ++i) {
+            backend.processEvents();
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+        
+    } catch (...) {
+        GTEST_SKIP() << "libmpv failed to initialize.";
     }
 }

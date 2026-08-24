@@ -44,6 +44,8 @@ private:
     IPlaybackBackendDelegate* m_delegate = nullptr;
     std::mutex m_mutex;
     
+    std::shared_ptr<std::atomic<bool>> m_alive;
+
     // Qt integration point
     static void onMpvWakeup(void* ctx);
 };

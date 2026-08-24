@@ -31,6 +31,7 @@
 
 // Indexer
 #include "core/indexer/Indexer.hpp"
+#include "core/indexer/IndexerWorker.hpp"
 #include "core/indexer/MediaClassifier.hpp"
 #include "indexer/CompositeMetadataExtractor.hpp"
 #include "indexer/StbImageExtractor.hpp"
@@ -281,17 +282,26 @@ int main(int argc, char *argv[]) {
 
     auto settingsModel = std::make_shared<ui::controllers::SettingsViewModel>(&context->getConfig());
 
-    // Wire settings to indexer
-    settingsModel->onSettingsChanged = [indexer](const std::vector<std::string>& roots, bool includeHidden) {
+    auto indexerWorker = std::make_shared<core::indexer::IndexerWorker>(indexer);
+
+    // Wire up file watcher
+    fileWatcher->setCallback([indexerWorker](const std::string& path) {
+        qInfo() << "[WATCHER] Directory changed, triggering re-index for:" << QString::fromStdString(path);
+        indexerWorker->requestIndex(path);
+    });
+
+    // Wire settings to indexer and watcher
+    settingsModel->onSettingsChanged = [indexer, indexerWorker, fileWatcher](const std::vector<std::string>& roots, bool includeHidden) {
         core::indexer::IndexerConfig idxConfig;
         idxConfig.includeHidden = includeHidden;
         idxConfig.batchSize = 100; // default
         indexer->setConfig(idxConfig);
 
         if (!roots.empty()) {
-            std::thread([indexer, roots]() {
-                indexer->indexRoots(roots);
-            }).detach();
+            for (const auto& root : roots) {
+                fileWatcher->watchDirectory(root);
+            }
+            indexerWorker->requestIndex(roots);
         }
     };
 
@@ -390,9 +400,15 @@ int main(int argc, char *argv[]) {
     initialIdxConfig.batchSize = 100;
     indexer->setConfig(initialIdxConfig);
 
-    std::thread([indexer, initialRoots]() {
-        indexer->indexRoots(initialRoots);
-    }).detach();
+    for (const auto& root : initialRoots) {
+        fileWatcher->watchDirectory(root);
+    }
+
+    indexerWorker->requestIndex(initialRoots);
+
+    QObject::connect(&app, &QCoreApplication::aboutToQuit, [&]() {
+        indexerWorker->shutdown();
+    });
 
     int res = app.exec();
 

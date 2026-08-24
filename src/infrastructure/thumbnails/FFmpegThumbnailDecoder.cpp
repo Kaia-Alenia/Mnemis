@@ -25,7 +25,7 @@ namespace {
 FFmpegThumbnailDecoder::FFmpegThumbnailDecoder() {
     // List of common video formats
     m_supportedExtensions = {
-        ".mp4", ".mkv", ".avi", ".mov", ".webm", ".flv", ".wmv", ".m4v"
+        ".mp4", ".mkv", ".avi", ".mov", ".webm", ".flv", ".wmv", ".m4v", ".webp"
     };
 }
 
@@ -133,7 +133,7 @@ std::optional<core::thumbnails::ImageBuffer> FFmpegThumbnailDecoder::decode(cons
     // Scale and convert to RGB24 using swscale
     SwsContext* sws_ctx = sws_getContext(
         orig_width, orig_height, codec_ctx->pix_fmt,
-        target_width, target_height, AV_PIX_FMT_RGB24,
+        target_width, target_height, AV_PIX_FMT_RGBA,
         SWS_BILINEAR, nullptr, nullptr, nullptr
     );
 
@@ -144,30 +144,29 @@ std::optional<core::thumbnails::ImageBuffer> FFmpegThumbnailDecoder::decode(cons
     auto swsCtxReleaser = [](SwsContext* ctx) { sws_freeContext(ctx); };
     std::unique_ptr<SwsContext, decltype(swsCtxReleaser)> swsGuard(sws_ctx, swsCtxReleaser);
 
-    AVFrame* rgb_frame = av_frame_alloc();
-    rgb_frame->format = AV_PIX_FMT_RGB24;
-    rgb_frame->width = target_width;
-    rgb_frame->height = target_height;
-    av_frame_get_buffer(rgb_frame, 0);
+    AVFrame* rgba_frame = av_frame_alloc();
+    rgba_frame->format = AV_PIX_FMT_RGBA;
+    rgba_frame->width = target_width;
+    rgba_frame->height = target_height;
+    av_frame_get_buffer(rgba_frame, 0);
 
-    sws_scale(sws_ctx, frame->data, frame->linesize, 0, orig_height, rgb_frame->data, rgb_frame->linesize);
+    sws_scale(sws_ctx, frame->data, frame->linesize, 0, orig_height, rgba_frame->data, rgba_frame->linesize);
 
     core::thumbnails::ImageBuffer buffer;
     buffer.width = target_width;
     buffer.height = target_height;
-    buffer.channels = 3;
+    buffer.channels = 4;
     buffer.isEncoded = false;
     
-    // Copy rgb data
-    int size = target_width * target_height * 3;
-    // linesize could be larger than width*3 due to alignment
+    // Copy rgba data
+    int size = target_width * target_height * 4;
     buffer.data.reserve(size);
     for (int y = 0; y < target_height; ++y) {
-        const uint8_t* row = rgb_frame->data[0] + y * rgb_frame->linesize[0];
-        buffer.data.insert(buffer.data.end(), row, row + target_width * 3);
+        const uint8_t* row = rgba_frame->data[0] + y * rgba_frame->linesize[0];
+        buffer.data.insert(buffer.data.end(), row, row + target_width * 4);
     }
 
-    av_frame_free(&rgb_frame);
+    av_frame_free(&rgba_frame);
 
     return buffer;
 }

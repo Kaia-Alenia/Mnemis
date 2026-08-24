@@ -13,6 +13,7 @@ core::Result<void> SQLitePlaylistRepository::createPlaylist(const core::models::
     if (sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr) != SQLITE_OK) {
         return core::Result<void>(core::Error{1, "Failed to prepare createPlaylist statement"});
     }
+    ScopedStatement scopedStmt(stmt);
 
     sqlite3_bind_text(stmt, 1, playlist.playlistId.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 2, playlist.name.c_str(), -1, SQLITE_TRANSIENT);
@@ -22,7 +23,6 @@ core::Result<void> SQLitePlaylistRepository::createPlaylist(const core::models::
     sqlite3_bind_text(stmt, 6, playlist.queryJson.c_str(), -1, SQLITE_TRANSIENT);
 
     int rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
 
     if (rc != SQLITE_DONE) {
         return core::Result<void>(core::Error{rc, "Failed to execute createPlaylist"});
@@ -34,8 +34,9 @@ core::Result<void> SQLitePlaylistRepository::updatePlaylist(const core::models::
     const char* sql = "UPDATE playlists SET name = ?, modified_time = ?, is_smart = ?, query_json = ? WHERE playlist_id = ?";
     sqlite3_stmt* stmt = nullptr;
     if (sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr) != SQLITE_OK) {
-        return core::Result<void>(core::Error{1, "Failed to prepare updatePlaylist"});
+        return core::Result<void>(core::Error{1, sqlite3_errmsg(m_conn.getHandle())});
     }
+    ScopedStatement scopedStmt(stmt);
     sqlite3_bind_text(stmt, 1, playlist.name.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int64(stmt, 2, playlist.modifiedTime);
     sqlite3_bind_int(stmt, 3, playlist.isSmart ? 1 : 0);
@@ -43,7 +44,6 @@ core::Result<void> SQLitePlaylistRepository::updatePlaylist(const core::models::
     sqlite3_bind_text(stmt, 5, playlist.playlistId.c_str(), -1, SQLITE_TRANSIENT);
 
     int rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
     if (rc != SQLITE_DONE) return core::Result<void>(core::Error{rc, "Failed to execute updatePlaylist"});
     return core::Result<void>();
 }
@@ -52,9 +52,13 @@ core::Result<void> SQLitePlaylistRepository::deletePlaylist(const std::string& p
     const char* sql = "DELETE FROM playlists WHERE playlist_id = ?";
     sqlite3_stmt* stmt = nullptr;
     if (sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr) != SQLITE_OK) return core::Result<void>(core::Error{1, "Prepare failed"});
+    ScopedStatement scopedStmt(stmt);
     sqlite3_bind_text(stmt, 1, playlistId.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
+    
+    int rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        return core::Result<void>(core::Error{rc, "Failed to execute deletePlaylist"});
+    }
     return core::Result<void>();
 }
 
@@ -62,8 +66,9 @@ core::Result<std::vector<core::models::Playlist>> SQLitePlaylistRepository::getA
     const char* sql = "SELECT playlist_id, name, created_time, modified_time, is_smart, query_json FROM playlists";
     sqlite3_stmt* stmt = nullptr;
     if (sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr) != SQLITE_OK) {
-        return core::Result<std::vector<core::models::Playlist>>(core::Error{1, "Failed to prepare getAllPlaylists"});
+        return core::Result<std::vector<core::models::Playlist>>(core::Error{1, sqlite3_errmsg(m_conn.getHandle())});
     }
+    ScopedStatement scopedStmt(stmt);
 
     std::vector<core::models::Playlist> playlists;
     while (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -77,7 +82,6 @@ core::Result<std::vector<core::models::Playlist>> SQLitePlaylistRepository::getA
         if (q) p.queryJson = q;
         playlists.push_back(p);
     }
-    sqlite3_finalize(stmt);
     return core::Result<std::vector<core::models::Playlist>>(playlists);
 }
 
@@ -85,8 +89,9 @@ core::Result<std::optional<core::models::Playlist>> SQLitePlaylistRepository::ge
     const char* sql = "SELECT playlist_id, name, created_time, modified_time, is_smart, query_json FROM playlists WHERE playlist_id = ?";
     sqlite3_stmt* stmt = nullptr;
     if (sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr) != SQLITE_OK) {
-        return core::Result<std::optional<core::models::Playlist>>(core::Error{1, "Failed to prepare getPlaylistById"});
+        return core::Result<std::optional<core::models::Playlist>>(core::Error{1, sqlite3_errmsg(m_conn.getHandle())});
     }
+    ScopedStatement scopedStmt(stmt);
     sqlite3_bind_text(stmt, 1, playlistId.c_str(), -1, SQLITE_TRANSIENT);
 
     std::optional<core::models::Playlist> result = std::nullopt;
@@ -101,7 +106,6 @@ core::Result<std::optional<core::models::Playlist>> SQLitePlaylistRepository::ge
         if (q) p.queryJson = q;
         result = p;
     }
-    sqlite3_finalize(stmt);
     return core::Result<std::optional<core::models::Playlist>>(result);
 }
 
@@ -109,6 +113,7 @@ core::Result<void> SQLitePlaylistRepository::addMediaToPlaylist(const std::strin
     const char* sql = "INSERT INTO playlist_items (playlist_id, media_id, position, added_time) VALUES (?, ?, (SELECT COALESCE(MAX(position),0)+1 FROM playlist_items WHERE playlist_id=?), ?)";
     sqlite3_stmt* stmt = nullptr;
     if (sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr) != SQLITE_OK) return core::Result<void>(core::Error{1, "Prepare failed"});
+    ScopedStatement scopedStmt(stmt);
     
     auto now = std::chrono::system_clock::now().time_since_epoch();
     int64_t timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
@@ -118,8 +123,10 @@ core::Result<void> SQLitePlaylistRepository::addMediaToPlaylist(const std::strin
     sqlite3_bind_text(stmt, 3, playlistId.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int64(stmt, 4, timestamp);
     
-    sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
+    int rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        return core::Result<void>(core::Error{rc, "Failed to execute addMediaToPlaylist"});
+    }
     return core::Result<void>();
 }
 
@@ -127,27 +134,41 @@ core::Result<void> SQLitePlaylistRepository::removeMediaFromPlaylist(const std::
     const char* sql = "DELETE FROM playlist_items WHERE playlist_id = ? AND media_id = ?";
     sqlite3_stmt* stmt = nullptr;
     if (sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr) != SQLITE_OK) return core::Result<void>(core::Error{1, "Prepare failed"});
+    ScopedStatement scopedStmt(stmt);
     sqlite3_bind_text(stmt, 1, playlistId.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 2, mediaId.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
+    
+    int rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        return core::Result<void>(core::Error{rc, "Failed to execute removeMediaFromPlaylist"});
+    }
     return core::Result<void>();
 }
 
 core::Result<void> SQLitePlaylistRepository::reorderPlaylistItems(const std::string& playlistId, const std::vector<std::string>& newOrderMediaIds) {
+    TransactionGuard txn(m_conn);
+
     const char* sql = "UPDATE playlist_items SET position = ? WHERE playlist_id = ? AND media_id = ?";
     sqlite3_stmt* stmt = nullptr;
-    if (sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr) != SQLITE_OK) return core::Result<void>(core::Error{1, "Prepare failed"});
+    if (sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        return core::Result<void>(core::Error{1, "Prepare failed"});
+    }
+    ScopedStatement scopedStmt(stmt);
     
     int position = 1;
     for (const auto& mediaId : newOrderMediaIds) {
         sqlite3_bind_int(stmt, 1, position++);
         sqlite3_bind_text(stmt, 2, playlistId.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(stmt, 3, mediaId.c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_step(stmt);
+        
+        int rc = sqlite3_step(stmt);
+        if (rc != SQLITE_DONE) {
+            return core::Result<void>(core::Error{rc, sqlite3_errmsg(m_conn.getHandle())});
+        }
         sqlite3_reset(stmt);
     }
-    sqlite3_finalize(stmt);
+
+    txn.commit();
     return core::Result<void>();
 }
 

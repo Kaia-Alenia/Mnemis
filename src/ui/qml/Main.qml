@@ -10,6 +10,7 @@ ApplicationWindow {
     minimumHeight: 600
     visible: true
     title: qsTr("Mnemis")
+    color: Theme.background
 
     onVisibilityChanged: {
         console.log("[WINDOW_STATE] visibility changed to: " + window.visibility)
@@ -56,6 +57,11 @@ ApplicationWindow {
                 Sidebar {
                     Layout.fillHeight: true
                     Layout.preferredWidth: 220
+                    
+                    onNavigationRequested: function(page) {
+                        console.log("[NAVIGATION] Navigating to: " + page)
+                        stack.push(placeholderPage, { "pageTitle": page })
+                    }
                 }
 
                 GalleryView {
@@ -92,6 +98,37 @@ ApplicationWindow {
                 console.log("[WINDOW_STATE] Popping viewer from stack. depth before pop=" + stack.depth);
                 stack.pop();
                 console.log("[WINDOW_STATE] Stack popped. depth after pop=" + stack.depth);
+            }
+        }
+    }
+
+    Component {
+        id: placeholderPage
+        Item {
+            property string pageTitle: ""
+            
+            Rectangle {
+                anchors.fill: parent
+                color: Theme.background
+                
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    spacing: Theme.spacingLg
+                    
+                    Text {
+                        text: "Under Construction: " + pageTitle
+                        color: Theme.primaryText
+                        font.pixelSize: Theme.fontSizeXl
+                        font.weight: Font.DemiBold
+                        Layout.alignment: Qt.AlignHCenter
+                    }
+                    
+                    Button {
+                        text: "Back"
+                        Layout.alignment: Qt.AlignHCenter
+                        onClicked: stack.pop()
+                    }
+                }
             }
         }
     }

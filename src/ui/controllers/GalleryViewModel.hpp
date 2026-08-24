@@ -7,6 +7,7 @@
 #include <vector>
 #include <unordered_set>
 #include <atomic>
+#include <thread>
 
 #include "MediaListContext.hpp"
 #include "core/models/MediaItem.hpp"
@@ -107,6 +108,7 @@ private:
     MediaListContext* m_listContext = nullptr;
 
     std::shared_ptr<bool> m_isAlive;
+    std::thread m_selectAllThread;
 };
 
 } // namespace mnemis::ui::controllers

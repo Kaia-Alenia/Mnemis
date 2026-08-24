@@ -41,4 +41,24 @@ private:
     bool m_active = false;
 };
 
+class ScopedStatement {
+public:
+    explicit ScopedStatement(sqlite3_stmt* stmt = nullptr);
+    ~ScopedStatement();
+
+    ScopedStatement(const ScopedStatement&) = delete;
+    ScopedStatement& operator=(const ScopedStatement&) = delete;
+
+    ScopedStatement(ScopedStatement&& other) noexcept;
+    ScopedStatement& operator=(ScopedStatement&& other) noexcept;
+
+    sqlite3_stmt* get() const { return m_stmt; }
+    operator sqlite3_stmt*() const { return m_stmt; }
+
+    void reset(sqlite3_stmt* stmt = nullptr);
+
+private:
+    sqlite3_stmt* m_stmt = nullptr;
+};
+
 } // namespace mnemis::database

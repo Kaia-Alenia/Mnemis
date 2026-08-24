@@ -22,14 +22,34 @@ static void* get_proc_address(void* ctx, const char* name) {
 
 class MpvRenderer : public QQuickFramebufferObject::Renderer {
 public:
-    MpvRenderer(MpvVideoItem* item) : m_item(item) { }
+    MpvRenderer(MpvVideoItem* item) : m_item(item) {
+        m_mpv = item->m_mpv;
+    }
+
+    ~MpvRenderer() {
+        if (m_mpv_gl) {
+            mpv_render_context_set_update_callback(m_mpv_gl, nullptr, nullptr);
+            mpv_render_context_free(m_mpv_gl);
+            m_mpv_gl = nullptr;
+        }
+    }
 
     void render() override {
-        if (!m_item->m_mpv) {
+        // If the item's mpv handle changed, we need to recreate the render context.
+        if (m_item->m_mpv != m_mpv) {
+            if (m_mpv_gl) {
+                mpv_render_context_set_update_callback(m_mpv_gl, nullptr, nullptr);
+                mpv_render_context_free(m_mpv_gl);
+                m_mpv_gl = nullptr;
+            }
+            m_mpv = m_item->m_mpv;
+        }
+
+        if (!m_mpv) {
             return;
         }
 
-        if (!m_item->m_mpv_gl) {
+        if (!m_mpv_gl) {
             m_item->window()->beginExternalCommands();
             
             mpv_opengl_init_params gl_init_params;
@@ -42,13 +62,13 @@ public:
                 {MPV_RENDER_PARAM_INVALID, nullptr}
             };
 
-            int err = mpv_render_context_create(&m_item->m_mpv_gl, m_item->m_mpv, params);
+            int err = mpv_render_context_create(&m_mpv_gl, m_mpv, params);
             if (err < 0) {
                 std::cerr << "Failed to initialize mpv GL context: " << mpv_error_string(err) << std::endl;
                 m_item->window()->endExternalCommands();
                 return;
             }
-            mpv_render_context_set_update_callback(m_item->m_mpv_gl, on_mpv_render_update, m_item);
+            mpv_render_context_set_update_callback(m_mpv_gl, on_mpv_render_update, m_item);
 
             m_item->window()->endExternalCommands();
             return;
@@ -68,7 +88,7 @@ public:
             {MPV_RENDER_PARAM_INVALID, nullptr}
         };
 
-        mpv_render_context_render(m_item->m_mpv_gl, params);
+        mpv_render_context_render(m_mpv_gl, params);
         
         m_item->window()->endExternalCommands();
     }
@@ -79,6 +99,8 @@ public:
 
 private:
     MpvVideoItem* m_item;
+    mpv_handle* m_mpv = nullptr;
+    mpv_render_context* m_mpv_gl = nullptr;
 };
 
 MpvVideoItem::MpvVideoItem(QQuickItem* parent) 
@@ -87,7 +109,7 @@ MpvVideoItem::MpvVideoItem(QQuickItem* parent)
 }
 
 MpvVideoItem::~MpvVideoItem() {
-    destroyMpvContext();
+    // Renderer destruction handles mpv_render_context_free on the correct thread.
 }
 
 QQuickFramebufferObject::Renderer* MpvVideoItem::createRenderer() const {
@@ -100,7 +122,6 @@ mnemis::ui::controllers::PlaybackController* MpvVideoItem::controller() const {
 
 void MpvVideoItem::setController(mnemis::ui::controllers::PlaybackController* controller) {
     if (m_controller != controller) {
-        destroyMpvContext();
         m_controller = controller;
         initMpvContext();
         emit controllerChanged();
@@ -112,22 +133,19 @@ void MpvVideoItem::onRenderRequested() {
 }
 
 void MpvVideoItem::initMpvContext() {
-    if (!m_controller) return;
+    if (!m_controller) {
+        m_mpv = nullptr;
+        return;
+    }
 
     m_mpv = static_cast<mpv_handle*>(m_controller->getNativePlayer());
-    if (!m_mpv) return;
-
+    
     // Trigger an update to force the renderer to be created and initialize the GL context on the render thread.
     update();
 }
 
 void MpvVideoItem::destroyMpvContext() {
-    if (m_mpv_gl) {
-        mpv_render_context_set_update_callback(m_mpv_gl, nullptr, nullptr);
-        mpv_render_context_free(m_mpv_gl);
-        m_mpv_gl = nullptr;
-    }
-    m_mpv = nullptr;
+    // No longer needed, handled by Renderer
 }
 
 } // namespace mnemis::ui::components

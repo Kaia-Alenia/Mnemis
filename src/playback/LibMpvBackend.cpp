@@ -8,6 +8,7 @@ namespace mnemis::playback {
 
 LibMpvBackend::LibMpvBackend(core::ILogger& logger)
     : m_logger(logger) {
+    m_alive = std::make_shared<std::atomic<bool>>(true);
     m_mpv = mpv_create();
     if (!m_mpv) {
         m_logger.log(core::LogLevel::Error, "Failed to create mpv context");
@@ -47,15 +48,20 @@ LibMpvBackend::LibMpvBackend(core::ILogger& logger)
 
 void LibMpvBackend::onMpvWakeup(void* ctx) {
     auto self = static_cast<LibMpvBackend*>(ctx);
+    auto alive = self->m_alive;
     if (QCoreApplication::instance()) {
-        QMetaObject::invokeMethod(QCoreApplication::instance(), [self]() {
-            self->processEvents();
+        QMetaObject::invokeMethod(QCoreApplication::instance(), [self, alive]() {
+            if (*alive) {
+                self->processEvents();
+            }
         }, Qt::QueuedConnection);
     }
 }
 
 LibMpvBackend::~LibMpvBackend() {
     if (m_mpv) {
+        mpv_set_wakeup_callback(m_mpv, nullptr, nullptr);
+        *m_alive = false;
         mpv_terminate_destroy(m_mpv);
         m_mpv = nullptr;
         m_logger.log(core::LogLevel::Info, "MPV context destroyed");
@@ -169,10 +175,42 @@ void LibMpvBackend::handleMpvEvent(mpv_event* event) {
             break;
         case MPV_EVENT_END_FILE: {
             mpv_event_end_file* eef = (mpv_event_end_file*)event->data;
+            
+            // Collect diagnostic info
+            double time_pos = 0.0, duration = 0.0;
+            int eof_reached = 0, core_idle = 0, paused_for_cache = 0, pause_state = 0;
+            mpv_get_property(m_mpv, "time-pos", MPV_FORMAT_DOUBLE, &time_pos);
+            mpv_get_property(m_mpv, "duration", MPV_FORMAT_DOUBLE, &duration);
+            mpv_get_property(m_mpv, "eof-reached", MPV_FORMAT_FLAG, &eof_reached);
+            mpv_get_property(m_mpv, "core-idle", MPV_FORMAT_FLAG, &core_idle);
+            mpv_get_property(m_mpv, "paused-for-cache", MPV_FORMAT_FLAG, &paused_for_cache);
+            mpv_get_property(m_mpv, "pause", MPV_FORMAT_FLAG, &pause_state);
+            
+            std::string reason_str;
+            switch(eef->reason) {
+                case MPV_END_FILE_REASON_EOF: reason_str = "EOF"; break;
+                case MPV_END_FILE_REASON_STOP: reason_str = "STOP"; break;
+                case MPV_END_FILE_REASON_QUIT: reason_str = "QUIT"; break;
+                case MPV_END_FILE_REASON_ERROR: reason_str = "ERROR"; break;
+                case MPV_END_FILE_REASON_REDIRECT: reason_str = "REDIRECT"; break;
+                default: reason_str = "UNKNOWN"; break;
+            }
+            
+            std::string err_str = eef->error < 0 ? mpv_error_string(eef->error) : "none";
+            
+            m_logger.log(core::LogLevel::Info, "[MPV_DIAGNOSTIC] END_FILE reason=" + reason_str + 
+                " error=" + err_str + 
+                " time-pos=" + std::to_string(time_pos) + 
+                " duration=" + std::to_string(duration) + 
+                " eof-reached=" + std::to_string(eof_reached) + 
+                " core-idle=" + std::to_string(core_idle) + 
+                " paused-for-cache=" + std::to_string(paused_for_cache) + 
+                " pause=" + std::to_string(pause_state));
+
             if (eef->reason == MPV_END_FILE_REASON_EOF) {
                 m_delegate->onEnded();
             } else if (eef->reason == MPV_END_FILE_REASON_ERROR) {
-                m_delegate->onError(mpv_error_string(eef->error));
+                m_delegate->onError(err_str);
             }
             break;
         }

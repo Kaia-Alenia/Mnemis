@@ -4,7 +4,7 @@ import QtQuick.Layouts
 
 Rectangle {
     id: root
-    color: "#0a0a0c" // Match sidebar deep dark
+    color: Theme.background // Match sidebar deep dark
 
     // Emitted on single click (open) and double-click (selection).
     signal mediaSelected(int idx, string id, string type)
@@ -13,7 +13,7 @@ Rectangle {
     GridView {
         id: grid
         anchors.fill: parent
-        anchors.margins: 16
+        anchors.margins: Theme.spacingMd
         focus: true
 
         property int minCellWidth: 160 // More compact
@@ -21,7 +21,8 @@ Rectangle {
         cellWidth: width / columns
         cellHeight: cellWidth
 
-        cacheBuffer: 800
+        // Pre-load roughly 2 screens of content to ensure smooth scrolling
+        cacheBuffer: grid.height * 2
 
         model: galleryModel
 
@@ -31,7 +32,7 @@ Rectangle {
                 implicitWidth: 6
                 implicitHeight: 100
                 radius: 3
-                color: parent.pressed ? "#444" : (parent.hovered ? "#333" : "#222")
+                color: parent.pressed ? Theme.borderFocus : (parent.hovered ? Theme.border : Theme.surfaceElevated)
             }
         }
 
@@ -50,8 +51,8 @@ Rectangle {
 
         delegate: Item {
             id: cell
-            width: grid.cellWidth - 12
-            height: grid.cellHeight - 12
+            width: grid.cellWidth - Theme.spacingMd
+            height: grid.cellHeight - Theme.spacingMd
 
             property bool hovered: false
             property bool selected: model.isSelected === true
@@ -71,11 +72,11 @@ Rectangle {
             Rectangle {
                 id: card
                 anchors.fill: parent
-                radius: 4 // Crisp, professional radius
+                radius: Theme.radiusSm // Crisp, professional radius
                 clip: true
-                color: cell.selected ? "#142030" : (cell.hovered ? "#141418" : "#101014")
+                color: cell.selected ? Theme.accentHover : (cell.hovered ? Theme.surfaceElevated : Theme.surface)
 
-                border.color: cell.selected ? "#3a7bd5" : (cell.hovered ? "#2a2a35" : "#1c1c22")
+                border.color: cell.selected ? Theme.accent : (cell.hovered ? Theme.borderFocus : Theme.border)
                 border.width: cell.selected ? 2 : 1
 
                 // Thumbnail
@@ -85,7 +86,8 @@ Rectangle {
                     source: (tState === 1 && model.thumbnailUrl !== undefined) ? model.thumbnailUrl : ""
                     fillMode: Image.PreserveAspectCrop
                     asynchronous: true
-                    smooth: true
+                    smooth: false // Phase 6: optimized for pixel art
+                    mipmap: false // Phase 6: optimized for pixel art
                     cache: true
                     opacity: (tState === 2 || tState === 3) ? 0.2 : 1.0
 
@@ -98,9 +100,8 @@ Rectangle {
                         BusyIndicator {
                             anchors.centerIn: parent
                             running: tState === 0
-                            width: 20
-                            height: 20
-                            // A simple loading indicator
+                            width: Theme.iconSizeMd
+                            height: Theme.iconSizeMd
                         }
                     }
 
@@ -113,8 +114,8 @@ Rectangle {
                         Text {
                             anchors.centerIn: parent
                             text: qsTr("ERROR")
-                            color: "#aa5555"
-                            font.pixelSize: 10
+                            color: Theme.danger
+                            font.pixelSize: Theme.fontSizeSm
                             font.bold: true
                             font.letterSpacing: 1
                         }
@@ -128,12 +129,12 @@ Rectangle {
 
                         Column {
                             anchors.centerIn: parent
-                            spacing: 4
+                            spacing: Theme.spacingXs
                             Text {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text: qsTr("OFFLINE")
-                                color: "#888894"
-                                font.pixelSize: 10
+                                color: Theme.secondaryText
+                                font.pixelSize: Theme.fontSizeSm
                                 font.bold: true
                                 font.letterSpacing: 1
                             }
@@ -149,16 +150,16 @@ Rectangle {
                     height: 28
                     gradient: Gradient {
                         GradientStop { position: 0.0; color: "transparent" }
-                        GradientStop { position: 1.0; color: "#d9000000" }
+                        GradientStop { position: 1.0; color: Theme.overlayMedium }
                     }
 
                     Text {
                         anchors.fill: parent
-                        anchors.leftMargin: 8
-                        anchors.rightMargin: 8
+                        anchors.leftMargin: Theme.spacingSm
+                        anchors.rightMargin: Theme.spacingSm
                         anchors.bottomMargin: 6
                         text: model.fileName !== undefined ? model.fileName : ""
-                        color: "#e2e2e2"
+                        color: Theme.primaryText
                         elide: Text.ElideRight
                         verticalAlignment: Text.AlignBottom
                         font.pixelSize: 11
@@ -170,11 +171,11 @@ Rectangle {
                     visible: cell.selected
                     anchors.top: parent.top
                     anchors.left: parent.left
-                    anchors.margins: 6
-                    width: 16
-                    height: 16
-                    radius: 3
-                    color: "#3a7bd5"
+                    anchors.margins: Theme.spacingSm
+                    width: Theme.iconSizeSm
+                    height: Theme.iconSizeSm
+                    radius: Theme.radiusSm
+                    color: Theme.accent
 
                     Text {
                         anchors.centerIn: parent
@@ -189,10 +190,10 @@ Rectangle {
                 Rectangle {
                     anchors.fill: parent
                     color: "transparent"
-                    border.color: "white"
+                    border.color: Theme.primaryText
                     border.width: 2
                     visible: cell.GridView.isCurrentItem && grid.activeFocus
-                    radius: 4
+                    radius: Theme.radiusSm
                 }
 
                 Behavior on color { ColorAnimation { duration: 100 } }
@@ -202,7 +203,6 @@ Rectangle {
             Accessible.role: Accessible.ListItem
             Accessible.name: model.fileName !== undefined ? model.fileName : qsTr("Media item")
             Accessible.description: cell.selected ? qsTr("Selected") : ""
-
 
             MouseArea {
                 anchors.fill: parent

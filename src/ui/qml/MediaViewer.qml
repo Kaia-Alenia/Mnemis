@@ -5,7 +5,7 @@ import mnemis.ui 1.0
 
 Rectangle {
     id: root
-    color: "#050505"
+    color: Theme.background
 
     signal backRequested()
     signal fullscreenToggleRequested(bool on)
@@ -71,6 +71,7 @@ Rectangle {
             fillMode: Image.PreserveAspectFit
             asynchronous: true
             smooth: false
+            mipmap: false
             antialiasing: false
             cache: false
             rotation: viewerModel.rotation
@@ -87,7 +88,7 @@ Rectangle {
                 anchors.centerIn: parent
                 visible: photoImage.status === Image.Error
                 text: qsTr("Failed to load image\n") + (viewerModel.canonicalPath ?? "")
-                color: "#ff6666"
+                color: Theme.danger
                 font.pixelSize: 14
                 horizontalAlignment: Text.AlignHCenter
                 Accessible.name: text
@@ -126,13 +127,13 @@ Rectangle {
     // ─── Audio Placeholder ─────────────────────────────────────────────────────
     Rectangle {
         anchors.fill: parent
-        color: "#050505"
+        color: Theme.background
         visible: isAudio
 
         Label {
             anchors.centerIn: parent
             text: "🎵\n\n" + (viewerModel.title !== undefined ? viewerModel.title : qsTr("Audio"))
-            color: "white"
+            color: Theme.primaryText
             font.pixelSize: 48
             horizontalAlignment: Text.AlignHCenter
             Accessible.name: qsTr("Audio Placeholder")
@@ -147,16 +148,16 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         height: 52
-        color: "#e0000000"
+        color: Theme.overlayDark
         z: 10
         opacity: root.controlsVisible ? 1.0 : 0.0
         Behavior on opacity { NumberAnimation { duration: 250 } }
 
         RowLayout {
             anchors.fill: parent
-            anchors.leftMargin: 8
-            anchors.rightMargin: 8
-            spacing: 6
+            anchors.leftMargin: Theme.spacingSm
+            anchors.rightMargin: Theme.spacingSm
+            spacing: Theme.spacingXs
 
             // Back
             ToolButton {
@@ -185,7 +186,7 @@ Rectangle {
             Label {
                 Layout.fillWidth: true
                 text: viewerModel.title !== undefined ? viewerModel.title : ""
-                color: "white"
+                color: Theme.primaryText
                 font.bold: true
                 font.pixelSize: 13
                 elide: Text.ElideMiddle
@@ -255,7 +256,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         height: 48
-        color: "#d0000000"
+        color: Theme.overlay
         visible: isImage
         z: 10
         opacity: root.controlsVisible ? 1.0 : 0.0
@@ -263,14 +264,14 @@ Rectangle {
 
         RowLayout {
             anchors.fill: parent
-            anchors.leftMargin: 12
-            anchors.rightMargin: 12
-            spacing: 4
+            anchors.leftMargin: Theme.spacingMd
+            anchors.rightMargin: Theme.spacingMd
+            spacing: Theme.spacingXs
 
             // Zoom out
             ToolButton {
                 text: "−"
-                font.pixelSize: 18
+                font.pixelSize: Theme.fontSizeLg
                 Accessible.name: qsTr("Zoom Out")
                 Accessible.role: Accessible.Button
                 onClicked: root.currentScale = Math.max(root.minScale, root.currentScale / 1.25)
@@ -279,8 +280,8 @@ Rectangle {
             // Zoom label
             Label {
                 text: Math.round(root.currentScale * 100) + "%"
-                color: "white"
-                font.pixelSize: 12
+                color: Theme.primaryText
+                font.pixelSize: Theme.fontSizeSm
                 Layout.minimumWidth: 48
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -349,7 +350,7 @@ Rectangle {
                 text: viewerModel.resolution.width > 0
                         ? viewerModel.resolution.width + "×" + viewerModel.resolution.height
                         : ""
-                color: "#aaa"
+                color: Theme.secondaryText
                 font.pixelSize: 11
             }
         }
@@ -362,7 +363,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         height: 56
-        color: "#d0000000"
+        color: Theme.overlay
         visible: isVideo || isAudio
         z: 10
         opacity: root.controlsVisible ? 1.0 : 0.0
@@ -383,7 +384,7 @@ Rectangle {
             }
 
             RowLayout {
-                spacing: 6
+                spacing: Theme.spacingSm
 
                 ToolButton {
                     text: playbackController.state === "Playing" ? "⏸" : "▶"
@@ -413,16 +414,16 @@ Rectangle {
                                String(Math.floor(dur/60)).padStart(2,"0") + ":" +
                                String(dur%60).padStart(2,"0")
                     }
-                    color: "white"
-                    font.pixelSize: 12
+                    color: Theme.primaryText
+                    font.pixelSize: Theme.fontSizeSm
                 }
 
                 Item { Layout.fillWidth: true }
 
                 Label {
                     text: qsTr("Vol:")
-                    color: "#aaa"
-                    font.pixelSize: 12
+                    color: Theme.secondaryText
+                    font.pixelSize: Theme.fontSizeSm
                 }
                 Slider {
                     from: 0; to: 100
@@ -435,8 +436,8 @@ Rectangle {
 
                 Label {
                     text: qsTr("Speed: ") + playbackController.playbackRate.toFixed(1) + "x"
-                    color: "#aaa"
-                    font.pixelSize: 12
+                    color: Theme.secondaryText
+                    font.pixelSize: Theme.fontSizeSm
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -452,7 +453,7 @@ Rectangle {
 
                 Label {
                     text: qsTr("Audio:")
-                    color: "#aaa"
+                    color: Theme.secondaryText
                     font.pixelSize: 12
                     visible: playbackController.audioTracks && playbackController.audioTracks.length > 0
                 }
@@ -483,7 +484,7 @@ Rectangle {
 
                 Label {
                     text: qsTr("Subs:")
-                    color: "#aaa"
+                    color: Theme.secondaryText
                     font.pixelSize: 12
                     visible: playbackController.subtitleTracks && playbackController.subtitleTracks.length > 0
                 }
@@ -536,6 +537,13 @@ Rectangle {
         else if (event.key === Qt.Key_R) viewerModel.rotate(90)
         else if (event.key === Qt.Key_L) viewerModel.rotate(-90)
         else if (event.key === Qt.Key_Escape) root.backRequested()
+        else if (event.key === Qt.Key_Space) {
+            if (isVideo || isAudio) {
+                if (playbackController.state === "Playing") playbackController.pause()
+                else playbackController.play()
+                event.accepted = true
+            }
+        }
     }
     focus: true
     Component.onCompleted: forceActiveFocus()

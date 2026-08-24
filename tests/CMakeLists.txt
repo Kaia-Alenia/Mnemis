@@ -17,6 +17,7 @@ add_executable(mnemis_tests
     test_qt_watcher.cpp
     test_thumbnail_cache.cpp
     test_thumbnails.cpp
+    test_unicode_paths.cpp
     test_gallery_viewmodel.cpp
     test_viewerviewmodel.cpp
     test_medialistcontext.cpp

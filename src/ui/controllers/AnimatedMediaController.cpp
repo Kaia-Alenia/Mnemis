@@ -59,7 +59,9 @@ void AnimatedMediaController::loadMedia(const QString& filePath) {
     setState(AnimationState::Loading);
 
     auto decoder = std::make_unique<infrastructure::media::QtAnimatedMediaDecoder>();
+    qInfo() << "[ANIMATED] loadMedia called with:" << filePath;
     if (!decoder->open(filePath.toStdString())) {
+        qWarning() << "[ANIMATED] decoder open failed for:" << filePath;
         setState(AnimationState::Error);
         return;
     }

@@ -354,6 +354,7 @@ TEST(ViewerViewModelTest, LoadAnimatedMediaTriggersAnimatedController) {
     item.fileSize = 1024;
     item.width = 100;
     item.height = 100;
+    item.mediaType = mnemis::core::models::MediaType::Gif;
     repo->items["animated_gif_id"] = item;
     repo->orderedIds.push_back("animated_gif_id");
 
@@ -394,6 +395,7 @@ TEST(ViewerViewModelTest, AnimatedPauseAndRestart) {
     item.fileSize = 1024;
     item.width = 100;
     item.height = 100;
+    item.mediaType = mnemis::core::models::MediaType::Gif;
     repo->items["animated_gif_id"] = item;
     repo->orderedIds.push_back("animated_gif_id");
 
@@ -437,6 +439,7 @@ TEST(ViewerViewModelTest, NavigateAwayAndBackToAnimated) {
     gifItem.fileSize = 1024;
     gifItem.width = 100;
     gifItem.height = 100;
+    gifItem.mediaType = mnemis::core::models::MediaType::Gif;
     repo->items["animated_gif_id"] = gifItem;
 
     MediaItem staticItem;

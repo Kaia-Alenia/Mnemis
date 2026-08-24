@@ -1,0 +1,14 @@
+{
+    "id": "test_plugin",
+    "name": "Mnemis Test Plugin",
+    "version": "1.0.0",
+    "vendor": "Alenia Studios",
+    "description": "Test plugin for Mnemis Plugin Runtime",
+    "apiVersion": "1.0",
+    "entryPoint": "libmnemis_test_plugin.so",
+    "platform": "linux",
+    "architecture": "x86_64",
+    "permissions": [],
+    "capabilities": [],
+    "dependencies": []
+}

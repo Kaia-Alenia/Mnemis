@@ -24,6 +24,9 @@ GalleryViewModel::~GalleryViewModel() {
     if (m_eventBus && m_eventSubToken) {
         m_eventBus->unsubscribe(m_eventSubToken);
     }
+    if (m_selectAllThread.joinable()) {
+        m_selectAllThread.join();
+    }
     if (m_thumbnailEngine) {
         m_thumbnailEngine->clearPendingRequests();
     }
@@ -400,7 +403,11 @@ void GalleryViewModel::selectAll() {
     auto query = m_currentQuery;
     auto alive = m_isAlive;
 
-    std::thread([this, alive, repo, query]() {
+    if (m_selectAllThread.joinable()) {
+        m_selectAllThread.join();
+    }
+
+    m_selectAllThread = std::thread([this, alive, repo, query]() {
         // We can request list with a large pageSize or repeatedly to gather IDs
         // SQLite is fast enough for getting just IDs, but our repo interface `list()` returns full MediaItems.
         // We could add `listIds()` or just live with the overhead for now as requested.
@@ -432,7 +439,7 @@ void GalleryViewModel::selectAll() {
                 emit self->dataChanged(self->index(startIndex, 0), self->index(startIndex + it.value().items.size() - 1, 0), {IsSelectedRole});
             }
         }, Qt::QueuedConnection);
-    }).detach();
+    });
 }
 
 bool GalleryViewModel::isSelected(const QString& mediaId) const {

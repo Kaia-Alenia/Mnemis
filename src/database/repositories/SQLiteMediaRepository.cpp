@@ -93,6 +93,7 @@ core::Result<void> SQLiteMediaRepository::add(const MediaItem& item) {
     sqlite3_stmt* stmt = nullptr;
     int rc = sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) return core::Result<void>(core::Error{rc, sqlite3_errmsg(m_conn.getHandle())});
+    ScopedStatement scopedStmt(stmt);
 
     sqlite3_bind_text(stmt, 1, item.mediaId.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 2, item.path.c_str(), -1, SQLITE_TRANSIENT);
@@ -132,7 +133,6 @@ core::Result<void> SQLiteMediaRepository::add(const MediaItem& item) {
     bindDoubleOptional(stmt, 32, item.playbackPosition);
 
     rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
 
     if (rc != SQLITE_DONE) {
         return core::Result<void>(core::Error{rc, sqlite3_errmsg(m_conn.getHandle())});
@@ -164,6 +164,7 @@ core::Result<void> SQLiteMediaRepository::update(const MediaItem& item) {
     sqlite3_stmt* stmt = nullptr;
     int rc = sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) return core::Result<void>(core::Error{rc, sqlite3_errmsg(m_conn.getHandle())});
+    ScopedStatement scopedStmt(stmt);
 
     sqlite3_bind_text(stmt, 1, item.path.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 2, item.canonicalPath.c_str(), -1, SQLITE_TRANSIENT);
@@ -204,7 +205,6 @@ core::Result<void> SQLiteMediaRepository::update(const MediaItem& item) {
     sqlite3_bind_text(stmt, 32, item.mediaId.c_str(), -1, SQLITE_TRANSIENT);
 
     rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
 
     if (rc != SQLITE_DONE) {
         return core::Result<void>(core::Error{rc, sqlite3_errmsg(m_conn.getHandle())});
@@ -227,11 +227,11 @@ core::Result<void> SQLiteMediaRepository::remove(const std::string& mediaId) {
     sqlite3_stmt* stmt = nullptr;
     int rc = sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) return core::Result<void>(core::Error{rc, sqlite3_errmsg(m_conn.getHandle())});
+    ScopedStatement scopedStmt(stmt);
 
     sqlite3_bind_text(stmt, 1, mediaId.c_str(), -1, SQLITE_TRANSIENT);
 
     rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
 
     if (rc != SQLITE_DONE) {
         return core::Result<void>(core::Error{rc, sqlite3_errmsg(m_conn.getHandle())});
@@ -304,6 +304,7 @@ core::Result<std::optional<MediaItem>> SQLiteMediaRepository::getById(const std:
     sqlite3_stmt* stmt = nullptr;
     int rc = sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) return core::Result<std::optional<MediaItem>>(core::Error{rc, sqlite3_errmsg(m_conn.getHandle())});
+    ScopedStatement scopedStmt(stmt);
 
     sqlite3_bind_text(stmt, 1, mediaId.c_str(), -1, SQLITE_TRANSIENT);
 
@@ -312,7 +313,6 @@ core::Result<std::optional<MediaItem>> SQLiteMediaRepository::getById(const std:
         result = populateItemFromRow(stmt);
     }
     
-    sqlite3_finalize(stmt);
     return core::Result<std::optional<MediaItem>>(std::move(result));
 }
 
@@ -364,6 +364,7 @@ core::Result<std::vector<MediaItem>> SQLiteMediaRepository::list(int page, int p
     sqlite3_stmt* stmt = nullptr;
     int rc = sqlite3_prepare_v2(m_conn.getHandle(), sql.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) return core::Result<std::vector<MediaItem>>(core::Error{rc, sqlite3_errmsg(m_conn.getHandle())});
+    ScopedStatement scopedStmt(stmt);
 
     int bindIdx = 1;
     std::string likeText;
@@ -391,7 +392,6 @@ core::Result<std::vector<MediaItem>> SQLiteMediaRepository::list(int page, int p
         results.push_back(populateItemFromRow(stmt));
     }
     
-    sqlite3_finalize(stmt);
     return core::Result<std::vector<MediaItem>>(std::move(results));
 }
 
@@ -424,6 +424,7 @@ core::Result<int> SQLiteMediaRepository::count(const core::repositories::QueryOp
     sqlite3_stmt* stmt = nullptr;
     int rc = sqlite3_prepare_v2(m_conn.getHandle(), sql.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) return core::Result<int>(core::Error{rc, sqlite3_errmsg(m_conn.getHandle())});
+    ScopedStatement scopedStmt(stmt);
 
     int bindIdx = 1;
     std::string likeText;
@@ -445,7 +446,6 @@ core::Result<int> SQLiteMediaRepository::count(const core::repositories::QueryOp
         count = sqlite3_column_int(stmt, 0);
     }
     
-    sqlite3_finalize(stmt);
     return core::Result<int>(count);
 }
 
@@ -464,6 +464,7 @@ core::Result<std::optional<MediaItem>> SQLiteMediaRepository::getByCanonicalPath
     sqlite3_stmt* stmt = nullptr;
     int rc = sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) return core::Result<std::optional<MediaItem>>(core::Error{rc, sqlite3_errmsg(m_conn.getHandle())});
+    ScopedStatement scopedStmt(stmt);
 
     sqlite3_bind_text(stmt, 1, canonicalPath.c_str(), -1, SQLITE_TRANSIENT);
 
@@ -472,7 +473,6 @@ core::Result<std::optional<MediaItem>> SQLiteMediaRepository::getByCanonicalPath
         result = populateItemFromRow(stmt);
     }
     
-    sqlite3_finalize(stmt);
     return core::Result<std::optional<MediaItem>>(std::move(result));
 }
 
@@ -557,6 +557,7 @@ core::Result<void> SQLiteMediaRepository::removeBatch(const std::vector<std::str
     const char* sql = "DELETE FROM media WHERE media_id = ?";
     sqlite3_stmt* stmt = nullptr;
     int rc = sqlite3_prepare_v2(m_conn.getHandle(), sql, -1, &stmt, nullptr);
+    ScopedStatement scopedStmt(stmt);
     if (rc != SQLITE_OK) {
         batchResult = core::Result<void>(core::Error{rc, sqlite3_errmsg(m_conn.getHandle())});
     } else {
@@ -570,7 +571,6 @@ core::Result<void> SQLiteMediaRepository::removeBatch(const std::vector<std::str
             }
             sqlite3_reset(stmt);
         }
-        sqlite3_finalize(stmt);
     }
 
     if (!batchResult.isSuccess()) {

@@ -89,4 +89,31 @@ void TransactionGuard::rollback() {
     }
 }
 
+// --- ScopedStatement ---
+
+ScopedStatement::ScopedStatement(sqlite3_stmt* stmt) : m_stmt(stmt) {}
+
+ScopedStatement::~ScopedStatement() {
+    reset();
+}
+
+ScopedStatement::ScopedStatement(ScopedStatement&& other) noexcept : m_stmt(other.m_stmt) {
+    other.m_stmt = nullptr;
+}
+
+ScopedStatement& ScopedStatement::operator=(ScopedStatement&& other) noexcept {
+    if (this != &other) {
+        reset(other.m_stmt);
+        other.m_stmt = nullptr;
+    }
+    return *this;
+}
+
+void ScopedStatement::reset(sqlite3_stmt* stmt) {
+    if (m_stmt) {
+        sqlite3_finalize(m_stmt);
+    }
+    m_stmt = stmt;
+}
+
 } // namespace mnemis::database
