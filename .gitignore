@@ -1,0 +1,63 @@
+# Build
+build/
+build-*/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+
+# Compiled output
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.dylib
+*.exe
+
+# Testing / coverage
+Testing/
+coverage/
+*.gcda
+*.gcno
+*.prof
+
+# Runtime data
+*.log
+logs/
+debug/
+*.db
+*.db-shm
+*.db-wal
+
+# Crash dumps
+core
+core.*
+*.dmp
+
+# IDE
+.vscode/
+.idea/
+*.user
+*.user.*
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+*.tmp
+*.temp
+*~
+
+# Local configuration
+.env
+.env.*
+*.local
+*.sh
