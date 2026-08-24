@@ -11,9 +11,9 @@ extern "C" {
 #include <memory>
 #include <mutex>
 
-namespace mnemis::indexer {
-
 #include <charconv>
+
+namespace mnemis::indexer {
 
 namespace {
     std::once_flag ffmpeg_init_flag;
