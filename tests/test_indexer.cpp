@@ -253,7 +253,7 @@ TEST_F(IndexerIntegrationTest, CancelledScanReconciliation) {
     item.path = MEDIA_DIR + "nonexistent_cancelled.mp3";
     try {
         item.canonicalPath = std::filesystem::canonical(MEDIA_DIR).string() + "/nonexistent_cancelled.mp3";
-    } catch (...) {
+    } catch (const std::filesystem::filesystem_error&) {
         item.canonicalPath = MEDIA_DIR + "nonexistent_cancelled.mp3";
     }
     item.fileName = "nonexistent_cancelled.mp3";

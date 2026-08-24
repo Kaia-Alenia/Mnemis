@@ -147,6 +147,9 @@ core::Result<void> SQLitePlaylistRepository::removeMediaFromPlaylist(const std::
 
 core::Result<void> SQLitePlaylistRepository::reorderPlaylistItems(const std::string& playlistId, const std::vector<std::string>& newOrderMediaIds) {
     TransactionGuard txn(m_conn);
+    if (auto res = txn.begin(); !res.isSuccess()) {
+        return res;
+    }
 
     const char* sql = "UPDATE playlist_items SET position = ? WHERE playlist_id = ? AND media_id = ?";
     sqlite3_stmt* stmt = nullptr;
@@ -168,8 +171,7 @@ core::Result<void> SQLitePlaylistRepository::reorderPlaylistItems(const std::str
         sqlite3_reset(stmt);
     }
 
-    txn.commit();
-    return core::Result<void>();
+    return txn.commit();
 }
 
 } // namespace mnemis::database::repositories

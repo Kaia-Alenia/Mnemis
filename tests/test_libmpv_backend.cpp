@@ -24,8 +24,8 @@ TEST(LibMpvBackendTest, Instantiation) {
         playback::LibMpvBackend backend(logger);
         backend.setDelegate(delegate.get());
         EXPECT_TRUE(true);
-    } catch (...) {
-        GTEST_SKIP() << "libmpv failed to initialize. Skipping test.";
+    } catch (const std::exception& e) {
+        GTEST_SKIP() << "libmpv failed to initialize. Skipping test. Error: " << e.what();
     }
 }
 
@@ -37,14 +37,14 @@ TEST(LibMpvBackendTest, Bug4sReproduction) {
         playback::LibMpvBackend backend(logger);
         backend.setDelegate(delegate.get());
         
-        backend.load("/home/alejandro/Escritorio/Mnemis/tests/fixtures/diag/test_30s.mp4");
+        backend.load("tests/fixtures/diag/test_30s.mp4");
         
         for (int i = 0; i < 60; ++i) {
             backend.processEvents();
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
         
-    } catch (...) {
-        GTEST_SKIP() << "libmpv failed to initialize.";
+    } catch (const std::exception& e) {
+        GTEST_SKIP() << "libmpv failed to initialize. Error: " << e.what();
     }
 }

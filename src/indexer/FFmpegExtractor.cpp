@@ -13,12 +13,22 @@ extern "C" {
 
 namespace mnemis::indexer {
 
+#include <charconv>
+
 namespace {
     std::once_flag ffmpeg_init_flag;
+
+    void ffmpegLogCallback(void* ptr, int level, const char* fmt, va_list vl) {
+        if (level > av_log_get_level()) return;
+        char line[1024];
+        static int print_prefix = 1;
+        av_log_format_line2(ptr, level, fmt, vl, line, sizeof(line), &print_prefix);
+        std::cerr << "[FFmpeg] " << line;
+    }
+
     void initFFmpeg() {
         std::call_once(ffmpeg_init_flag, []() {
-            // Mute ffmpeg output globally so it doesn't pollute stdout during index
-            av_log_set_level(AV_LOG_QUIET);
+            av_log_set_callback(ffmpegLogCallback);
         });
     }
 }
@@ -73,10 +83,16 @@ core::Result<core::indexer::Metadata> FFmpegExtractor::extract(const std::string
         else if (key == "album_artist") meta.albumArtist = val;
         else if (key == "genre") meta.genre = val;
         else if (key == "date") {
-            try { meta.year = std::stoul(val); } catch (...) {}
+            unsigned int year;
+            if (auto [p, ec] = std::from_chars(val.data(), val.data() + val.size(), year); ec == std::errc()) {
+                meta.year = year;
+            }
         }
         else if (key == "track") {
-            try { meta.trackNumber = std::stoul(val); } catch (...) {}
+            unsigned int track;
+            if (auto [p, ec] = std::from_chars(val.data(), val.data() + val.size(), track); ec == std::errc()) {
+                meta.trackNumber = track;
+            }
         }
     }
 
