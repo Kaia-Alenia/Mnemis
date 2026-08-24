@@ -29,7 +29,8 @@ TEST(UnicodePathsTest, StdFileSystemHandlesUnicode) {
     // Check if StdFileSystem correctly handles the unicode string path
     std::string stdPath = unicodePath.toStdString();
     
-    EXPECT_TRUE(fs.exists(stdPath));
-    EXPECT_TRUE(fs.isFile(stdPath));
-    EXPECT_EQ(fs.fileSize(stdPath), 4);
+    EXPECT_TRUE(fs.isAccessible(stdPath).value_or(false));
+    auto idRes = fs.getFileIdentity(stdPath);
+    ASSERT_TRUE(idRes.isSuccess());
+    EXPECT_EQ(idRes.value().size, 4);
 }
