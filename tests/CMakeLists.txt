@@ -342,6 +342,7 @@ target_link_libraries(MnemisLibraryControllerTests
     PRIVATE
         Qt6::Core
         Qt6::Gui
+        Qt6::Widgets
         SQLite::SQLite3
 )
 
@@ -423,6 +424,7 @@ target_link_libraries(MnemisThumbnailControllerTests
     PRIVATE
         Qt6::Core
         Qt6::Gui
+        Qt6::Widgets
         SQLite::SQLite3
 )
 

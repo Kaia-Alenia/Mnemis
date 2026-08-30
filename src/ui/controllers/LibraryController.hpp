@@ -106,6 +106,8 @@ public:
         qulonglong rootId
     );
 
+    Q_INVOKABLE QString chooseFolder();
+
     Q_INVOKABLE bool addRoot(
         const QString& path,
         const QString& name

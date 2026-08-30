@@ -1,10 +1,30 @@
 #include "LibraryController.hpp"
 
+#include <QFileDialog>
+#include <QImageReader>
+#include <QDir>
+
 #include <QUrl>
 
 namespace mnemis::ui {
 
 namespace {
+
+bool isAnimatedMedia(
+    const QString& path
+)
+{
+    QImageReader reader(path);
+
+    if (!reader.canRead()) {
+        return false;
+    }
+
+    const int count =
+        reader.imageCount();
+
+    return count > 1;
+}
 
 QString uiMediaTypeName(
     media::MediaType type
@@ -248,6 +268,18 @@ QVariantMap LibraryController::mediaToMap(
         )
     );
 
+    const QString mediaPath =
+        QString::fromStdString(
+            media.canonicalPath
+        );
+
+    map.insert(
+        QStringLiteral("animated"),
+        media.type == media::MediaType::Image
+            ? isAnimatedMedia(mediaPath)
+            : false
+    );
+
     map.insert(
         QStringLiteral("size"),
         QVariant::fromValue<qlonglong>(
@@ -392,6 +424,17 @@ void LibraryController::selectRoot(
     }
 
     goToRoot();
+}
+
+QString LibraryController::chooseFolder()
+{
+    return QFileDialog::getExistingDirectory(
+        nullptr,
+        QStringLiteral("Select Library Folder"),
+        QDir::homePath(),
+        QFileDialog::ShowDirsOnly |
+        QFileDialog::DontResolveSymlinks
+    );
 }
 
 bool LibraryController::addRoot(

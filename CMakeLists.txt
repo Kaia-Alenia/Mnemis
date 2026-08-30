@@ -19,7 +19,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     Core
     Gui
     Qml
-    Quick
+    Quick Widgets
 )
 
 find_package(SQLite3 REQUIRED)

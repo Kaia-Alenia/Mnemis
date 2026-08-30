@@ -19,6 +19,8 @@ ApplicationWindow {
 
     property bool viewerOpen: false
     property bool spritePlaying: false
+    property real panX: 0
+    property real panY: 0
 
     Rectangle {
         anchors.fill: parent
@@ -498,12 +500,33 @@ ApplicationWindow {
                                 MouseArea {
                                     anchors.fill: parent
 
-                                    onDoubleClicked: {
+                                    onClicked: {
                                         imageViewer.openMedia(
                                             modelData.path
                                         )
 
+                                        root.panX = 0
+                                        root.panY = 0
+                                        gifPlaybackTimer.frame = 0
                                         root.viewerOpen = true
+
+                                        imageViewer.zoom =
+                                            Math.max(
+                                                0.05,
+                                                Math.min(
+                                                    (
+                                                        viewer.width - 32
+                                                    ) /
+                                                    imageViewer.imageWidth,
+                                                    (
+                                                        viewer.height -
+                                                        64 -
+                                                        120 -
+                                                        32
+                                                    ) /
+                                                    imageViewer.imageHeight
+                                                )
+                                            )
                                     }
                                 }
 
@@ -578,11 +601,14 @@ ApplicationWindow {
                                         Layout.fillWidth: true
 
                                         text:
-                                            modelData.type.toUpperCase()
+                                            modelData.animated
+                                            ? "ANIMATED"
+                                            : modelData.type.toUpperCase()
 
                                         color: "#777777"
 
                                         font.pixelSize: 10
+
                                     }
                                 }
                             }
@@ -636,6 +662,8 @@ ApplicationWindow {
 
                     onClicked: {
                         imageViewer.close()
+                        root.panX = 0
+                        root.panY = 0
                         root.viewerOpen = false
                         root.spritePlaying = false
                     }
@@ -703,10 +731,43 @@ ApplicationWindow {
                 }
 
                 Button {
-                    text: "1x"
+                    text: "Fit"
 
-                    onClicked:
-                        imageViewer.zoom = 1
+                    onClicked: {
+                        var width =
+                            imageViewer.spriteSheetMode
+                            ? imageViewer.frameWidth
+                            : imageViewer.imageWidth
+
+                        var height =
+                            imageViewer.spriteSheetMode
+                            ? imageViewer.frameHeight
+                            : imageViewer.imageHeight
+
+                        if (
+                            width > 0 &&
+                            height > 0
+                        ) {
+                            imageViewer.zoom =
+                                Math.max(
+                                    0.05,
+                                    Math.min(
+                                        (
+                                            viewer.width - 32
+                                        ) / width,
+                                        (
+                                            viewer.height -
+                                            64 -
+                                            120 -
+                                            32
+                                        ) / height
+                                    )
+                                )
+
+                            root.panX = 0
+                            root.panY = 0
+                        }
+                    }
                 }
 
                 Button {
@@ -729,6 +790,8 @@ ApplicationWindow {
         // ----------------------------------------------------
 
         Rectangle {
+            id: imageViewport
+
             anchors.left: parent.left
             anchors.right: parent.right
 
@@ -801,158 +864,188 @@ ApplicationWindow {
                     requestPaint()
             }
 
-            // ------------------------------------------------
-            // Static image viewer
-            // ------------------------------------------------
+            Item {
+                id: viewContent
 
-            Image {
-                id: staticImage
+                property real contentWidth:
+                    (
+                        imageViewer.spriteSheetMode
+                        ? imageViewer.frameWidth
+                        : imageViewer.imageWidth
+                    ) * imageViewer.zoom
 
-                anchors.centerIn: parent
+                property real contentHeight:
+                    (
+                        imageViewer.spriteSheetMode
+                        ? imageViewer.frameHeight
+                        : imageViewer.imageHeight
+                    ) * imageViewer.zoom
 
-                visible:
-                    imageViewer.opened &&
-                    !imageViewer.animated &&
-                    !imageViewer.spriteSheetMode
+                width: Math.max(1, contentWidth)
+                height: Math.max(1, contentHeight)
 
-                source:
-                    imageViewer.sourceUrl
+                x:
+                    (parent.width - width) / 2 + root.panX
 
-                width:
-                    imageViewer.imageWidth *
-                    imageViewer.zoom
+                y:
+                    (Math.max(1, parent.height - 120) - height) / 2 + root.panY
 
-                height:
-                    imageViewer.imageHeight *
-                    imageViewer.zoom
+                // ------------------------------------------------
+                // Static image viewer
+                // ------------------------------------------------
 
-                fillMode:
-                    Image.Stretch
+                Image {
+                    id: staticImage
 
-                smooth: false
+                    anchors.centerIn: parent
 
-                mipmap: false
+                    visible:
+                        imageViewer.opened &&
+                        !imageViewer.animated &&
+                        !imageViewer.spriteSheetMode
 
-                asynchronous: true
+                    source:
+                        imageViewer.sourceUrl
 
-                cache: true
+                    width:
+                        imageViewer.imageWidth *
+                        imageViewer.zoom
 
-                sourceClipRect:
-                    Qt.rect(
-                        0,
-                        0,
-                        imageViewer.imageWidth,
-                        imageViewer.imageHeight
-                    )
-            }
+                    height:
+                        imageViewer.imageHeight *
+                        imageViewer.zoom
 
-            // ------------------------------------------------
-            // Animated image viewer
-            // ------------------------------------------------
+                    fillMode:
+                        Image.Stretch
 
-            AnimatedImage {
-                id: animatedImage
+                    smooth: false
 
-                anchors.centerIn: parent
+                    mipmap: false
 
-                visible:
-                    imageViewer.opened &&
-                    imageViewer.animated &&
-                    !imageViewer.spriteSheetMode
+                    asynchronous: true
 
-                source:
-                    imageViewer.sourceUrl
+                    cache: true
 
-                width:
-                    imageViewer.imageWidth *
-                    imageViewer.zoom
+                    sourceClipRect:
+                        Qt.rect(
+                            0,
+                            0,
+                            imageViewer.imageWidth,
+                            imageViewer.imageHeight
+                        )
+                }
 
-                height:
-                    imageViewer.imageHeight *
-                    imageViewer.zoom
+                // ------------------------------------------------
+                // Animated image viewer
+                // ------------------------------------------------
 
-                fillMode:
-                    Image.Stretch
+                AnimatedImage {
+                    id: animatedImage
 
-                smooth: false
+                    anchors.centerIn: parent
 
-                mipmap: false
+                    visible:
+                        imageViewer.opened &&
+                        imageViewer.animated &&
+                        !imageViewer.spriteSheetMode
 
-                asynchronous: true
+                    source:
+                        imageViewer.sourceUrl
 
-                playing:
-                    true
+                    width:
+                        imageViewer.imageWidth *
+                        imageViewer.zoom
 
-                speed:
-                    imageViewer.animationSpeed / 100.0
-            }
+                    height:
+                        imageViewer.imageHeight *
+                        imageViewer.zoom
 
-            // ------------------------------------------------
-            // Sprite sheet viewer
-            // ------------------------------------------------
+                    fillMode:
+                        Image.Stretch
 
-            Image {
-                id: spriteImage
+                    smooth: false
 
-                anchors.centerIn: parent
+                    mipmap: false
 
-                visible:
-                    imageViewer.opened &&
-                    imageViewer.spriteSheetMode
+                    asynchronous: true
 
-                source:
-                    imageViewer.sourceUrl
+                    playing: false
 
-                width:
-                    imageViewer.frameWidth *
-                    imageViewer.zoom
+                    currentFrame:
+                        gifPlaybackTimer.frame
 
-                height:
-                    imageViewer.frameHeight *
-                    imageViewer.zoom
+                    cache: false
+                }
 
-                fillMode:
-                    Image.Stretch
+                // ------------------------------------------------
+                // Sprite sheet viewer
+                // ------------------------------------------------
 
-                smooth: false
+                Image {
+                    id: spriteImage
 
-                mipmap: false
+                    anchors.centerIn: parent
 
-                asynchronous: true
+                    visible:
+                        imageViewer.opened &&
+                        imageViewer.spriteSheetMode
 
-                sourceClipRect:
-                    Qt.rect(
-                        (
-                            imageViewer.frameIndex %
-                            imageViewer.frameColumns
-                        ) *
-                        imageViewer.frameWidth,
+                    source:
+                        imageViewer.sourceUrl
 
-                        Math.floor(
-                            imageViewer.frameIndex /
-                            imageViewer.frameColumns
-                        ) *
-                        imageViewer.frameHeight,
+                    width:
+                        imageViewer.frameWidth *
+                        imageViewer.zoom
 
-                        imageViewer.frameWidth,
-                        imageViewer.frameHeight
-                    )
-            }
+                    height:
+                        imageViewer.frameHeight *
+                        imageViewer.zoom
 
-            // ------------------------------------------------
+                    fillMode:
+                        Image.Stretch
+
+                    smooth: false
+
+                    mipmap: false
+
+                    asynchronous: true
+
+                    sourceClipRect:
+                        Qt.rect(
+                            (
+                                imageViewer.frameIndex %
+                                imageViewer.frameColumns
+                            ) *
+                            imageViewer.frameWidth,
+
+                            Math.floor(
+                                imageViewer.frameIndex /
+                                imageViewer.frameColumns
+                            ) *
+                            imageViewer.frameHeight,
+
+                            imageViewer.frameWidth,
+                            imageViewer.frameHeight
+                        )
+                }
+
+                // ------------------------------------------------
+                            // ------------------------------------------------
             // Pixel grid overlay
             // ------------------------------------------------
 
             Repeater {
                 model:
                     imageViewer.gridEnabled
-                    ? (
-                        Math.max(
-                            1,
-                            Math.ceil(
-                                imageViewer.imageWidth /
-                                imageViewer.gridCellWidth
-                            )
+                    ? Math.max(
+                        1,
+                        Math.ceil(
+                            (
+                                imageViewer.spriteSheetMode
+                                ? imageViewer.frameWidth
+                                : imageViewer.imageWidth
+                            ) /
+                            Math.max(1, imageViewer.gridCellWidth)
                         )
                     )
                     : 0
@@ -960,64 +1053,30 @@ ApplicationWindow {
                 delegate: Rectangle {
                     required property int index
 
-                    property real cellWidth:
+                    x:
+                        index *
                         imageViewer.gridCellWidth *
                         imageViewer.zoom
 
-                    property real displayLeft:
-                        (
-                            parent.width -
-                            (
-                                imageViewer.spriteSheetMode
-                                ? imageViewer.frameWidth
-                                : imageViewer.imageWidth
-                            ) *
-                            imageViewer.zoom
-                        ) / 2
-
-                    x:
-                        displayLeft +
-                        index *
-                        cellWidth
-
-                    y:
-                        (
-                            parent.height -
-                            (
-                                imageViewer.spriteSheetMode
-                                ? imageViewer.frameHeight
-                                : imageViewer.imageHeight
-                            ) *
-                            imageViewer.zoom
-                        ) / 2
-
+                    y: 0
                     width: 1
-                    height:
-                        (
-                            imageViewer.spriteSheetMode
-                            ? imageViewer.frameHeight
-                            : imageViewer.imageHeight
-                        ) *
-                        imageViewer.zoom
-
-                    color:
-                        "#66ffffff"
-
-                    visible:
-                        width < parent.width
+                    height: viewContent.height
+                    color: "#88ffffff"
                 }
             }
 
             Repeater {
                 model:
                     imageViewer.gridEnabled
-                    ? (
-                        Math.max(
-                            1,
-                            Math.ceil(
-                                imageViewer.imageHeight /
-                                imageViewer.gridCellHeight
-                            )
+                    ? Math.max(
+                        1,
+                        Math.ceil(
+                            (
+                                imageViewer.spriteSheetMode
+                                ? imageViewer.frameHeight
+                                : imageViewer.imageHeight
+                            ) /
+                            Math.max(1, imageViewer.gridCellHeight)
                         )
                     )
                     : 0
@@ -1025,134 +1084,131 @@ ApplicationWindow {
                 delegate: Rectangle {
                     required property int index
 
-                    property real cellHeight:
+                    x: 0
+                    y:
+                        index *
                         imageViewer.gridCellHeight *
                         imageViewer.zoom
 
-                    property real displayTop:
-                        (
-                            parent.height -
-                            (
-                                imageViewer.spriteSheetMode
-                                ? imageViewer.frameHeight
-                                : imageViewer.imageHeight
-                            ) *
-                            imageViewer.zoom
-                        ) / 2
-
-                    x:
-                        (
-                            parent.width -
-                            (
-                                imageViewer.spriteSheetMode
-                                ? imageViewer.frameWidth
-                                : imageViewer.imageWidth
-                            ) *
-                            imageViewer.zoom
-                        ) / 2
-
-                    y:
-                        displayTop +
-                        index *
-                        cellHeight
-
-                    width:
-                        (
-                            imageViewer.spriteSheetMode
-                            ? imageViewer.frameWidth
-                            : imageViewer.imageWidth
-                        ) *
-                        imageViewer.zoom
-
+                    width: viewContent.width
                     height: 1
-
-                    color:
-                        "#66ffffff"
+                    color: "#88ffffff"
                 }
             }
 
+// Pixel inspector
             // ------------------------------------------------
-            // Pixel inspector
-            // ------------------------------------------------
 
-            MouseArea {
-                anchors.fill: parent
+            
 
-                hoverEnabled: true
+        }
 
-                enabled:
-                    imageViewer.opened
+        // ----------------------------------------------------
+        // Viewer navigation
+        // ----------------------------------------------------
 
-                onPositionChanged: function(mouse) {
+        MouseArea {
+            anchors.fill: imageViewport
 
-                    var imageWidth =
-                        imageViewer.spriteSheetMode
-                        ? imageViewer.frameWidth
-                        : imageViewer.imageWidth
+            hoverEnabled: true
+            enabled: imageViewer.opened
 
-                    var imageHeight =
-                        imageViewer.spriteSheetMode
-                        ? imageViewer.frameHeight
-                        : imageViewer.imageHeight
+            property bool panning: false
+            property real lastX: 0
+            property real lastY: 0
 
-                    if (
-                        imageWidth <= 0 ||
-                        imageHeight <= 0
-                    ) {
-                        return
-                    }
+            onPressed: function(mouse) {
+                if (mouse.button === Qt.LeftButton) {
+                    panning = true
+                    lastX = mouse.x
+                    lastY = mouse.y
+                }
+            }
 
-                    var displayWidth =
-                        imageWidth *
-                        imageViewer.zoom
+            onReleased: {
+                panning = false
+            }
 
-                    var displayHeight =
-                        imageHeight *
-                        imageViewer.zoom
+            onCanceled: {
+                panning = false
+            }
 
-                    var left =
+            onWheel: function(wheel) {
+                imageViewer.zoom =
+                    wheel.angleDelta.y > 0
+                    ? Math.min(
+                        64,
+                        imageViewer.zoom * 2
+                    )
+                    : Math.max(
+                        0.05,
+                        imageViewer.zoom / 2
+                    )
+
+                wheel.accepted = true
+            }
+
+            onPositionChanged: function(mouse) {
+
+                if (panning) {
+                    root.panX +=
+                        mouse.x - lastX
+
+                    root.panY +=
+                        mouse.y - lastY
+
+                    lastX = mouse.x
+                    lastY = mouse.y
+
+                    return
+                }
+
+                var imageWidth =
+                    imageViewer.spriteSheetMode
+                    ? imageViewer.frameWidth
+                    : imageViewer.imageWidth
+
+                var imageHeight =
+                    imageViewer.spriteSheetMode
+                    ? imageViewer.frameHeight
+                    : imageViewer.imageHeight
+
+                if (
+                    imageWidth <= 0 ||
+                    imageHeight <= 0
+                ) {
+                    return
+                }
+
+                var px =
+                    Math.floor(
                         (
-                            width -
-                            displayWidth
-                        ) / 2
+                            mouse.x -
+                            viewContent.x
+                        ) /
+                        imageViewer.zoom
+                    )
 
-                    var top =
+                var py =
+                    Math.floor(
                         (
-                            height -
-                            displayHeight
-                        ) / 2
+                            mouse.y -
+                            viewContent.y
+                        ) /
+                        imageViewer.zoom
+                    )
 
-                    var px =
-                        Math.floor(
-                            (
-                                mouse.x -
-                                left
-                            ) /
-                            imageViewer.zoom
-                        )
-
-                    var py =
-                        Math.floor(
-                            (
-                                mouse.y -
-                                top
-                            ) /
-                            imageViewer.zoom
-                        )
-
-                    if (
-                        px >= 0 &&
-                        py >= 0 &&
-                        px < imageWidth &&
-                        py < imageHeight
-                    ) {
-
-                        imageViewer.setPixelInfo(
-                            px,
-                            py,
-                            "pixel"
-                        )
-                    }
+                if (
+                    px >= 0 &&
+                    py >= 0 &&
+                    px < imageWidth &&
+                    py < imageHeight
+                ) {
+                    imageViewer.setPixelInfo(
+                        px,
+                        py,
+                        ""
+                    )
                 }
             }
         }
@@ -1206,6 +1262,14 @@ ApplicationWindow {
                     Label {
                         text:
                             "RGBA: " +
+                            imageViewer.pixelRGBA
+
+                        color: "#AAAAAA"
+                    }
+
+                    Label {
+                        text:
+                            "HEX: " +
                             imageViewer.pixelHex
 
                         color: "#AAAAAA"
@@ -1221,9 +1285,190 @@ ApplicationWindow {
                         checked:
                             imageViewer.spriteSheetMode
 
-                        onToggled:
+                        onToggled: {
                             imageViewer.spriteSheetMode =
                                 checked
+
+                            if (checked) {
+                                imageViewer.frameStart = 0
+
+                                imageViewer.frameEnd =
+                                    Math.max(
+                                        0,
+                                        (
+                                            imageViewer.frameColumns *
+                                            imageViewer.frameRows
+                                        ) - 1
+                                    )
+
+                                imageViewer.frameIndex = 0
+
+                                spritePlaybackMode.currentIndex =
+                                    0
+                            }
+                        }
+                    }
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+
+                    visible:
+                        imageViewer.gridEnabled
+
+                    Label {
+                        text: "Grid"
+
+                        color: "#AAAAAA"
+                    }
+
+                    Label {
+                        text: "W"
+
+                        color: "#777777"
+                    }
+
+                    SpinBox {
+                        from: 1
+                        to: 4096
+
+                        value:
+                            imageViewer.gridCellWidth
+
+                        onValueModified:
+                            imageViewer.gridCellWidth =
+                                value
+                    editable: true
+                    }
+
+                    Label {
+                        text: "H"
+
+                        color: "#777777"
+                    }
+
+                    SpinBox {
+                        from: 1
+                        to: 4096
+
+                        value:
+                            imageViewer.gridCellHeight
+
+                        onValueModified:
+                            imageViewer.gridCellHeight =
+                                value
+                    editable: true
+                    }
+                }
+
+
+                RowLayout {
+                    Layout.fillWidth: true
+
+                    visible:
+                        imageViewer.spriteSheetMode
+
+                    Label {
+                        text: "Playback"
+
+                        color: "#AAAAAA"
+                    }
+
+                    ComboBox {
+                        id: spritePlaybackMode
+
+                        model: [
+                            "Complete Sheet",
+                            "Single Row"
+                        ]
+
+                        currentIndex: 0
+
+                        onCurrentIndexChanged: {
+                            if (currentIndex === 0) {
+                                imageViewer.frameStart = 0
+
+                                imageViewer.frameEnd =
+                                    Math.max(
+                                        0,
+                                        (
+                                            imageViewer.frameColumns *
+                                            imageViewer.frameRows
+                                        ) - 1
+                                    )
+
+                                imageViewer.frameIndex = 0
+                            } else {
+                                var start =
+                                    (
+                                        spriteRow.value - 1
+                                    ) *
+                                    imageViewer.frameColumns
+
+                                imageViewer.frameStart =
+                                    start
+
+                                imageViewer.frameEnd =
+                                    Math.max(
+                                        start,
+                                        start +
+                                        imageViewer.frameColumns -
+                                        1
+                                    )
+
+                                imageViewer.frameIndex =
+                                    start
+                            }
+                        }
+                    }
+
+                    Label {
+                        visible:
+                            spritePlaybackMode.currentIndex === 1
+
+                        text: "Row"
+
+                        color: "#777777"
+                    }
+
+                    SpinBox {
+                        id: spriteRow
+
+                        visible:
+                            spritePlaybackMode.currentIndex === 1
+
+                        from: 1
+
+                        to:
+                            Math.max(
+                                1,
+                                imageViewer.frameRows
+                            )
+
+                        value: 1
+
+                        onValueModified: {
+                            var start =
+                                (
+                                    value - 1
+                                ) *
+                                imageViewer.frameColumns
+
+                            imageViewer.frameStart =
+                                start
+
+                            imageViewer.frameEnd =
+                                Math.max(
+                                    start,
+                                    start +
+                                    imageViewer.frameColumns -
+                                    1
+                                )
+
+                            imageViewer.frameIndex =
+                                start
+                        }
+                    editable: true
                     }
                 }
 
@@ -1249,6 +1494,7 @@ ApplicationWindow {
                         onValueModified:
                             imageViewer.frameWidth =
                                 value
+                    editable: true
                     }
 
                     SpinBox {
@@ -1261,6 +1507,7 @@ ApplicationWindow {
                         onValueModified:
                             imageViewer.frameHeight =
                                 value
+                    editable: true
                     }
 
                     Label {
@@ -1276,9 +1523,48 @@ ApplicationWindow {
                         value:
                             imageViewer.frameColumns
 
-                        onValueModified:
+                        onValueModified: {
                             imageViewer.frameColumns =
                                 value
+
+                            if (
+                                spritePlaybackMode.currentIndex === 0
+                            ) {
+                                imageViewer.frameStart = 0
+
+                                imageViewer.frameEnd =
+                                    Math.max(
+                                        0,
+                                        (
+                                            imageViewer.frameColumns *
+                                            imageViewer.frameRows
+                                        ) - 1
+                                    )
+
+                                imageViewer.frameIndex = 0
+                            } else {
+                                var start =
+                                    (
+                                        spriteRow.value - 1
+                                    ) *
+                                    imageViewer.frameColumns
+
+                                imageViewer.frameStart =
+                                    start
+
+                                imageViewer.frameEnd =
+                                    Math.max(
+                                        start,
+                                        start +
+                                        imageViewer.frameColumns -
+                                        1
+                                    )
+
+                                imageViewer.frameIndex =
+                                    start
+                            }
+                        }
+                    editable: true
                     }
 
                     Label {
@@ -1294,9 +1580,54 @@ ApplicationWindow {
                         value:
                             imageViewer.frameRows
 
-                        onValueModified:
+                        onValueModified: {
                             imageViewer.frameRows =
                                 value
+
+                            spriteRow.value =
+                                Math.min(
+                                    spriteRow.value,
+                                    imageViewer.frameRows
+                                )
+
+                            if (
+                                spritePlaybackMode.currentIndex === 0
+                            ) {
+                                imageViewer.frameStart = 0
+
+                                imageViewer.frameEnd =
+                                    Math.max(
+                                        0,
+                                        (
+                                            imageViewer.frameColumns *
+                                            imageViewer.frameRows
+                                        ) - 1
+                                    )
+
+                                imageViewer.frameIndex = 0
+                            } else {
+                                var start =
+                                    (
+                                        spriteRow.value - 1
+                                    ) *
+                                    imageViewer.frameColumns
+
+                                imageViewer.frameStart =
+                                    start
+
+                                imageViewer.frameEnd =
+                                    Math.max(
+                                        start,
+                                        start +
+                                        imageViewer.frameColumns -
+                                        1
+                                    )
+
+                                imageViewer.frameIndex =
+                                    start
+                            }
+                        }
+                    editable: true
                     }
 
                     Label {
@@ -1315,6 +1646,7 @@ ApplicationWindow {
                         onValueModified:
                             imageViewer.fps =
                                 value
+                    editable: true
                     }
 
                     Button {
@@ -1377,6 +1709,67 @@ ApplicationWindow {
                                 checked
                     }
                 }
+            }
+        }
+    }
+
+    }
+    
+    // ========================================================
+    // GIF playback timer
+    // ========================================================
+
+    Timer {
+        id: gifPlaybackTimer
+
+        property int frame: 0
+
+        interval:
+            imageViewer.animated &&
+            animatedImage.frameCount > 0
+            ? Math.max(
+                1,
+                Math.round(
+                    (
+                        imageViewer.currentAnimationDelay > 0
+                        ? imageViewer.currentAnimationDelay
+                        : 83
+                    ) /
+                    Math.max(
+                        0.1,
+                        imageViewer.animationSpeed / 100.0
+                    )
+                )
+            )
+            : 83
+
+        repeat: true
+
+        running:
+            root.viewerOpen &&
+            imageViewer.opened &&
+            imageViewer.animated &&
+            !imageViewer.spriteSheetMode &&
+            animatedImage.frameCount > 1
+
+        onTriggered: {
+            if (
+                animatedImage.frameCount <= 0
+            ) {
+                frame = 0
+                return
+            }
+
+            frame =
+                (
+                    frame + 1
+                ) %
+                animatedImage.frameCount
+        }
+
+        onRunningChanged: {
+            if (!running) {
+                frame = 0
             }
         }
     }

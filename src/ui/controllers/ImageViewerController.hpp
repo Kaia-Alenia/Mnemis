@@ -1,7 +1,9 @@
+#include <QImage>
 #pragma once
 
 #include <QObject>
 #include <QString>
+#include <QVector>
 
 #include "media/viewer/ViewerTypes.hpp"
 
@@ -158,6 +160,12 @@ class ImageViewerController final : public QObject {
     )
 
     Q_PROPERTY(
+        QString pixelRGBA
+        READ pixelRGBA
+        NOTIFY pixelChanged
+    )
+
+    Q_PROPERTY(
         int imageWidth
         READ imageWidth
         NOTIFY imageInfoChanged
@@ -174,6 +182,24 @@ class ImageViewerController final : public QObject {
         READ totalFrames
         WRITE setTotalFrames
         NOTIFY animationInfoChanged
+    )
+
+    Q_PROPERTY(
+        int animationFrameCount
+        READ animationFrameCount
+        NOTIFY animationInfoChanged
+    )
+
+    Q_PROPERTY(
+        int animationLoopCount
+        READ animationLoopCount
+        NOTIFY animationInfoChanged
+    )
+
+    Q_PROPERTY(
+        int currentAnimationDelay
+        READ currentAnimationDelay
+        NOTIFY frameChanged
     )
 
 public:
@@ -235,12 +261,17 @@ public:
     int pixelX() const;
     int pixelY() const;
     QString pixelHex() const;
+    QString pixelRGBA() const;
 
     int imageWidth() const;
     int imageHeight() const;
 
     int totalFrames() const;
     void setTotalFrames(int value);
+
+    int animationFrameCount() const;
+    int animationLoopCount() const;
+    int currentAnimationDelay() const;
 
     Q_INVOKABLE void openMedia(
         const QString& path
@@ -305,11 +336,17 @@ private:
     int m_pixelY = -1;
 
     QString m_pixelHex = QStringLiteral("#00000000");
+    QString m_pixelRGBA = QStringLiteral("0, 0, 0, 0");
+
+    QImage m_currentImage;
 
     int m_imageWidth = 0;
     int m_imageHeight = 0;
 
     int m_totalFrames = 1;
+
+    QVector<int> m_animationFrameDelays;
+    int m_animationLoopCount = -1;
 };
 
 } // namespace mnemis::ui

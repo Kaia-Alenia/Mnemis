@@ -221,6 +221,23 @@ void ImageViewerController::setFrameColumns(
 
     m_frameColumns = clamped;
 
+    if (m_spriteSheetMode) {
+        m_frameEnd =
+            qMax(
+                0,
+                m_frameColumns * m_frameRows - 1
+            );
+
+        m_frameIndex =
+            qBound(
+                m_frameStart,
+                m_frameIndex,
+                m_frameEnd
+            );
+
+        emit frameChanged();
+    }
+
     emit spriteChanged();
 }
 
@@ -245,6 +262,23 @@ void ImageViewerController::setFrameRows(
     }
 
     m_frameRows = clamped;
+
+    if (m_spriteSheetMode) {
+        m_frameEnd =
+            qMax(
+                0,
+                m_frameColumns * m_frameRows - 1
+            );
+
+        m_frameIndex =
+            qBound(
+                m_frameStart,
+                m_frameIndex,
+                m_frameEnd
+            );
+
+        emit frameChanged();
+    }
 
     emit spriteChanged();
 }
@@ -428,6 +462,11 @@ QString ImageViewerController::pixelHex() const
     return m_pixelHex;
 }
 
+QString ImageViewerController::pixelRGBA() const
+{
+    return m_pixelRGBA;
+}
+
 int ImageViewerController::imageWidth() const
 {
     return m_imageWidth;
@@ -441,6 +480,33 @@ int ImageViewerController::imageHeight() const
 int ImageViewerController::totalFrames() const
 {
     return m_totalFrames;
+}
+
+int ImageViewerController::animationFrameCount() const
+{
+    return m_animationFrameDelays.isEmpty()
+        ? 1
+        : m_animationFrameDelays.size();
+}
+
+int ImageViewerController::animationLoopCount() const
+{
+    return m_animationLoopCount;
+}
+
+int ImageViewerController::currentAnimationDelay() const
+{
+    if (
+        m_animationFrameDelays.isEmpty() ||
+        m_frameIndex < 0 ||
+        m_frameIndex >= m_animationFrameDelays.size()
+    ) {
+        return 0;
+    }
+
+    return m_animationFrameDelays.at(
+        m_frameIndex
+    );
 }
 
 void ImageViewerController::setTotalFrames(
@@ -491,14 +557,10 @@ void ImageViewerController::openMedia(
             m_sourcePath
         ).toString();
 
-    const QString suffix =
-        information.suffix()
-            .toLower();
-
-    m_animated =
-        suffix == QStringLiteral("gif") ||
-        suffix == QStringLiteral("apng") ||
-        suffix == QStringLiteral("webp");
+    m_currentImage =
+        QImage(
+            m_sourcePath
+        );
 
     QImageReader reader(
         m_sourcePath
@@ -518,17 +580,70 @@ void ImageViewerController::openMedia(
         m_imageHeight = 0;
     }
 
+    // --------------------------------------------------------
+    // Generic animation detection
+    //
+    // Do not rely on extension or imageCount().
+    // Walk the real decoded image sequence.
+    // --------------------------------------------------------
+
+    m_animationFrameDelays.clear();
+    m_animationLoopCount = -1;
+
     m_totalFrames = 1;
+    m_animated = false;
 
-    if (m_animated) {
-        const int count =
-            reader.imageCount();
+    QImageReader animationReader(
+        m_sourcePath
+    );
 
-        if (count > 0) {
-            m_totalFrames = count;
+    if (animationReader.canRead()) {
+
+        while (true) {
+
+            const QImage frame =
+                animationReader.read();
+
+            if (frame.isNull()) {
+                break;
+            }
+
+            int delay =
+                animationReader.nextImageDelay();
+
+            if (delay <= 0) {
+                delay = 83;
+            }
+
+            m_animationFrameDelays.append(
+                delay
+            );
+
+            if (!animationReader.jumpToNextImage()) {
+                break;
+            }
+        }
+
+        if (
+            m_animationFrameDelays.size() > 1
+        ) {
+            m_animated = true;
+
+            m_totalFrames =
+                m_animationFrameDelays.size();
+
+            QImageReader loopReader(
+                m_sourcePath
+            );
+
+            m_animationLoopCount =
+                loopReader.loopCount();
+        } else {
+            m_animationFrameDelays.clear();
+            m_totalFrames = 1;
+            m_animationLoopCount = -1;
         }
     }
-
     m_frameStart = 0;
 
     m_frameEnd =
@@ -538,6 +653,15 @@ void ImageViewerController::openMedia(
         );
 
     m_frameIndex = 0;
+
+    if (m_animated) {
+        m_frameStart = 0;
+        m_frameEnd =
+            qMax(
+                0,
+                m_totalFrames - 1
+            );
+    }
 
     m_opened = true;
 
@@ -560,12 +684,17 @@ void ImageViewerController::close()
     m_sourcePath.clear();
     m_sourceUrl.clear();
 
+    m_currentImage =
+        QImage();
+
     m_animated = false;
 
     m_imageWidth = 0;
     m_imageHeight = 0;
 
     m_totalFrames = 1;
+    m_animationFrameDelays.clear();
+    m_animationLoopCount = -1;
 
     m_frameIndex = 0;
     m_frameStart = 0;
@@ -576,6 +705,11 @@ void ImageViewerController::close()
     m_pixelHex =
         QStringLiteral(
             "#00000000"
+        );
+
+    m_pixelRGBA =
+        QStringLiteral(
+            "0, 0, 0, 0"
         );
 
     if (wasOpened) {
@@ -592,18 +726,51 @@ void ImageViewerController::close()
 void ImageViewerController::setPixelInfo(
     int x,
     int y,
-    const QString& hex
-)
+    const QString&)
 {
-    if (m_pixelX == x &&
-        m_pixelY == y &&
-        m_pixelHex == hex) {
+    if (m_currentImage.isNull() || x < 0 || y < 0) {
         return;
     }
+
+    int sourceX = x;
+    int sourceY = y;
+
+    if (m_spriteSheetMode) {
+        const int column =
+            m_frameColumns > 0 ? (m_frameIndex % m_frameColumns) : 0;
+        const int row =
+            m_frameColumns > 0 ? (m_frameIndex / m_frameColumns) : 0;
+
+        sourceX = column * m_frameWidth + x;
+        sourceY = row * m_frameHeight + y;
+    }
+
+    if (!m_currentImage.valid(sourceX, sourceY)) {
+        return;
+    }
+
+    const QColor color =
+        m_currentImage.pixelColor(sourceX, sourceY);
+
+    const QString hex =
+        QStringLiteral("#%1%2%3%4")
+            .arg(color.red(), 2, 16, QChar('0'))
+            .arg(color.green(), 2, 16, QChar('0'))
+            .arg(color.blue(), 2, 16, QChar('0'))
+            .arg(color.alpha(), 2, 16, QChar('0'))
+            .toUpper();
+
+    const QString rgba =
+        QStringLiteral("%1, %2, %3, %4")
+            .arg(color.red())
+            .arg(color.green())
+            .arg(color.blue())
+            .arg(color.alpha());
 
     m_pixelX = x;
     m_pixelY = y;
     m_pixelHex = hex;
+    m_pixelRGBA = rgba;
 
     emit pixelChanged();
 }
@@ -623,6 +790,11 @@ void ImageViewerController::resetView()
     m_pixelHex =
         QStringLiteral(
             "#00000000"
+        );
+
+    m_pixelRGBA =
+        QStringLiteral(
+            "0, 0, 0, 0"
         );
 
     emit zoomChanged();
