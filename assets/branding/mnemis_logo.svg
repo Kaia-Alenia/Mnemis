@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E1035"/>
+      <stop offset="50%" stop-color="#2D1554"/>
+      <stop offset="100%" stop-color="#0F0926"/>
+    </linearGradient>
+
+    <!-- Headphone Band Gradient -->
+    <linearGradient id="headphoneGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6C5CE7"/>
+      <stop offset="50%" stop-color="#A29BFE"/>
+      <stop offset="100%" stop-color="#6C5CE7"/>
+    </linearGradient>
+
+    <!-- Ear Cup Cyan Gradient -->
+    <linearGradient id="earCupGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00CEC9"/>
+      <stop offset="100%" stop-color="#0984E3"/>
+    </linearGradient>
+
+    <!-- Cat Fur Gradient -->
+    <linearGradient id="catFurGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#ECEFF1"/>
+    </linearGradient>
+
+    <!-- Inner Ear Pink Gradient -->
+    <linearGradient id="earPink" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF7675"/>
+      <stop offset="100%" stop-color="#FD79A8"/>
+    </linearGradient>
+
+    <!-- Cheek Blush Gradient -->
+    <radialGradient id="blush" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF7675" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#FF7675" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Subtle Glow Shadow -->
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <filter id="cyanGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#00CEC9" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- App Icon Squircle Background -->
+  <rect x="16" y="16" width="480" height="480" rx="110" ry="110" fill="url(#bgGrad)"/>
+
+  <!-- Subtle Ambient Glow Behind Mascot -->
+  <circle cx="256" cy="275" r="170" fill="#6C5CE7" opacity="0.18"/>
+
+  <!-- Headphone Arc (Behind Ears) -->
+  <path d="M 145 255 C 145 130 367 130 367 255" fill="none" stroke="url(#headphoneGrad)" stroke-width="22" stroke-linecap="round"/>
+
+  <!-- Cat Ears -->
+  <!-- Left Outer Ear -->
+  <path d="M 152 225 L 180 120 C 185 102 210 106 218 126 L 246 200 Z" fill="url(#catFurGrad)" filter="url(#softGlow)"/>
+  <!-- Left Inner Ear -->
+  <path d="M 166 215 L 186 135 C 190 122 206 125 211 138 L 232 195 Z" fill="url(#earPink)"/>
+
+  <!-- Right Outer Ear -->
+  <path d="M 360 225 L 332 120 C 327 102 302 106 294 126 L 266 200 Z" fill="url(#catFurGrad)" filter="url(#softGlow)"/>
+  <!-- Right Inner Ear -->
+  <path d="M 346 215 L 326 135 C 322 122 306 125 301 138 L 280 195 Z" fill="url(#earPink)"/>
+
+  <!-- Cat Head Body -->
+  <ellipse cx="256" cy="278" rx="142" ry="128" fill="url(#catFurGrad)" filter="url(#softGlow)"/>
+
+  <!-- Cheeks Blush -->
+  <circle cx="178" cy="302" r="22" fill="url(#blush)"/>
+  <circle cx="334" cy="302" r="22" fill="url(#blush)"/>
+
+  <!-- Cute Big Anime / Mascot Eyes -->
+  <!-- Left Eye -->
+  <circle cx="204" cy="265" r="18" fill="#1E1035"/>
+  <circle cx="200" cy="259" r="6" fill="#FFFFFF"/>
+  <circle cx="210" cy="271" r="2.5" fill="#FFFFFF"/>
+
+  <!-- Right Eye -->
+  <circle cx="308" cy="265" r="18" fill="#1E1035"/>
+  <circle cx="304" cy="259" r="6" fill="#FFFFFF"/>
+  <circle cx="314" cy="271" r="2.5" fill="#FFFFFF"/>
+
+  <!-- Little Nose -->
+  <path d="M 252 284 C 252 281 260 281 260 284 L 257 289 C 256.5 290 255.5 290 255 289 Z" fill="#FD79A8"/>
+
+  <!-- Happy Cat Mouth (^w^) -->
+  <path d="M 244 293 Q 250 299 256 293 Q 262 299 268 293" fill="none" stroke="#2D3436" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Whiskers -->
+  <!-- Left Whiskers -->
+  <path d="M 125 288 Q 155 292 175 293" fill="none" stroke="#B2BEC3" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 128 304 Q 155 303 174 300" fill="none" stroke="#B2BEC3" stroke-width="3" stroke-linecap="round"/>
+  <!-- Right Whiskers -->
+  <path d="M 387 288 Q 357 292 337 293" fill="none" stroke="#B2BEC3" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 384 304 Q 357 303 338 300" fill="none" stroke="#B2BEC3" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Headphone Ear Cups (In Front of Head Sides) -->
+  <!-- Left Ear Cup Cushion -->
+  <rect x="110" y="228" width="34" height="74" rx="16" fill="#2D3436" filter="url(#softGlow)"/>
+  <rect x="115" y="233" width="28" height="64" rx="14" fill="url(#earCupGrad)" filter="url(#cyanGlow)"/>
+  <!-- Play Icon symbol on Left Headphone -->
+  <path d="M 125 257 L 135 265 L 125 273 Z" fill="#FFFFFF"/>
+
+  <!-- Right Ear Cup Cushion -->
+  <rect x="368" y="228" width="34" height="74" rx="16" fill="#2D3436" filter="url(#softGlow)"/>
+  <rect x="369" y="233" width="28" height="64" rx="14" fill="url(#earCupGrad)" filter="url(#cyanGlow)"/>
+  <!-- Play Icon symbol on Right Headphone -->
+  <path d="M 379 257 L 389 265 L 379 273 Z" fill="#FFFFFF"/>
+
+  <!-- Sound Waves / Music Accent -->
+  <path d="M 92 248 A 20 20 0 0 0 92 282" fill="none" stroke="#00CEC9" stroke-width="3.5" stroke-linecap="round" opacity="0.8"/>
+  <path d="M 80 238 A 34 34 0 0 0 80 292" fill="none" stroke="#00CEC9" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+
+  <path d="M 420 248 A 20 20 0 0 1 420 282" fill="none" stroke="#00CEC9" stroke-width="3.5" stroke-linecap="round" opacity="0.8"/>
+  <path d="M 432 238 A 34 34 0 0 1 432 292" fill="none" stroke="#00CEC9" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Brand Subtitle / Name "MNEMIS" -->
+  <text x="256" y="445" text-anchor="middle" font-family="'Outfit', 'Inter', 'Segoe UI', system-ui, sans-serif" font-size="34" font-weight="800" letter-spacing="6" fill="#FFFFFF">MNEMIS</text>
+  <text x="256" y="470" text-anchor="middle" font-family="'Outfit', 'Inter', 'Segoe UI', system-ui, sans-serif" font-size="12" font-weight="600" letter-spacing="3" fill="#A29BFE">ALENIA STUDIOS</text>
+</svg>
