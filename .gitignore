@@ -1,0 +1,10 @@
+# Binarios grandes y builds
+extracted_apk/
+*.apk
+*.idsig
+*.keystore
+build/
+
+# IDE y temporales
+.vscode/
+*.log
