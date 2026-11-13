@@ -1,10 +1,13 @@
 package com.alenia.mnemis.sync
 
+import com.alenia.mnemis.plugin.DynamicPluginManager
 import com.alenia.mnemis.plugin.MnemisPlugin
 import com.alenia.mnemis.plugin.MnemisPluginRegistry
+import com.alenia.mnemis.update.MnemisUpdater
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -147,6 +150,67 @@ class KoalaSyncProtocolTest {
 
         MnemisPluginRegistry.unregister("test_custom_plugin")
         assertFalse(MnemisPluginRegistry.allPlugins().any { it.id == "test_custom_plugin" })
+    }
+
+    @Test
+    fun dynamicPluginManager_parsesManifestAndEvaluatesDomainAndBlockRules() {
+        val manifest = """
+            {
+              "id": "vimeo_helper",
+              "name": "Vimeo Sync Helper",
+              "version": "1.2.0",
+              "description": "Helper for Vimeo embeds",
+              "matchDomains": ["vimeo.com"],
+              "blockPatterns": ["doubleclick.net", "/ads/"],
+              "userScript": "console.log('vimeo ready');"
+            }
+        """.trimIndent()
+
+        val plugin = DynamicPluginManager.parseManifest(manifest)
+        assertNotNull(plugin)
+        assertEquals("vimeo_helper", plugin!!.id)
+        assertFalse(plugin.isBuiltIn)
+        assertTrue(plugin.matchesUrl("https://vimeo.com/123456"))
+        assertFalse(plugin.matchesUrl("https://m.youtube.com/watch?v=123"))
+        assertTrue(plugin.shouldBlockRequest("https://stats.doubleclick.net/pixel"))
+        assertFalse(plugin.shouldBlockRequest("https://player.vimeo.com/video/123"))
+        assertEquals("console.log('vimeo ready');", plugin.getUserScript("https://vimeo.com/123"))
+
+        assertNull(DynamicPluginManager.parseManifest("{}"))
+    }
+
+    @Test
+    fun mnemisUpdater_detectsNewerGitHubReleaseAndSelectsApkAsset() {
+        assertTrue(MnemisUpdater.isNewerVersion("v1.2.0", "1.0.0"))
+        assertTrue(MnemisUpdater.isNewerVersion("1.0.1", "1.0.0"))
+        assertFalse(MnemisUpdater.isNewerVersion("v1.0.0", "1.0.0"))
+        assertFalse(MnemisUpdater.isNewerVersion("0.9.9", "1.0.0"))
+
+        val releaseJson = """
+            {
+              "tag_name": "v1.2.0",
+              "html_url": "https://github.com/Kaia-Alenia/Mnemis/releases/tag/v1.2.0",
+              "body": "- Added dynamic plugins\n- Added GitHub updater",
+              "draft": false,
+              "prerelease": false,
+              "assets": [
+                {
+                  "name": "mnemis-v1.2.0.apk",
+                  "browser_download_url": "https://github.com/Kaia-Alenia/Mnemis/releases/download/v1.2.0/mnemis-v1.2.0.apk"
+                }
+              ]
+            }
+        """.trimIndent()
+
+        val update = MnemisUpdater.parseReleaseJson(releaseJson, "1.0.0")
+        assertNotNull(update)
+        assertEquals("1.2.0", update!!.latestVersion)
+        assertEquals(
+            "https://github.com/Kaia-Alenia/Mnemis/releases/download/v1.2.0/mnemis-v1.2.0.apk",
+            update.downloadUrl
+        )
+
+        assertNull(MnemisUpdater.parseReleaseJson(releaseJson, "1.2.0"))
     }
 }
 

@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.alenia.mnemis.R
 import com.alenia.mnemis.databinding.ActivityWebPlayerBinding
 import com.alenia.mnemis.databinding.DialogKoalasyncBinding
+import com.alenia.mnemis.plugin.DynamicPluginManager
 import com.alenia.mnemis.plugin.MnemisPluginRegistry
 import com.alenia.mnemis.prefs.MnemisPreferences
 import com.alenia.mnemis.sync.KoalaSyncClient
@@ -61,6 +62,7 @@ class WebPlayerActivity : AppCompatActivity() {
         binding.tvWebTitle.text = initialTitle
 
         setupSyncAndBridge()
+        DynamicPluginManager.loadAll(this)
         prefs.saveLastPlayed(initialTitle, targetUrl, isWeb = true)
         setupWebView(targetUrl)
         setupControls()
@@ -68,6 +70,7 @@ class WebPlayerActivity : AppCompatActivity() {
 
     private fun setupSyncAndBridge() {
         prefs = MnemisPreferences(this)
+        binding.btnWebKoalaSync.visibility = if (prefs.koalaSyncPluginEnabled) View.VISIBLE else View.GONE
         koalaSyncClient = KoalaSyncClient(
             serverUrl = prefs.relayServerUrl,
             listener = object : KoalaSyncClient.SyncListener {
@@ -205,7 +208,10 @@ class WebPlayerActivity : AppCompatActivity() {
                     val activeUrl = url ?: currentPageUrl
                     currentPageUrl = activeUrl
                     injectMatchingWebPlugins(activeUrl)
-                    if (prefs.koalaSyncPluginEnabled) {
+                    val isYouTube = activeUrl.contains("youtube.com", ignoreCase = true) ||
+                        activeUrl.contains("youtu.be", ignoreCase = true)
+                    val allowSpaBridge = !isYouTube || prefs.isPluginEnabled(MnemisPreferences.PLUGIN_YOUTUBE_SPA)
+                    if (prefs.koalaSyncPluginEnabled && allowSpaBridge) {
                         webBridge.injectScript()
                     }
                 }

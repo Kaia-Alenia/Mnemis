@@ -254,6 +254,7 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
 
     private fun setupKoalaSync() {
         prefs = MnemisPreferences(this)
+        binding.btnKoalaSync.visibility = if (prefs.koalaSyncPluginEnabled) View.VISIBLE else View.GONE
         koalaSyncClient = KoalaSyncClient(
             serverUrl = prefs.relayServerUrl,
             listener = object : KoalaSyncClient.SyncListener {

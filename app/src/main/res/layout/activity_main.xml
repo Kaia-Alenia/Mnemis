@@ -419,15 +419,35 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:paddingHorizontal="16dp"
                     android:paddingTop="14dp"
-                    android:paddingBottom="6dp"
-                    android:text="Activa, busca o descarga módulos para ampliar Mnemis."
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp" />
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/plugins_subtitle"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnInstallPluginUrl"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/plugins_install_url"
+                        android:textAllCaps="false"
+                        android:textColor="@color/accent_primary"
+                        android:textSize="12sp"
+                        app:strokeColor="@color/accent_primary" />
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewPlugins"
@@ -533,7 +553,7 @@
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         app:thumbTint="@color/white"
-                        app:trackTint="@color/accent_primary" />
+                        app:trackTint="@color/switch_track_tint" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switchSettingsKoalaSync"
@@ -544,7 +564,7 @@
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         app:thumbTint="@color/white"
-                        app:trackTint="@color/accent_primary" />
+                        app:trackTint="@color/switch_track_tint" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSaveSettings"
@@ -552,9 +572,34 @@
                         android:layout_height="48dp"
                         android:layout_marginTop="24dp"
                         android:backgroundTint="@color/accent_primary"
-                        android:text="Guardar ajustes"
+                        android:text="@string/settings_save"
                         android:textAllCaps="false"
                         android:textColor="@color/white" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@color/divider_subtle" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentVersion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCheckUpdates"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/updater_check_button"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_primary"
+                        app:strokeColor="@color/divider_subtle" />
                 </LinearLayout>
             </ScrollView>
         </FrameLayout>

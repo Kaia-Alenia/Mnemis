@@ -36,6 +36,23 @@
 
     <string name="plugin_desc_hls_sniffer">Optionaler HLS/MP4-Stream-Detektor für kompatible Websites.</string>
     <string name="plugin_desc_subtitles">Optionales Modul zum Laden externer SRT/VTT-Untertitel.</string>
+    <string name="plugins_subtitle">Dynamische Module aktivieren, suchen oder installieren.</string>
+    <string name="plugins_install_url">URL installieren</string>
+    <string name="plugins_url_hint">URL des Plugin-JSON-Manifests (https://…)</string>
+    <string name="plugins_install_action">Installieren</string>
+    <string name="plugins_url_invalid">Gültige HTTP/HTTPS-URL eingeben</string>
+    <string name="plugins_install_success">Plugin %1$s installiert</string>
+    <string name="plugins_install_failed">Plugin konnte nicht installiert werden: %1$s</string>
+
+    <string name="settings_save">Einstellungen speichern</string>
+    <string name="settings_saved">Einstellungen gespeichert</string>
+    <string name="updater_current_version">Aktuelle Version: %1$s</string>
+    <string name="updater_check_button">Nach Updates suchen</string>
+    <string name="updater_up_to_date">Mnemis ist auf dem neuesten Stand</string>
+    <string name="updater_check_failed">Updates konnten nicht geprüft werden</string>
+    <string name="updater_available_title">Neue Version %1$s verfügbar</string>
+    <string name="updater_default_notes">Auf GitHub ist eine neue Mnemis-Version verfügbar.</string>
+    <string name="updater_download_action">Herunterladen</string>
 
     <string name="chat_title">Raum-Chat</string>
     <string name="chat_empty">Noch keine Nachrichten.</string>

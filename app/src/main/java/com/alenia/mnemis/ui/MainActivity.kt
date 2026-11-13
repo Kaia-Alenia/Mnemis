@@ -21,14 +21,17 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alenia.mnemis.BuildConfig
 import com.alenia.mnemis.R
 import com.alenia.mnemis.databinding.ActivityMainBinding
 import com.alenia.mnemis.databinding.DialogOpenUrlBinding
 import com.alenia.mnemis.model.PluginItem
 import com.alenia.mnemis.model.VideoAlbum
 import com.alenia.mnemis.model.VideoItem
+import com.alenia.mnemis.plugin.DynamicPluginManager
 import com.alenia.mnemis.plugin.MnemisPluginRegistry
 import com.alenia.mnemis.prefs.MnemisPreferences
+import com.alenia.mnemis.update.MnemisUpdater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -78,6 +81,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         prefs = MnemisPreferences(this)
+        DynamicPluginManager.loadAll(this)
 
         setupDrawerAndToolbar()
         setupHomeSection()
@@ -91,6 +95,7 @@ class MainActivity : AppCompatActivity() {
         switchSection(Section.HOME)
         handleIncomingIntent(intent)
         checkPermissionAndLoadVideos()
+        checkAppUpdates(manual = false)
     }
 
     override fun onResume() {
@@ -271,12 +276,10 @@ class MainActivity : AppCompatActivity() {
         pluginAdapter = PluginAdapter(
             onToggleEnabled = { plugin, enabled ->
                 prefs.setPluginEnabled(plugin.id, enabled)
-                refreshPluginsList()
             },
             onInstallClick = { plugin ->
                 prefs.setPluginInstalled(plugin.id, true)
                 prefs.setPluginEnabled(plugin.id, true)
-                Toast.makeText(this, "${plugin.name} descargado y activado", Toast.LENGTH_SHORT).show()
                 refreshPluginsList()
             }
         )
@@ -285,42 +288,67 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = pluginAdapter
         }
+        binding.btnInstallPluginUrl.setOnClickListener {
+            showInstallPluginDialog()
+        }
         refreshPluginsList()
     }
 
+    private fun showInstallPluginDialog() {
+        val dialogBinding = DialogOpenUrlBinding.inflate(LayoutInflater.from(this))
+        dialogBinding.tilUrl.hint = getString(R.string.plugins_url_hint)
+        dialogBinding.btnPlayDialog.text = getString(R.string.plugins_install_action)
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(R.string.plugins_install_url)
+            .setView(dialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        dialogBinding.btnCancelDialog.setOnClickListener { dialog.dismiss() }
+        dialogBinding.btnPlayDialog.setOnClickListener {
+            val url = dialogBinding.etUrl.text?.toString()?.trim().orEmpty()
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                dialogBinding.tilUrl.error = getString(R.string.plugins_url_invalid)
+                return@setOnClickListener
+            }
+            dialogBinding.tilUrl.error = null
+            dialog.dismiss()
+
+            lifecycleScope.launch {
+                val result = DynamicPluginManager.fetchAndInstall(this@MainActivity, url)
+                result.onSuccess { plugin ->
+                    prefs.setPluginEnabled(plugin.id, true)
+                    Toast.makeText(
+                        this@MainActivity,
+                        getString(R.string.plugins_install_success, plugin.name),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    refreshPluginsList()
+                }.onFailure { err ->
+                    Toast.makeText(
+                        this@MainActivity,
+                        getString(R.string.plugins_install_failed, err.message ?: "error"),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+        dialog.show()
+    }
+
     private fun refreshPluginsList() {
-        val registered = MnemisPluginRegistry.allPlugins().map { plugin ->
+        val catalog = MnemisPluginRegistry.allPlugins().map { plugin ->
             PluginItem(
                 id = plugin.id,
                 name = plugin.name,
                 version = plugin.version,
                 description = plugin.description,
-                isBuiltIn = true,
+                isBuiltIn = plugin.isBuiltIn,
                 isInstalled = true,
                 isEnabled = prefs.isPluginEnabled(plugin.id)
             )
         }
-        val optionalCatalog = listOf(
-            PluginItem(
-                id = "generic_hls_sniffer",
-                name = "Stream Sniffer",
-                version = "v0.9.0",
-                description = getString(R.string.plugin_desc_hls_sniffer),
-                isBuiltIn = false,
-                isInstalled = prefs.isPluginInstalled("generic_hls_sniffer"),
-                isEnabled = prefs.isPluginEnabled("generic_hls_sniffer")
-            ),
-            PluginItem(
-                id = "subtitle_overlay",
-                name = "Subtitles SRT/VTT",
-                version = "v0.8.2",
-                description = getString(R.string.plugin_desc_subtitles),
-                isBuiltIn = false,
-                isInstalled = prefs.isPluginInstalled("subtitle_overlay"),
-                isEnabled = prefs.isPluginEnabled("subtitle_overlay")
-            )
-        )
-        val catalog = registered + optionalCatalog
 
         val filtered = if (currentQuery.isEmpty()) {
             catalog
@@ -347,7 +375,10 @@ class MainActivity : AppCompatActivity() {
             prefs.relayServerUrl = binding.etSettingsRelayUrl.text?.toString().orEmpty()
             prefs.adBlockEnabled = binding.switchSettingsAdBlock.isChecked
             prefs.koalaSyncPluginEnabled = binding.switchSettingsKoalaSync.isChecked
-            Toast.makeText(this, "Ajustes guardados", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.settings_saved), Toast.LENGTH_SHORT).show()
+        }
+        binding.btnCheckUpdates.setOnClickListener {
+            checkAppUpdates(manual = true)
         }
     }
 
@@ -356,6 +387,37 @@ class MainActivity : AppCompatActivity() {
         binding.etSettingsRelayUrl.setText(prefs.relayServerUrl)
         binding.switchSettingsAdBlock.isChecked = prefs.adBlockEnabled
         binding.switchSettingsKoalaSync.isChecked = prefs.koalaSyncPluginEnabled
+        binding.tvCurrentVersion.text = getString(R.string.updater_current_version, BuildConfig.VERSION_NAME)
+    }
+
+    private fun checkAppUpdates(manual: Boolean) {
+        lifecycleScope.launch {
+            val result = MnemisUpdater.checkForUpdates(BuildConfig.VERSION_NAME)
+            result.onSuccess { update ->
+                if (update != null) {
+                    showUpdateDialog(update)
+                } else if (manual) {
+                    Toast.makeText(this@MainActivity, R.string.updater_up_to_date, Toast.LENGTH_SHORT).show()
+                }
+            }.onFailure {
+                if (manual) {
+                    Toast.makeText(this@MainActivity, R.string.updater_check_failed, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun showUpdateDialog(update: MnemisUpdater.UpdateInfo) {
+        if (isFinishing || isDestroyed) return
+        val notes = update.releaseNotes.ifBlank { getString(R.string.updater_default_notes) }
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.updater_available_title, update.latestVersion))
+            .setMessage(notes)
+            .setPositiveButton(R.string.updater_download_action) { _, _ ->
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(update.downloadUrl)))
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
     }
 
     private fun setupBackNavigation() {
