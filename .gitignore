@@ -3,7 +3,9 @@ extracted_apk/
 *.apk
 *.idsig
 *.keystore
+.gradle/
 build/
+local.properties
 
 # IDE y temporales
 .vscode/

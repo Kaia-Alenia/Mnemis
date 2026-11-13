@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Mnemis</string>
+    <string name="title_videos">Mis Videos</string>
+    <string name="title_streams">Reproducir Enlace</string>
+    <string name="open_link">Abrir URL de Video</string>
+    <string name="enter_url_hint">Pega un enlace de YouTube, Google Drive o MP4/HLS…</string>
+    <string name="play">Reproducir</string>
+    <string name="cancel">Cancelar</string>
+    <string name="resolving_link">Extrayendo enlace con Mnemis Resolver…</string>
+    <string name="error_resolving">No se pudo resolver el enlace de video</string>
+    <string name="permission_required">Se requiere permiso para leer videos del dispositivo</string>
+    <string name="grant_permission">Permitir Acceso</string>
+    <string name="no_videos_found">No se encontraron videos en el dispositivo</string>
+
+    <string name="nav_home">Inicio</string>
+    <string name="nav_videos">Mis Videos</string>
+    <string name="nav_web">Web / Streaming</string>
+    <string name="nav_plugins">Plugins</string>
+    <string name="nav_downloads">Descargas</string>
+    <string name="nav_system">Sistema</string>
+    <string name="nav_settings">Ajustes</string>
+
+    <string name="search_hint">Buscar…</string>
+    <string name="search_no_results">Sin resultados para \"%1$s\"</string>
+    <string name="cd_back">Volver</string>
+
+    <string name="home_continue_watching">Seguir viendo</string>
+    <string name="home_resume_button">Reanudar</string>
+    <string name="home_no_recent">Aún no hay reproducciones recientes. Abre una plataforma web o un video local para empezar.</string>
+    <string name="home_quick_actions">Accesos rápidos</string>
+    <string name="home_action_web">Abrir Web / Streaming</string>
+    <string name="home_action_videos">Explorar Álbumes Locales</string>
+    <string name="home_action_plugins">Gestionar Plugins</string>
+    <string name="home_type_web">WEB STREAM</string>
+    <string name="home_type_local">VIDEO LOCAL</string>
+
+    <string name="plugin_desc_hls_sniffer">Detector opcional de listas HLS/MP4 en sitios web compatibles.</string>
+    <string name="plugin_desc_subtitles">Módulo opcional para cargar pistas externas SRT/VTT en reproducción local.</string>
+
+    <string name="chat_title">Chat de la sala</string>
+    <string name="chat_empty">Todavía no hay mensajes.</string>
+    <string name="chat_input_hint">Escribe un mensaje</string>
+    <string name="chat_send">Enviar</string>
+    <string name="chat_secret_badge">Secreto: %1$s</string>
+    <string name="chat_send_failed">No se pudo enviar el mensaje. Verifica tu conexión o secreto de chat.</string>
+
+    <string name="sync_password_hint">Contraseña de la sala (opcional)</string>
+    <string name="sync_chat_secret_hint">Secreto del chat (opcional)</string>
+
+    <string name="brightness">Brillo</string>
+    <string name="volume">Volumen</string>
+    <string name="seek">Posición</string>
+
+    <plurals name="video_count">
+        <item quantity="one">%d video</item>
+        <item quantity="other">%d videos</item>
+    </plurals>
+</resources>
+

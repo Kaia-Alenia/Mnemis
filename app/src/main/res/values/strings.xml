@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">Mnemis</string>
+    <string name="title_videos">My Videos</string>
+    <string name="title_streams">Play Link</string>
+    <string name="open_link">Open Video URL</string>
+    <string name="enter_url_hint">Paste a YouTube, Google Drive or MP4/HLS link…</string>
+    <string name="play">Play</string>
+    <string name="cancel">Cancel</string>
+    <string name="resolving_link">Resolving link with Mnemis Resolver…</string>
+    <string name="error_resolving">Could not resolve video link</string>
+    <string name="permission_required">Permission is required to read device videos</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="no_videos_found">No videos found on device</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_videos">My Videos</string>
+    <string name="nav_web">Web / Streaming</string>
+    <string name="nav_plugins">Plugins</string>
+    <string name="nav_downloads">Downloads</string>
+    <string name="nav_system">System</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="search_hint">Search…</string>
+    <string name="search_no_results">No results for \"%1$s\"</string>
+    <string name="cd_back">Back</string>
+
+    <string name="home_continue_watching">Continue Watching</string>
+    <string name="home_resume_button">Resume</string>
+    <string name="home_no_recent">No recent playback yet. Open a web stream or local video to get started.</string>
+    <string name="home_quick_actions">Quick Actions</string>
+    <string name="home_action_web">Open Web / Streaming</string>
+    <string name="home_action_videos">Browse Local Albums</string>
+    <string name="home_action_plugins">Manage Plugins</string>
+    <string name="home_type_web">WEB STREAM</string>
+    <string name="home_type_local">LOCAL VIDEO</string>
+
+    <string name="plugin_desc_hls_sniffer">Optional HLS/MP4 stream detector for compatible web sites.</string>
+    <string name="plugin_desc_subtitles">Optional module to load external SRT/VTT subtitle tracks.</string>
+
+    <string name="chat_title">Room Chat</string>
+    <string name="chat_empty">No messages yet.</string>
+    <string name="chat_input_hint">Write a message</string>
+    <string name="chat_send">Send</string>
+    <string name="chat_secret_badge">Secret: %1$s</string>
+    <string name="chat_send_failed">Could not send message. Check your connection or chat secret.</string>
+
+    <string name="sync_password_hint">Room password (optional)</string>
+    <string name="sync_chat_secret_hint">Chat secret (optional)</string>
+
+    <string name="brightness">Brightness</string>
+    <string name="volume">Volume</string>
+    <string name="seek">Seek</string>
+
+    <plurals name="video_count">
+        <item quantity="one">%d video</item>
+        <item quantity="other">%d videos</item>
+    </plurals>
+</resources>

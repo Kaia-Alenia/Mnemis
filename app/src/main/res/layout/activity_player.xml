@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playerRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <!-- Media3 PlayerView -->
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/playerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:surface_type="texture_view"
+        app:use_controller="true"
+        app:show_buffering="when_playing"
+        app:resize_mode="fit"
+        app:controller_layout_id="@layout/custom_player_controls" />
+
+    <!-- Overlay transparente para capturar gestos -->
+    <View
+        android:id="@+id/gestureTouchView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Tarjeta flotante de feedback para Gestos (Brillo / Volumen / Seek) -->
+    <LinearLayout
+        android:id="@+id/layoutGestureFeedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_overlay_badge"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="16dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/ivFeedbackIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="Feedback Icon"
+            android:src="@drawable/ic_volume"
+            app:tint="@color/accent_light" />
+
+        <TextView
+            android:id="@+id/tvFeedbackText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Volumen: 75%" />
+
+        <ProgressBar
+            android:id="@+id/pbFeedbackProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="120dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="8dp"
+            android:max="100"
+            android:progress="75"
+            android:progressTint="@color/accent_primary" />
+    </LinearLayout>
+
+    <!-- Barra Superior de Acciones Rápidas (Back, Título, Rotación, Aspect Ratio, PiP) -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="top"
+        android:background="@drawable/bg_gradient_top"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Volver"
+            android:src="@drawable/ic_back"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/tvPlayerTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Título del video en reproducción" />
+
+        <!-- Botón Chat KoalaSync -->
+        <ImageButton
+            android:id="@+id/btnPlayerChat"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/chat_title"
+            android:src="@drawable/ic_chat"
+            android:visibility="gone"
+            app:tint="@color/white" />
+
+        <!-- Botón KoalaSync -->
+        <ImageButton
+            android:id="@+id/btnKoalaSync"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="KoalaSync"
+            android:src="@drawable/ic_sync"
+            app:tint="@color/white" />
+
+        <!-- Botón Cambio Aspect Ratio (Fit / Zoom / Stretch) -->
+        <ImageButton
+            android:id="@+id/btnAspectRatio"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Aspect Ratio"
+            android:src="@drawable/ic_aspect_ratio"
+            app:tint="@color/white" />
+
+        <!-- Botón Rotación (Portrait / Landscape / Sensor) -->
+        <ImageButton
+            android:id="@+id/btnRotation"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Rotación"
+            android:src="@drawable/ic_rotate"
+            app:tint="@color/white" />
+
+        <!-- Botón Picture in Picture -->
+        <ImageButton
+            android:id="@+id/btnPip"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Picture in Picture"
+            android:src="@drawable/ic_pip"
+            app:tint="@color/white" />
+    </LinearLayout>
+
+</FrameLayout>
+
