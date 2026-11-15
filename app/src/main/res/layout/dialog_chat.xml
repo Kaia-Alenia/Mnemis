@@ -52,7 +52,7 @@
             android:id="@+id/btnReactFire"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:text="🔥"
             android:textSize="16sp" />
@@ -61,7 +61,7 @@
             android:id="@+id/btnReactLaugh"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:text="😂"
             android:textSize="16sp" />
@@ -70,7 +70,7 @@
             android:id="@+id/btnReactWow"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:text="😮"
             android:textSize="16sp" />
@@ -79,7 +79,7 @@
             android:id="@+id/btnReactClap"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:text="👏"
             android:textSize="16sp" />
@@ -88,7 +88,7 @@
             android:id="@+id/btnReactHeart"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:text="❤️"
             android:textSize="16sp" />
@@ -104,7 +104,7 @@
         <EditText
             android:id="@+id/etChatInput"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:background="@color/background_dark"
             android:hint="@string/chat_input_hint"
@@ -118,7 +118,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSendChat"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:backgroundTint="@color/accent_primary"
             android:text="@string/chat_send"

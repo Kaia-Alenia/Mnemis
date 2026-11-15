@@ -3,6 +3,10 @@ extracted_apk/
 *.apk
 *.idsig
 *.keystore
+# The shared debug keystore is committed on purpose: it is the standard
+# Android debug key (alias androiddebugkey / password android), not a secret.
+# CI and local builds must share it so debug APKs keep one signature.
+!debug.keystore
 .gradle/
 build/
 local.properties

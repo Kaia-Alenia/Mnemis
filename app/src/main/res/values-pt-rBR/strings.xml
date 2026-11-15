@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">Mnemis</string>
+    <string name="title_videos">Meus vídeos</string>
+    <string name="title_streams">Reproduzir link</string>
+    <string name="open_link">Abrir URL do vídeo</string>
+    <string name="enter_url_hint">Cole um link do YouTube, Google Drive ou MP4/HLS…</string>
+    <string name="play">Reproduzir</string>
+    <string name="cancel">Cancelar</string>
+    <string name="resolving_link">Resolvendo link com o Mnemis Resolver…</string>
+    <string name="error_resolving">Não foi possível resolver o link do vídeo</string>
+    <string name="permission_required">É necessário permitir o acesso aos vídeos do dispositivo</string>
+    <string name="grant_permission">Permitir acesso</string>
+    <string name="no_videos_found">Nenhum vídeo encontrado no dispositivo</string>
+
+    <string name="nav_home">Início</string>
+    <string name="nav_videos">Meus vídeos</string>
+    <string name="nav_web">Web / Streaming</string>
+    <string name="nav_plugins">Plugins</string>
+    <string name="nav_downloads">Downloads</string>
+    <string name="nav_system">Sistema</string>
+    <string name="nav_settings">Configurações</string>
+
+    <string name="search_hint">Buscar…</string>
+    <string name="search_no_results">Sem resultados para \"%1$s\"</string>
+    <string name="cd_back">Voltar</string>
+
+    <string name="home_continue_watching">Continuar assistindo</string>
+    <string name="home_resume_button">Retomar</string>
+    <string name="home_no_recent">Nenhuma reprodução recente ainda. Abra um stream da web ou um vídeo local para começar.</string>
+    <string name="home_quick_actions">Ações rápidas</string>
+    <string name="home_action_web">Abrir Web / Streaming</string>
+    <string name="home_action_videos">Explorar álbuns locais</string>
+    <string name="home_action_plugins">Gerenciar plugins</string>
+    <string name="home_type_web">STREAM WEB</string>
+    <string name="home_type_local">VÍDEO LOCAL</string>
+
+    <string name="plugin_desc_hls_sniffer">Detector opcional de streams HLS/MP4 em sites compatíveis.</string>
+    <string name="plugin_desc_subtitles">Módulo opcional para carregar legendas externas SRT/VTT.</string>
+    <string name="plugins_subtitle">Ative, pesquise ou instale módulos dinâmicos.</string>
+    <string name="plugins_install_url">Instalar URL</string>
+    <string name="plugins_url_hint">URL do manifesto JSON do plugin (https://…)</string>
+    <string name="plugins_install_action">Instalar</string>
+    <string name="plugins_url_invalid">Insira uma URL HTTP/HTTPS válida</string>
+    <string name="plugins_install_success">Plugin %1$s instalado</string>
+    <string name="plugins_install_failed">Falha ao instalar o plugin: %1$s</string>
+
+    <string name="settings_save">Salvar configurações</string>
+    <string name="settings_saved">Configurações salvas</string>
+    <string name="updater_current_version">Versão atual: %1$s</string>
+    <string name="updater_check_button">Verificar atualizações</string>
+    <string name="updater_up_to_date">O Mnemis já está atualizado</string>
+    <string name="updater_check_failed">Não foi possível verificar atualizações</string>
+    <string name="updater_available_title">Nova versão %1$s disponível</string>
+    <string name="updater_default_notes">Uma nova versão do Mnemis está disponível no GitHub.</string>
+    <string name="updater_download_action">Baixar</string>
+    <string name="updater_downloading">Baixando atualização…</string>
+    <string name="updater_download_failed">Não foi possível baixar a atualização</string>
+    <string name="updater_install_prompt">Instalar atualização</string>
+    <string name="updater_install_conflict_title">Não é possível instalar a atualização</string>
+    <string name="updater_install_conflict_message">Esta atualização foi assinada com uma chave diferente da do app Mnemis instalado neste dispositivo. Desinstale o Mnemis uma vez e depois instale a nova versão.</string>
+    <string name="updater_uninstall_action">Desinstalar Mnemis</string>
+
+    <string name="chat_title">Chat da sala</string>
+    <string name="chat_empty">Ainda não há mensagens.</string>
+    <string name="chat_input_hint">Escreva uma mensagem</string>
+    <string name="chat_send">Enviar</string>
+    <string name="chat_secret_badge">Segredo: %1$s</string>
+    <string name="chat_send_failed">Não foi possível enviar a mensagem. Verifique sua conexão ou o segredo do chat.</string>
+
+    <string name="sync_password_hint">Senha da sala (opcional)</string>
+    <string name="sync_chat_secret_hint">Segredo do chat (opcional)</string>
+
+    <string name="brightness">Brilho</string>
+    <string name="volume">Volume</string>
+    <string name="seek">Posição</string>
+
+    <plurals name="video_count">
+        <item quantity="one">%d vídeo</item>
+        <item quantity="other">%d vídeos</item>
+    </plurals>
+</resources>

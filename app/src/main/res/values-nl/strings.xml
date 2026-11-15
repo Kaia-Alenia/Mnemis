@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">Mnemis</string>
+    <string name="title_videos">Mijn video\'s</string>
+    <string name="title_streams">Link afspelen</string>
+    <string name="open_link">Video-URL openen</string>
+    <string name="enter_url_hint">Plak een YouTube-, Google Drive- of MP4/HLS-link…</string>
+    <string name="play">Afspelen</string>
+    <string name="cancel">Annuleren</string>
+    <string name="resolving_link">Link wordt opgelost met Mnemis Resolver…</string>
+    <string name="error_resolving">Videolink kon niet worden opgelost</string>
+    <string name="permission_required">Toestemming is vereist om video\'s op het apparaat te lezen</string>
+    <string name="grant_permission">Toestemming geven</string>
+    <string name="no_videos_found">Geen video\'s gevonden op het apparaat</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_videos">Mijn video\'s</string>
+    <string name="nav_web">Web / Streaming</string>
+    <string name="nav_plugins">Plug-ins</string>
+    <string name="nav_downloads">Downloads</string>
+    <string name="nav_system">Systeem</string>
+    <string name="nav_settings">Instellingen</string>
+
+    <string name="search_hint">Zoeken…</string>
+    <string name="search_no_results">Geen resultaten voor \"%1$s\"</string>
+    <string name="cd_back">Terug</string>
+
+    <string name="home_continue_watching">Verder kijken</string>
+    <string name="home_resume_button">Hervatten</string>
+    <string name="home_no_recent">Nog geen recente weergave. Open een webstream of lokale video om te beginnen.</string>
+    <string name="home_quick_actions">Snelle acties</string>
+    <string name="home_action_web">Web / Streaming openen</string>
+    <string name="home_action_videos">Lokale albums bekijken</string>
+    <string name="home_action_plugins">Plug-ins beheren</string>
+    <string name="home_type_web">WEBSTREAM</string>
+    <string name="home_type_local">LOKALE VIDEO</string>
+
+    <string name="plugin_desc_hls_sniffer">Optionele HLS/MP4-streamdetector voor compatibele websites.</string>
+    <string name="plugin_desc_subtitles">Optionele module om externe SRT/VTT-ondertiteling te laden.</string>
+    <string name="plugins_subtitle">Dynamische modules inschakelen, zoeken of installeren.</string>
+    <string name="plugins_install_url">URL installeren</string>
+    <string name="plugins_url_hint">URL van het plug-inmanifest JSON (https://…)</string>
+    <string name="plugins_install_action">Installeren</string>
+    <string name="plugins_url_invalid">Voer een geldige HTTP/HTTPS-URL in</string>
+    <string name="plugins_install_success">Plug-in %1$s geïnstalleerd</string>
+    <string name="plugins_install_failed">Installeren van plug-in mislukt: %1$s</string>
+
+    <string name="settings_save">Instellingen opslaan</string>
+    <string name="settings_saved">Instellingen opgeslagen</string>
+    <string name="updater_current_version">Huidige versie: %1$s</string>
+    <string name="updater_check_button">Controleren op updates</string>
+    <string name="updater_up_to_date">Mnemis is up-to-date</string>
+    <string name="updater_check_failed">Kon niet controleren op updates</string>
+    <string name="updater_available_title">Nieuwe versie %1$s beschikbaar</string>
+    <string name="updater_default_notes">Er is een nieuwe Mnemis-release beschikbaar op GitHub.</string>
+    <string name="updater_download_action">Downloaden</string>
+    <string name="updater_downloading">Update wordt gedownload…</string>
+    <string name="updater_download_failed">Update kon niet worden gedownload</string>
+    <string name="updater_install_prompt">Update installeren</string>
+    <string name="updater_install_conflict_title">Update kan niet worden geïnstalleerd</string>
+    <string name="updater_install_conflict_message">Deze update is ondertekend met een andere sleutel dan de Mnemis-app die op dit apparaat is geïnstalleerd. Verwijder Mnemis één keer en installeer daarna de nieuwe versie.</string>
+    <string name="updater_uninstall_action">Mnemis verwijderen</string>
+
+    <string name="chat_title">Kamerchat</string>
+    <string name="chat_empty">Nog geen berichten.</string>
+    <string name="chat_input_hint">Schrijf een bericht</string>
+    <string name="chat_send">Verzenden</string>
+    <string name="chat_secret_badge">Geheim: %1$s</string>
+    <string name="chat_send_failed">Bericht kon niet worden verzonden. Controleer je verbinding of chatgeheim.</string>
+
+    <string name="sync_password_hint">Kamerwachtwoord (optioneel)</string>
+    <string name="sync_chat_secret_hint">Chatgeheim (optioneel)</string>
+
+    <string name="brightness">Helderheid</string>
+    <string name="volume">Volume</string>
+    <string name="seek">Positie</string>
+
+    <plurals name="video_count">
+        <item quantity="one">%d video</item>
+        <item quantity="other">%d video\'s</item>
+    </plurals>
+</resources>

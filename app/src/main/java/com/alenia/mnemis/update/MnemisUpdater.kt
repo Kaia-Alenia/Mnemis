@@ -1,10 +1,14 @@
 package com.alenia.mnemis.update
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 /**
@@ -44,6 +48,56 @@ object MnemisUpdater {
                     val body = response.body?.string().orEmpty()
                     parseReleaseJson(body, currentVersion)
                 }
+            }
+        }
+
+    fun isApkUrl(url: String): Boolean = url.endsWith(".apk", ignoreCase = true)
+
+    /**
+     * Downloads the file at [url] to [destFile], streaming in chunks and reporting
+     * progress as bytes arrive. [onProgress] receives (downloadedBytes, totalBytes);
+     * totalBytes is -1 when the server does not report a content length.
+     * Returns Result.success(destFile) or Result.failure on any HTTP or IO error.
+     */
+    suspend fun downloadApk(
+        url: String,
+        destFile: File,
+        onProgress: (downloadedBytes: Long, totalBytes: Long) -> Unit
+    ): Result<File> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val request = Request.Builder()
+                    .url(url)
+                    .header("User-Agent", "Mnemis-Android")
+                    .build()
+
+                httpClient.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) {
+                        error("HTTP ${response.code}")
+                    }
+                    val body = response.body ?: error("Empty response body")
+                    val total = body.contentLength()
+                    destFile.parentFile?.mkdirs()
+                    body.byteStream().use { input ->
+                        destFile.outputStream().use { output ->
+                            val buffer = ByteArray(8192)
+                            var downloaded = 0L
+                            while (true) {
+                                val read = input.read(buffer)
+                                if (read == -1) break
+                                output.write(buffer, 0, read)
+                                downloaded += read
+                                onProgress(downloaded, total)
+                                currentCoroutineContext().ensureActive()
+                            }
+                            output.flush()
+                        }
+                    }
+                    destFile
+                }
+            }.onFailure { error ->
+                if (error is CancellationException) throw error
+                destFile.delete()
             }
         }
 

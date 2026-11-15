@@ -3,12 +3,17 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Minimalist geometric M / Play emblem -->
-    <path
-        android:fillColor="#3B82F6"
-        android:pathData="M34,32 L34,76 L44,76 L44,52 L54,62 L64,52 L64,76 L74,76 L74,32 L63,32 L54,43 L45,32 Z" />
+    <!-- Noche-menta M / Play emblem: white M, mint play triangle as its right leg -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M48,54 L64,64 L48,74 Z" />
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeLineJoin="round"
+        android:pathData="M23.8,76.0 L23.8,32.0 L35.9,32.0 L49.4,49.7 L62.9,32.0 L62.9,50.5 L49.4,67.5 L35.9,50.5 L35.9,76.0 Z" />
+    <path
+        android:fillColor="#2DD4BF"
+        android:strokeColor="#2DD4BF"
+        android:strokeWidth="2.5"
+        android:strokeLineJoin="round"
+        android:pathData="M62.9,32.0 L84.2,54.0 L62.9,76.0 Z" />
 </vector>
-

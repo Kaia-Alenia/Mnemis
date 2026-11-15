@@ -1,0 +1,83 @@
+<resources>
+    <string name="app_name">Mnemis</string>
+    <string name="title_videos">Мої відео</string>
+    <string name="title_streams">Відтворити посилання</string>
+    <string name="open_link">Відкрити URL відео</string>
+    <string name="enter_url_hint">Вставте посилання YouTube, Google Drive або MP4/HLS…</string>
+    <string name="play">Відтворити</string>
+    <string name="cancel">Скасувати</string>
+    <string name="resolving_link">Обробка посилання через Mnemis Resolver…</string>
+    <string name="error_resolving">Не вдалося обробити посилання на відео</string>
+    <string name="permission_required">Потрібен дозвіл на читання відео з пристрою</string>
+    <string name="grant_permission">Надати дозвіл</string>
+    <string name="no_videos_found">На пристрої не знайдено відео</string>
+
+    <string name="nav_home">Головна</string>
+    <string name="nav_videos">Мої відео</string>
+    <string name="nav_web">Інтернет / Стрімінг</string>
+    <string name="nav_plugins">Плагіни</string>
+    <string name="nav_downloads">Завантаження</string>
+    <string name="nav_system">Система</string>
+    <string name="nav_settings">Налаштування</string>
+
+    <string name="search_hint">Пошук…</string>
+    <string name="search_no_results">Немає результатів за запитом «%1$s»</string>
+    <string name="cd_back">Назад</string>
+
+    <string name="home_continue_watching">Продовжити перегляд</string>
+    <string name="home_resume_button">Продовжити</string>
+    <string name="home_no_recent">Недавніх переглядів ще немає. Відкрийте веб-трансляцію або локальне відео, щоб почати.</string>
+    <string name="home_quick_actions">Швидкі дії</string>
+    <string name="home_action_web">Відкрити Інтернет / Стрімінг</string>
+    <string name="home_action_videos">Переглянути локальні альбоми</string>
+    <string name="home_action_plugins">Керування плагінами</string>
+    <string name="home_type_web">ВЕБ-ТРАНСЛЯЦІЯ</string>
+    <string name="home_type_local">ЛОКАЛЬНЕ ВІДЕО</string>
+
+    <string name="plugin_desc_hls_sniffer">Додатковий детектор потоків HLS/MP4 для сумісних сайтів.</string>
+    <string name="plugin_desc_subtitles">Додатковий модуль для завантаження зовнішніх субтитрів SRT/VTT.</string>
+    <string name="plugins_subtitle">Вмикайте, шукайте або встановлюйте динамічні модулі.</string>
+    <string name="plugins_install_url">Встановити URL</string>
+    <string name="plugins_url_hint">URL JSON-маніфесту плагіна (https://…)</string>
+    <string name="plugins_install_action">Встановити</string>
+    <string name="plugins_url_invalid">Введіть дійсну URL-адресу HTTP/HTTPS</string>
+    <string name="plugins_install_success">Плагін %1$s встановлено</string>
+    <string name="plugins_install_failed">Не вдалося встановити плагін: %1$s</string>
+
+    <string name="settings_save">Зберегти налаштування</string>
+    <string name="settings_saved">Налаштування збережено</string>
+    <string name="updater_current_version">Поточна версія: %1$s</string>
+    <string name="updater_check_button">Перевірити оновлення</string>
+    <string name="updater_up_to_date">Встановлено останню версію Mnemis</string>
+    <string name="updater_check_failed">Не вдалося перевірити оновлення</string>
+    <string name="updater_available_title">Доступна нова версія %1$s</string>
+    <string name="updater_default_notes">На GitHub доступна нова версія Mnemis.</string>
+    <string name="updater_download_action">Завантажити</string>
+    <string name="updater_downloading">Завантаження оновлення…</string>
+    <string name="updater_download_failed">Не вдалося завантажити оновлення</string>
+    <string name="updater_install_prompt">Установити оновлення</string>
+    <string name="updater_install_conflict_title">Не вдається встановити оновлення</string>
+    <string name="updater_install_conflict_message">Це оновлення підписане іншим ключем, ніж застосунок Mnemis, встановлений на цьому пристрої. Видаліть Mnemis один раз, а потім встановіть нову версію.</string>
+    <string name="updater_uninstall_action">Видалити Mnemis</string>
+
+    <string name="chat_title">Чат кімнати</string>
+    <string name="chat_empty">Повідомлень ще немає.</string>
+    <string name="chat_input_hint">Написати повідомлення</string>
+    <string name="chat_send">Надіслати</string>
+    <string name="chat_secret_badge">Секрет: %1$s</string>
+    <string name="chat_send_failed">Не вдалося надіслати повідомлення. Перевірте підключення або секрет чату.</string>
+
+    <string name="sync_password_hint">Пароль кімнати (необов’язково)</string>
+    <string name="sync_chat_secret_hint">Секрет чату (необов’язково)</string>
+
+    <string name="brightness">Яскравість</string>
+    <string name="volume">Гучність</string>
+    <string name="seek">Позиція</string>
+
+    <plurals name="video_count">
+        <item quantity="one">%d відео</item>
+        <item quantity="few">%d відео</item>
+        <item quantity="many">%d відео</item>
+        <item quantity="other">%d відео</item>
+    </plurals>
+</resources>

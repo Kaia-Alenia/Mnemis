@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">Mnemis</string>
+    <string name="title_videos">내 동영상</string>
+    <string name="title_streams">링크 재생</string>
+    <string name="open_link">동영상 URL 열기</string>
+    <string name="enter_url_hint">YouTube, Google Drive 또는 MP4/HLS 링크를 붙여넣으세요…</string>
+    <string name="play">재생</string>
+    <string name="cancel">취소</string>
+    <string name="resolving_link">Mnemis Resolver로 링크를 확인하는 중…</string>
+    <string name="error_resolving">동영상 링크를 확인할 수 없습니다</string>
+    <string name="permission_required">기기 동영상을 읽으려면 권한이 필요합니다</string>
+    <string name="grant_permission">권한 허용</string>
+    <string name="no_videos_found">기기에 동영상이 없습니다</string>
+
+    <string name="nav_home">홈</string>
+    <string name="nav_videos">내 동영상</string>
+    <string name="nav_web">웹 / 스트리밍</string>
+    <string name="nav_plugins">플러그인</string>
+    <string name="nav_downloads">다운로드</string>
+    <string name="nav_system">시스템</string>
+    <string name="nav_settings">설정</string>
+
+    <string name="search_hint">검색…</string>
+    <string name="search_no_results">"%1$s"에 대한 결과가 없습니다</string>
+    <string name="cd_back">뒤로</string>
+
+    <string name="home_continue_watching">이어서 보기</string>
+    <string name="home_resume_button">계속 재생</string>
+    <string name="home_no_recent">아직 최근 재생 기록이 없습니다. 웹 스트림이나 로컬 동영상을 열어 시작하세요.</string>
+    <string name="home_quick_actions">빠른 작업</string>
+    <string name="home_action_web">웹 / 스트리밍 열기</string>
+    <string name="home_action_videos">로컬 앨범 둘러보기</string>
+    <string name="home_action_plugins">플러그인 관리</string>
+    <string name="home_type_web">웹 스트림</string>
+    <string name="home_type_local">로컬 동영상</string>
+
+    <string name="plugin_desc_hls_sniffer">호환되는 웹사이트용 선택적 HLS/MP4 스트림 감지기.</string>
+    <string name="plugin_desc_subtitles">외부 SRT/VTT 자막 트랙을 불러오는 선택적 모듈.</string>
+    <string name="plugins_subtitle">동적 모듈을 활성화, 검색 또는 설치합니다.</string>
+    <string name="plugins_install_url">URL 설치</string>
+    <string name="plugins_url_hint">플러그인 매니페스트 JSON URL (https://…)</string>
+    <string name="plugins_install_action">설치</string>
+    <string name="plugins_url_invalid">유효한 HTTP/HTTPS URL을 입력하세요</string>
+    <string name="plugins_install_success">%1$s 플러그인이 설치되었습니다</string>
+    <string name="plugins_install_failed">플러그인 설치 실패: %1$s</string>
+
+    <string name="settings_save">설정 저장</string>
+    <string name="settings_saved">설정이 저장되었습니다</string>
+    <string name="updater_current_version">현재 버전: %1$s</string>
+    <string name="updater_check_button">업데이트 확인</string>
+    <string name="updater_up_to_date">Mnemis가 최신 상태입니다</string>
+    <string name="updater_check_failed">업데이트를 확인할 수 없습니다</string>
+    <string name="updater_available_title">새 버전 %1$s 사용 가능</string>
+    <string name="updater_default_notes">GitHub에서 새 Mnemis 릴리스를 사용할 수 있습니다.</string>
+    <string name="updater_download_action">다운로드</string>
+    <string name="updater_downloading">업데이트 다운로드 중…</string>
+    <string name="updater_download_failed">업데이트를 다운로드할 수 없습니다</string>
+    <string name="updater_install_prompt">업데이트 설치</string>
+    <string name="updater_install_conflict_title">업데이트를 설치할 수 없습니다</string>
+    <string name="updater_install_conflict_message">이 업데이트는 이 기기에 설치된 Mnemis 앱과 다른 키로 서명되었습니다. Mnemis를 한 번 제거한 다음 새 버전을 설치하세요.</string>
+    <string name="updater_uninstall_action">Mnemis 제거</string>
+
+    <string name="chat_title">방 채팅</string>
+    <string name="chat_empty">아직 메시지가 없습니다.</string>
+    <string name="chat_input_hint">메시지 쓰기</string>
+    <string name="chat_send">보내기</string>
+    <string name="chat_secret_badge">비밀: %1$s</string>
+    <string name="chat_send_failed">메시지를 보낼 수 없습니다. 연결 또는 채팅 비밀을 확인하세요.</string>
+
+    <string name="sync_password_hint">방 비밀번호 (선택 사항)</string>
+    <string name="sync_chat_secret_hint">채팅 비밀 (선택 사항)</string>
+
+    <string name="brightness">밝기</string>
+    <string name="volume">음량</string>
+    <string name="seek">위치</string>
+
+    <plurals name="video_count">
+        <item quantity="one">%d개의 동영상</item>
+        <item quantity="other">%d개의 동영상</item>
+    </plurals>
+</resources>

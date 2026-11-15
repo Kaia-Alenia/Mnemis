@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">Mnemis</string>
+    <string name="title_videos">Videolarım</string>
+    <string name="title_streams">Bağlantıyı Oynat</string>
+    <string name="open_link">Video URL\'si Aç</string>
+    <string name="enter_url_hint">YouTube, Google Drive veya MP4/HLS bağlantısı yapıştırın…</string>
+    <string name="play">Oynat</string>
+    <string name="cancel">İptal</string>
+    <string name="resolving_link">Mnemis Resolver ile bağlantı çözümleniyor…</string>
+    <string name="error_resolving">Video bağlantısı çözümlenemedi</string>
+    <string name="permission_required">Cihazdaki videoları okumak için izin gerekiyor</string>
+    <string name="grant_permission">İzin Ver</string>
+    <string name="no_videos_found">Cihazda video bulunamadı</string>
+
+    <string name="nav_home">Ana Sayfa</string>
+    <string name="nav_videos">Videolarım</string>
+    <string name="nav_web">Web / Yayın</string>
+    <string name="nav_plugins">Eklentiler</string>
+    <string name="nav_downloads">İndirilenler</string>
+    <string name="nav_system">Sistem</string>
+    <string name="nav_settings">Ayarlar</string>
+
+    <string name="search_hint">Ara…</string>
+    <string name="search_no_results">"%1$s" için sonuç yok</string>
+    <string name="cd_back">Geri</string>
+
+    <string name="home_continue_watching">İzlemeye Devam Et</string>
+    <string name="home_resume_button">Devam Et</string>
+    <string name="home_no_recent">Henüz son oynatma yok. Başlamak için bir web yayını veya yerel video açın.</string>
+    <string name="home_quick_actions">Hızlı İşlemler</string>
+    <string name="home_action_web">Web / Yayın Aç</string>
+    <string name="home_action_videos">Yerel Albümlere Göz At</string>
+    <string name="home_action_plugins">Eklentileri Yönet</string>
+    <string name="home_type_web">WEB YAYINI</string>
+    <string name="home_type_local">YEREL VİDEO</string>
+
+    <string name="plugin_desc_hls_sniffer">Uyumlu web siteleri için isteğe bağlı HLS/MP4 akış algılayıcı.</string>
+    <string name="plugin_desc_subtitles">Harici SRT/VTT altyazı parçalarını yüklemek için isteğe bağlı modül.</string>
+    <string name="plugins_subtitle">Dinamik modülleri etkinleştirin, arayın veya yükleyin.</string>
+    <string name="plugins_install_url">URL Yükle</string>
+    <string name="plugins_url_hint">Eklenti bildirim JSON URL\'si (https://…)</string>
+    <string name="plugins_install_action">Yükle</string>
+    <string name="plugins_url_invalid">Geçerli bir HTTP/HTTPS URL\'si girin</string>
+    <string name="plugins_install_success">%1$s eklentisi yüklendi</string>
+    <string name="plugins_install_failed">Eklenti yüklenemedi: %1$s</string>
+
+    <string name="settings_save">Ayarları kaydet</string>
+    <string name="settings_saved">Ayarlar kaydedildi</string>
+    <string name="updater_current_version">Geçerli sürüm: %1$s</string>
+    <string name="updater_check_button">Güncellemeleri denetle</string>
+    <string name="updater_up_to_date">Mnemis güncel</string>
+    <string name="updater_check_failed">Güncellemeler denetlenemedi</string>
+    <string name="updater_available_title">Yeni sürüm %1$s kullanılabilir</string>
+    <string name="updater_default_notes">GitHub\'da yeni bir Mnemis sürümü mevcut.</string>
+    <string name="updater_download_action">İndir</string>
+    <string name="updater_downloading">Güncelleme indiriliyor…</string>
+    <string name="updater_download_failed">Güncelleme indirilemedi</string>
+    <string name="updater_install_prompt">Güncellemeyi yükle</string>
+    <string name="updater_install_conflict_title">Güncelleme yüklenemiyor</string>
+    <string name="updater_install_conflict_message">Bu güncelleme, bu cihaza yüklü Mnemis uygulamasından farklı bir anahtarla imzalanmış. Mnemis’i bir kez kaldırın, ardından yeni sürümü yükleyin.</string>
+    <string name="updater_uninstall_action">Mnemis’i kaldır</string>
+
+    <string name="chat_title">Oda Sohbeti</string>
+    <string name="chat_empty">Henüz mesaj yok.</string>
+    <string name="chat_input_hint">Mesaj yazın</string>
+    <string name="chat_send">Gönder</string>
+    <string name="chat_secret_badge">Gizli: %1$s</string>
+    <string name="chat_send_failed">Mesaj gönderilemedi. Bağlantınızı veya sohbet gizli anahtarını kontrol edin.</string>
+
+    <string name="sync_password_hint">Oda şifresi (isteğe bağlı)</string>
+    <string name="sync_chat_secret_hint">Sohbet gizli anahtarı (isteğe bağlı)</string>
+
+    <string name="brightness">Parlaklık</string>
+    <string name="volume">Ses</string>
+    <string name="seek">Konum</string>
+
+    <plurals name="video_count">
+        <item quantity="one">%d video</item>
+        <item quantity="other">%d video</item>
+    </plurals>
+</resources>
