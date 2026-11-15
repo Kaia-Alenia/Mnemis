@@ -49,6 +49,8 @@ class WebPlayerActivity : AppCompatActivity() {
     private var customView: View? = null
     private var customViewCallback: WebChromeClient.CustomViewCallback? = null
     private var currentPageUrl: String = ""
+    private var isInPipMode: Boolean = false
+    private var pipPendingAfterFullscreenExit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -250,7 +252,12 @@ class WebPlayerActivity : AppCompatActivity() {
                     binding.fullscreenContainer.removeAllViews()
                     binding.fullscreenContainer.visibility = View.GONE
                     binding.webViewPlayer.visibility = View.VISIBLE
-                    binding.webTopBar.visibility = View.VISIBLE
+                    // Do not restore the top bar while in PiP: it would cover the
+                    // video in the small PiP window. onPictureInPictureModeChanged
+                    // owns the top bar visibility while in PiP.
+                    if (!isInPipMode) {
+                        binding.webTopBar.visibility = View.VISIBLE
+                    }
                     customView = null
                     customViewCallback?.onCustomViewHidden()
                     customViewCallback = null
@@ -299,22 +306,71 @@ class WebPlayerActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Enters picture-in-picture.
+     *
+     * The video must be visible when PiP captures the window. When the YouTube
+     * video is in the fullscreen custom view, hiding that view FIRST and then
+     * entering PiP captures a black frame: the video surface has not moved back
+     * into the inline WebView player yet, and the exit can pause the video.
+     * So we enter PiP now (the PiP window shows the playing video) and the
+     * fullscreen view is exited once PiP is active, in
+     * onPictureInPictureModeChanged.
+     */
     private fun enterPipMode() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             Toast.makeText(this, "PiP no compatible con esta versión de Android", Toast.LENGTH_SHORT).show()
             return
         }
-        if (customView != null) {
-            binding.webViewPlayer.webChromeClient?.onHideCustomView()
-        }
+        if (isInPipMode) return
         val params = PictureInPictureParams.Builder()
             .setAspectRatio(Rational(16, 9))
             .build()
-        enterPictureInPictureMode(params)
+        val entered = enterPictureInPictureMode(params)
+        if (!entered && customView != null) {
+            // Fallback: the direct enter failed. Exit fullscreen, make sure the
+            // video is playing again, and retry PiP once the WebView has the
+            // inline video back. This only helps while the activity is still in
+            // the foreground (e.g. button tap); if the user already left, the
+            // retry is a no-op.
+            binding.webViewPlayer.webChromeClient?.onHideCustomView()
+            resumeVideo()
+            pipPendingAfterFullscreenExit = true
+            binding.webViewPlayer.postDelayed({
+                if (pipPendingAfterFullscreenExit && !isInPipMode && !isFinishing && !isDestroyed) {
+                    pipPendingAfterFullscreenExit = false
+                    enterPictureInPictureMode(params)
+                }
+            }, 350)
+        }
+    }
+
+    /**
+     * Makes sure the page video keeps playing after a fullscreen exit.
+     * Exiting the fullscreen custom view moves the video back to the inline
+     * player and can pause it, which leaves a black frame. Play it again
+     * through the KoalaSync bridge (YouTube API + native play, with a canplay
+     * retry) and, as a safety net, directly on any paused video element
+     * (in case the bridge script was not injected).
+     */
+    private fun resumeVideo() {
+        webBridge.applyRemotePlay(null)
+        binding.webViewPlayer.evaluateJavascript(
+            "(function(){var yt=document.getElementById('movie_player');" +
+                "if(yt&&typeof yt.playVideo==='function'){try{yt.playVideo();}catch(e){}}" +
+                "var vs=document.querySelectorAll('video');" +
+                "for(var i=0;i<vs.length;i++){if(vs[i].paused){var p=vs[i].play();" +
+                "if(p&&typeof p.catch==='function'){p.catch(function(){});}}}})();",
+            null
+        )
     }
 
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
+        // Auto-PiP: works from fullscreen too. enterPipMode enters PiP
+        // immediately (no delay, the activity is still resumed here), so the
+        // fullscreen video is captured and the custom view is exited once PiP
+        // is active.
         if (webBridge.isVideoPlaying()) {
             enterPipMode()
         }
@@ -322,7 +378,25 @@ class WebPlayerActivity : AppCompatActivity() {
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
-        binding.webTopBar.visibility = if (isInPictureInPictureMode) View.GONE else View.VISIBLE
+        isInPipMode = isInPictureInPictureMode
+        if (isInPictureInPictureMode) {
+            pipPendingAfterFullscreenExit = false
+            binding.webTopBar.visibility = View.GONE
+            // We entered PiP while the YouTube fullscreen custom view was
+            // showing. Move the video back into the inline WebView player now
+            // that PiP is active, and make sure it keeps playing (the surface
+            // swap can pause it).
+            if (customView != null) {
+                binding.webViewPlayer.webChromeClient?.onHideCustomView()
+                resumeVideo()
+            }
+        } else {
+            // Back to full screen mode. Only restore the top bar when we are not
+            // in the fullscreen custom view (it hides the top bar itself).
+            if (customView == null) {
+                binding.webTopBar.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun showKoalaSyncDialog() {
