@@ -11,8 +11,8 @@ android {
         applicationId = "com.alenia.mnemis"
         minSdk = 24
         targetSdk = 34
-        versionCode = 44
-        versionName = "1.0.6"
+        versionCode = 45
+        versionName = "1.0.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
