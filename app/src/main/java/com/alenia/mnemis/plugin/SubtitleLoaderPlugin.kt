@@ -27,8 +27,8 @@ object SubtitleLoaderPlugin : MnemisPlugin {
     override val description = "Optional module to load external SRT/VTT subtitle tracks."
     override val isBuiltIn = true
 
-    /** MIME type passed to the system file picker. "*\/*" is used because many
-     * file managers do not map .srt/.vtt to a specific MIME type; the picked
+    /** MIME type passed to the system file picker (wildcard, since many
+     * file managers do not map .srt/.vtt to a specific MIME type); the picked
      * file is validated by extension afterwards in [loadTrack]. */
     const val PICKER_MIME_TYPE = "*/*"
 
