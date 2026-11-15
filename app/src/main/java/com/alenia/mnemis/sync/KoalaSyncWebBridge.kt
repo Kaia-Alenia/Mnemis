@@ -26,6 +26,7 @@ class KoalaSyncWebBridge(
     @JavascriptInterface
     fun onPlay(currentTimeSeconds: Double) {
         if (!currentTimeSeconds.isNaN()) {
+            lastSnapshot = lastSnapshot.copy(isPlaying = true, currentTimeSeconds = currentTimeSeconds)
             syncClient.sendPlay(currentTimeSeconds)
         }
     }
@@ -33,9 +34,13 @@ class KoalaSyncWebBridge(
     @JavascriptInterface
     fun onPause(currentTimeSeconds: Double) {
         if (!currentTimeSeconds.isNaN()) {
+            lastSnapshot = lastSnapshot.copy(isPlaying = false, currentTimeSeconds = currentTimeSeconds)
             syncClient.sendPause(currentTimeSeconds)
         }
     }
+
+    /** Last known playing state of the page video (from JS play/pause events and snapshots). */
+    fun isVideoPlaying(): Boolean = lastSnapshot.isPlaying
 
     @JavascriptInterface
     fun onSeek(targetTimeSeconds: Double) {

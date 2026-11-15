@@ -78,4 +78,9 @@
         <item quantity="one">%d video</item>
         <item quantity="other">%d videos</item>
     </plurals>
+    <string name="pip_button">Picture in Picture</string>
+    <string name="sync_connecting">Connecting to room...</string>
+    <string name="playback_channel_name">Playback</string>
+    <string name="playback_notification_text">Playing in background</string>
+    <string name="playback_stop">Stop</string>
 </resources>

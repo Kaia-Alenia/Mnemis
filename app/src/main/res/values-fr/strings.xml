@@ -78,5 +78,10 @@
         <item quantity="one">%d vidéo</item>
         <item quantity="other">%d vidéos</item>
     </plurals>
+    <string name="pip_button">Image dans l\'image</string>
+    <string name="sync_connecting">Connexion à la salle...</string>
+    <string name="playback_channel_name">Lecture</string>
+    <string name="playback_notification_text">Lecture en arrière-plan</string>
+    <string name="playback_stop">Arrêter</string>
 </resources>
 

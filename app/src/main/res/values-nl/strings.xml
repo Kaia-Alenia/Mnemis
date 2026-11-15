@@ -78,4 +78,9 @@
         <item quantity="one">%d video</item>
         <item quantity="other">%d video\'s</item>
     </plurals>
+    <string name="pip_button">Beeld in beeld</string>
+    <string name="sync_connecting">Verbinden met kamer...</string>
+    <string name="playback_channel_name">Afspelen</string>
+    <string name="playback_notification_text">Afspelen op de achtergrond</string>
+    <string name="playback_stop">Stoppen</string>
 </resources>

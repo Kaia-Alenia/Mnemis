@@ -80,4 +80,9 @@
         <item quantity="many">%d відео</item>
         <item quantity="other">%d відео</item>
     </plurals>
+    <string name="pip_button">Картинка в картинці</string>
+    <string name="sync_connecting">Підключення до кімнати...</string>
+    <string name="playback_channel_name">Відтворення</string>
+    <string name="playback_notification_text">Відтворення у фоновому режимі</string>
+    <string name="playback_stop">Зупинити</string>
 </resources>

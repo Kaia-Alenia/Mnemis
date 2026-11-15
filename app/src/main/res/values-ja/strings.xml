@@ -78,4 +78,9 @@
         <item quantity="one">%d 本の動画</item>
         <item quantity="other">%d 本の動画</item>
     </plurals>
+    <string name="pip_button">ピクチャーインピクチャー</string>
+    <string name="sync_connecting">ルームに接続中...</string>
+    <string name="playback_channel_name">再生</string>
+    <string name="playback_notification_text">バックグラウンドで再生中</string>
+    <string name="playback_stop">停止</string>
 </resources>
