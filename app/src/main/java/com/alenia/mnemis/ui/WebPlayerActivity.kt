@@ -2,12 +2,14 @@ package com.alenia.mnemis.ui
 
 import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.util.Rational
 import android.view.View
+import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
@@ -34,6 +36,15 @@ import kotlinx.coroutines.launch
 
 /**
  * WebView-based player with injected KoalaSync plugin script for web streaming platforms.
+ *
+ * Fullscreen is handled IN THE PAGE (in-app fullscreen), not with the WebView
+ * fullscreen custom view: the Fullscreen API is intercepted in JS
+ * (see [injectFullscreenOverride]) so the video never leaves the inline
+ * player. The native custom view moves the video onto a separate hardware
+ * surface that PiP never captures -- that is why v1.0.4 and v1.0.5 showed a
+ * black PiP window ("a black screen gets added"). With the video always
+ * inline, PiP simply captures the normal activity window and the video
+ * renders in it.
  */
 class WebPlayerActivity : AppCompatActivity() {
 
@@ -50,7 +61,8 @@ class WebPlayerActivity : AppCompatActivity() {
     private var customViewCallback: WebChromeClient.CustomViewCallback? = null
     private var currentPageUrl: String = ""
     private var isInPipMode: Boolean = false
-    private var pipPendingAfterFullscreenExit: Boolean = false
+    private var isInAppFullscreen: Boolean = false
+    private var pipExpandedVideo: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -163,6 +175,161 @@ class WebPlayerActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * JS interface called by the injected Fullscreen API override when the
+     * page enters or leaves in-app fullscreen. Runs on a background thread,
+     * so it forwards to the UI thread.
+     */
+    private inner class FullscreenJsInterface {
+        @JavascriptInterface
+        fun onEnterFullscreen() {
+            runOnUiThread { enterInAppFullscreen() }
+        }
+
+        @JavascriptInterface
+        fun onExitFullscreen() {
+            runOnUiThread { exitInAppFullscreen() }
+        }
+    }
+
+    /**
+     * Intercepts the Fullscreen API in the page so the video never enters
+     * the native WebView fullscreen custom view.
+     *
+     * Why: the native custom view moves the video onto a separate hardware
+     * surface. PiP captures the activity window, not that surface, so the
+     * PiP window shows black (and the black fullscreen container covers the
+     * page). Hiding the custom view first (v1.0.4) or entering PiP first and
+     * hiding it after (v1.0.5) both failed, because the surface is gone
+     * either way by the time PiP renders.
+     *
+     * Instead, requestFullscreen/exitFullscreen are replaced with an
+     * in-page implementation: the player (YouTube #movie_player, or the
+     * largest visible video) gets a fixed full-viewport class, the page is
+     * told it is in fullscreen (fullscreenElement getter + fullscreenchange
+     * event) so its fullscreen button shows the exit state, and the app is
+     * notified through the MnemisFullscreen interface to hide the top bar
+     * and rotate to landscape. The video stays in the inline player, so
+     * PiP captures it normally.
+     *
+     * Idempotent (guarded by window.__mnemisFsOverride) and safe to inject
+     * on every navigation. Exposes window.mnemisSetVideoFill(on) so the
+     * app can expand the video just for PiP, and window.mnemisExitFullscreen()
+     * for the Back button.
+     */
+    private fun injectFullscreenOverride() {
+        val js = """
+            (function(){
+              if(window.__mnemisFsOverride){return;}
+              window.__mnemisFsOverride=true;
+              try{
+                var st=document.createElement('style');
+                st.id='mnemis-fs-style';
+                st.textContent='.mnemis-video-fill{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100vh!important;z-index:2147483647!important;background:#000!important;margin:0!important;padding:0!important;transform:none!important}.mnemis-video-fill video{width:100%!important;height:100%!important;object-fit:contain!important}';
+                var h=document.head||document.getElementsByTagName('head')[0]||document.documentElement;
+                if(h){h.appendChild(st);}
+              }catch(e){}
+              var fsEl=null;
+              function findTarget(req){
+                if(req&&(req.tagName==='VIDEO'||req.id==='movie_player')){return req;}
+                var mp=document.getElementById('movie_player');
+                if(mp){return mp;}
+                var vs=document.querySelectorAll('video');
+                var best=null,bestArea=0;
+                for(var i=0;i<vs.length;i++){
+                  var r=vs[i].getBoundingClientRect();
+                  var a=r.width*r.height;
+                  if(a>bestArea&&r.width>0&&r.height>0){bestArea=a;best=vs[i];}
+                }
+                return best||req;
+              }
+              window.mnemisSetVideoFill=function(on){
+                if(on){
+                  var t=findTarget(null);
+                  if(!t){return false;}
+                  fsEl=t;
+                  t.classList.add('mnemis-video-fill');
+                  return true;
+                }
+                if(fsEl){fsEl.classList.remove('mnemis-video-fill');fsEl=null;}
+                var els=document.querySelectorAll('.mnemis-video-fill');
+                for(var j=0;j<els.length;j++){els[j].classList.remove('mnemis-video-fill');}
+                return true;
+              };
+              window.mnemisExitFullscreen=function(){
+                window.mnemisSetVideoFill(false);
+                try{document.dispatchEvent(new Event('fullscreenchange'));}catch(e){}
+                try{if(window.MnemisFullscreen){MnemisFullscreen.onExitFullscreen();}}catch(e){}
+              };
+              function enterFs(req){
+                var t=findTarget(req);
+                if(!t){return Promise.reject(new Error('no video'));}
+                fsEl=t;
+                t.classList.add('mnemis-video-fill');
+                try{document.dispatchEvent(new Event('fullscreenchange'));}catch(e){}
+                try{if(window.MnemisFullscreen){MnemisFullscreen.onEnterFullscreen();}}catch(e){}
+                return Promise.resolve();
+              }
+              function exitFs(){
+                window.mnemisSetVideoFill(false);
+                try{document.dispatchEvent(new Event('fullscreenchange'));}catch(e){}
+                try{if(window.MnemisFullscreen){MnemisFullscreen.onExitFullscreen();}}catch(e){}
+                return Promise.resolve();
+              }
+              try{
+                Element.prototype.requestFullscreen=function(){return enterFs(this);};
+                Element.prototype.webkitRequestFullscreen=function(){return enterFs(this);};
+                Document.prototype.exitFullscreen=function(){return exitFs();};
+                Document.prototype.webkitExitFullscreen=function(){return exitFs();};
+              }catch(e){}
+              try{
+                Object.defineProperty(document,'fullscreenElement',{configurable:true,get:function(){return fsEl;}});
+                Object.defineProperty(document,'webkitFullscreenElement',{configurable:true,get:function(){return fsEl;}});
+              }catch(e){}
+            })();
+        """.trimIndent()
+        binding.webViewPlayer.evaluateJavascript(js, null)
+    }
+
+    /**
+     * Expands the video to fill the viewport (for PiP from inline mode) or
+     * restores it. Uses the injected mnemisSetVideoFill; no-op if the
+     * override script has not loaded yet.
+     */
+    private fun setVideoFill(expand: Boolean) {
+        val js = if (expand) {
+            "window.mnemisSetVideoFill && window.mnemisSetVideoFill(true);"
+        } else {
+            "window.mnemisSetVideoFill && window.mnemisSetVideoFill(false);"
+        }
+        binding.webViewPlayer.evaluateJavascript(js, null)
+    }
+
+    /**
+     * App side of in-app fullscreen: hide the top bar and rotate to
+     * landscape. Called from the JS interface when the page enters
+     * fullscreen through the override.
+     */
+    private fun enterInAppFullscreen() {
+        if (isInAppFullscreen) return
+        isInAppFullscreen = true
+        binding.webTopBar.visibility = View.GONE
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+    }
+
+    /**
+     * App side of leaving in-app fullscreen: restore the top bar (unless
+     * in PiP) and the orientation.
+     */
+    private fun exitInAppFullscreen() {
+        if (!isInAppFullscreen) return
+        isInAppFullscreen = false
+        if (!isInPipMode) {
+            binding.webTopBar.visibility = View.VISIBLE
+        }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView(url: String) {
         binding.webViewPlayer.apply {
@@ -174,6 +341,7 @@ class WebPlayerActivity : AppCompatActivity() {
                 "Mozilla/5.0 (Linux; Android 13; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36"
 
             addJavascriptInterface(webBridge, KoalaSyncWebBridge.JS_INTERFACE_NAME)
+            addJavascriptInterface(FullscreenJsInterface(), "MnemisFullscreen")
 
             webViewClient = object : WebViewClient() {
                 override fun shouldInterceptRequest(
@@ -200,6 +368,7 @@ class WebPlayerActivity : AppCompatActivity() {
                     if (prefs.adBlockEnabled) {
                         webBridge.injectEarlyAdBlock()
                     }
+                    injectFullscreenOverride()
                 }
 
                 override fun onPageFinished(view: WebView?, loadedUrl: String?) {
@@ -210,6 +379,7 @@ class WebPlayerActivity : AppCompatActivity() {
                         webBridge.injectEarlyAdBlock()
                     }
                     injectMatchingWebPlugins(activeUrl)
+                    injectFullscreenOverride()
                     if (prefs.koalaSyncPluginEnabled) {
                         webBridge.injectScript()
                     }
@@ -225,6 +395,7 @@ class WebPlayerActivity : AppCompatActivity() {
                     val activeUrl = url ?: currentPageUrl
                     currentPageUrl = activeUrl
                     injectMatchingWebPlugins(activeUrl)
+                    injectFullscreenOverride()
                     val isYouTube = activeUrl.contains("youtube.com", ignoreCase = true) ||
                         activeUrl.contains("youtu.be", ignoreCase = true)
                     val allowSpaBridge = !isYouTube || prefs.isPluginEnabled(MnemisPreferences.PLUGIN_YOUTUBE_SPA)
@@ -236,6 +407,16 @@ class WebPlayerActivity : AppCompatActivity() {
 
             webChromeClient = object : WebChromeClient() {
                 override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
+                    // Primary path is the JS Fullscreen API override (in-app
+                    // fullscreen): the page never enters native fullscreen, so
+                    // this should not fire. If it does fire, the override did
+                    // not load yet; fall back to the native custom view so
+                    // the video is at least visible in fullscreen. (PiP from
+                    // native fullscreen may still be black; the override is
+                    // what fixes PiP.)
+                    if (isInAppFullscreen) {
+                        return
+                    }
                     if (customView != null) {
                         callback?.onCustomViewHidden()
                         return
@@ -249,6 +430,11 @@ class WebPlayerActivity : AppCompatActivity() {
                 }
 
                 override fun onHideCustomView() {
+                    // If we are in JS in-app fullscreen, the JS exit path
+                    // owns the restore; ignore the native callback.
+                    if (isInAppFullscreen) {
+                        return
+                    }
                     binding.fullscreenContainer.removeAllViews()
                     binding.fullscreenContainer.visibility = View.GONE
                     binding.webViewPlayer.visibility = View.VISIBLE
@@ -292,6 +478,15 @@ class WebPlayerActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 when {
+                    isInAppFullscreen -> {
+                        // Exit through the JS override so the page state
+                        // (class, fullscreenElement, button state) is cleaned
+                        // up and the app is notified through the interface.
+                        binding.webViewPlayer.evaluateJavascript(
+                            "window.mnemisExitFullscreen && window.mnemisExitFullscreen();",
+                            null
+                        )
+                    }
                     customView != null -> {
                         binding.webViewPlayer.webChromeClient?.onHideCustomView()
                     }
@@ -309,13 +504,13 @@ class WebPlayerActivity : AppCompatActivity() {
     /**
      * Enters picture-in-picture.
      *
-     * The video must be visible when PiP captures the window. When the YouTube
-     * video is in the fullscreen custom view, hiding that view FIRST and then
-     * entering PiP captures a black frame: the video surface has not moved back
-     * into the inline WebView player yet, and the exit can pause the video.
-     * So we enter PiP now (the PiP window shows the playing video) and the
-     * fullscreen view is exited once PiP is active, in
-     * onPictureInPictureModeChanged.
+     * The video is always inline now (in-app fullscreen keeps it in the
+     * page; there is no native custom view in the primary path), so PiP
+     * captures the normal activity window and the video renders in it.
+     * When entering PiP from inline mode, the video is expanded to fill
+     * the viewport first so it fills the PiP window instead of showing
+     * small at the top of the page; the expansion is removed on PiP exit
+     * (unless the user is in fullscreen).
      */
     private fun enterPipMode() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -323,22 +518,23 @@ class WebPlayerActivity : AppCompatActivity() {
             return
         }
         if (isInPipMode) return
+        if (!isInAppFullscreen && customView == null) {
+            setVideoFill(true)
+            pipExpandedVideo = true
+        }
         val params = PictureInPictureParams.Builder()
             .setAspectRatio(Rational(16, 9))
             .build()
         val entered = enterPictureInPictureMode(params)
         if (!entered && customView != null) {
-            // Fallback: the direct enter failed. Exit fullscreen, make sure the
-            // video is playing again, and retry PiP once the WebView has the
-            // inline video back. This only helps while the activity is still in
-            // the foreground (e.g. button tap); if the user already left, the
-            // retry is a no-op.
+            // Fallback for the native fullscreen path only: exit the custom
+            // view, make sure the video is playing again, and retry PiP once
+            // the WebView has the inline video back. Only helps while the
+            // activity is still in the foreground (e.g. button tap).
             binding.webViewPlayer.webChromeClient?.onHideCustomView()
             resumeVideo()
-            pipPendingAfterFullscreenExit = true
             binding.webViewPlayer.postDelayed({
-                if (pipPendingAfterFullscreenExit && !isInPipMode && !isFinishing && !isDestroyed) {
-                    pipPendingAfterFullscreenExit = false
+                if (!isInPipMode && !isFinishing && !isDestroyed) {
                     enterPictureInPictureMode(params)
                 }
             }, 350)
@@ -367,10 +563,9 @@ class WebPlayerActivity : AppCompatActivity() {
 
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
-        // Auto-PiP: works from fullscreen too. enterPipMode enters PiP
-        // immediately (no delay, the activity is still resumed here), so the
-        // fullscreen video is captured and the custom view is exited once PiP
-        // is active.
+        // Auto-PiP: works from in-app fullscreen too, because the video is
+        // inline in the page (no custom view to hide) and enterPipMode
+        // enters PiP immediately while the activity is still resumed.
         if (webBridge.isVideoPlaying()) {
             enterPipMode()
         }
@@ -380,21 +575,22 @@ class WebPlayerActivity : AppCompatActivity() {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
         isInPipMode = isInPictureInPictureMode
         if (isInPictureInPictureMode) {
-            pipPendingAfterFullscreenExit = false
             binding.webTopBar.visibility = View.GONE
-            // We entered PiP while the YouTube fullscreen custom view was
-            // showing. Move the video back into the inline WebView player now
-            // that PiP is active, and make sure it keeps playing (the surface
-            // swap can pause it).
-            if (customView != null) {
-                binding.webViewPlayer.webChromeClient?.onHideCustomView()
-                resumeVideo()
-            }
+            // The video stays inline (in-app fullscreen or the PiP video
+            // fill): nothing to hide and no surface to move. Just make sure
+            // it keeps playing.
+            resumeVideo()
         } else {
-            // Back to full screen mode. Only restore the top bar when we are not
-            // in the fullscreen custom view (it hides the top bar itself).
-            if (customView == null) {
+            // Back to full screen mode. Only restore the top bar when we are
+            // not in fullscreen (in-app or native custom view, which hides
+            // the top bar itself).
+            if (!isInAppFullscreen && customView == null) {
                 binding.webTopBar.visibility = View.VISIBLE
+            }
+            // The video was expanded only for PiP (not fullscreen): restore it.
+            if (pipExpandedVideo && !isInAppFullscreen) {
+                pipExpandedVideo = false
+                setVideoFill(false)
             }
         }
     }
@@ -456,4 +652,3 @@ class WebPlayerActivity : AppCompatActivity() {
         binding.webViewPlayer.destroy()
     }
 }
-
