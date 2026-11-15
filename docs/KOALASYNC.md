@@ -1,5 +1,14 @@
 # KoalaSync in Mnemis
 
+## About KoalaSync / Acerca de KoalaSync
+
+KoalaSync is the reference watch-party project that Mnemis connects to. It is an independent open-source project by Shik3i, released under the MIT License.
+
+- Website / Sitio web: https://sync.koalastuff.net/
+- GitHub / GitHub: https://github.com/Shik3i/KoalaSync
+
+KoalaSync es el proyecto de referencia para ver contenido en grupo al que se conecta Mnemis. Es un proyecto independiente de código abierto creado por Shik3i, publicado bajo la licencia MIT.
+
 ## KoalaSync en Mnemis
 
 Mnemis connects to KoalaSync through a native OkHttp WebSocket client using Engine.IO v4 and Socket.IO framing. The current implementation joins rooms, reports peer and playback state, and applies remote control events.

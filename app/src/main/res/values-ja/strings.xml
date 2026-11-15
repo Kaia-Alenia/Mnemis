@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">Mnemis</string>
+    <string name="title_videos">マイビデオ</string>
+    <string name="title_streams">リンクを再生</string>
+    <string name="open_link">動画URLを開く</string>
+    <string name="enter_url_hint">YouTube、Google Drive、MP4/HLSのリンクを貼り付け…</string>
+    <string name="play">再生</string>
+    <string name="cancel">キャンセル</string>
+    <string name="resolving_link">Mnemis Resolverでリンクを解決中…</string>
+    <string name="error_resolving">動画リンクを解決できませんでした</string>
+    <string name="permission_required">デバイスの動画を読み取るには権限が必要です</string>
+    <string name="grant_permission">権限を許可</string>
+    <string name="no_videos_found">デバイスに動画が見つかりませんでした</string>
+
+    <string name="nav_home">ホーム</string>
+    <string name="nav_videos">マイビデオ</string>
+    <string name="nav_web">Web / ストリーミング</string>
+    <string name="nav_plugins">プラグイン</string>
+    <string name="nav_downloads">ダウンロード</string>
+    <string name="nav_system">システム</string>
+    <string name="nav_settings">設定</string>
+
+    <string name="search_hint">検索…</string>
+    <string name="search_no_results">「%1$s」の結果がありません</string>
+    <string name="cd_back">戻る</string>
+
+    <string name="home_continue_watching">続きから見る</string>
+    <string name="home_resume_button">再開</string>
+    <string name="home_no_recent">まだ最近の再生はありません。Webストリームまたはローカル動画を開いて開始してください。</string>
+    <string name="home_quick_actions">クイックアクション</string>
+    <string name="home_action_web">Web / ストリーミングを開く</string>
+    <string name="home_action_videos">ローカルアルバムを見る</string>
+    <string name="home_action_plugins">プラグインを管理</string>
+    <string name="home_type_web">WEBストリーム</string>
+    <string name="home_type_local">ローカル動画</string>
+
+    <string name="plugin_desc_hls_sniffer">対応サイト向けのオプションのHLS/MP4ストリーム検出機能。</string>
+    <string name="plugin_desc_subtitles">外部SRT/VTT字幕トラックを読み込むためのオプションモジュール。</string>
+    <string name="plugins_subtitle">動的モジュールを有効化、検索、インストールします。</string>
+    <string name="plugins_install_url">URLをインストール</string>
+    <string name="plugins_url_hint">プラグインマニフェストJSONのURL（https://…）</string>
+    <string name="plugins_install_action">インストール</string>
+    <string name="plugins_url_invalid">有効なHTTP/HTTPS URLを入力してください</string>
+    <string name="plugins_install_success">プラグイン%1$sをインストールしました</string>
+    <string name="plugins_install_failed">プラグインのインストールに失敗しました：%1$s</string>
+
+    <string name="settings_save">設定を保存</string>
+    <string name="settings_saved">設定を保存しました</string>
+    <string name="updater_current_version">現在のバージョン：%1$s</string>
+    <string name="updater_check_button">更新を確認</string>
+    <string name="updater_up_to_date">Mnemisは最新です</string>
+    <string name="updater_check_failed">更新を確認できませんでした</string>
+    <string name="updater_available_title">新しいバージョン%1$sが利用可能です</string>
+    <string name="updater_default_notes">新しいMnemisリリースがGitHubで利用可能です。</string>
+    <string name="updater_download_action">ダウンロード</string>
+    <string name="updater_downloading">アップデートをダウンロード中…</string>
+    <string name="updater_download_failed">アップデートをダウンロードできませんでした</string>
+    <string name="updater_install_prompt">アップデートをインストール</string>
+    <string name="updater_install_conflict_title">アップデートをインストールできません</string>
+    <string name="updater_install_conflict_message">このアップデートは、このデバイスにインストールされているMnemisアプリとは異なるキーで署名されています。Mnemisを一度アンインストールしてから、新しいバージョンをインストールしてください。</string>
+    <string name="updater_uninstall_action">Mnemisをアンインストール</string>
+
+    <string name="chat_title">ルームチャット</string>
+    <string name="chat_empty">まだメッセージがありません。</string>
+    <string name="chat_input_hint">メッセージを入力</string>
+    <string name="chat_send">送信</string>
+    <string name="chat_secret_badge">シークレット：%1$s</string>
+    <string name="chat_send_failed">メッセージを送信できませんでした。接続またはチャットシークレットを確認してください。</string>
+
+    <string name="sync_password_hint">ルームパスワード（任意）</string>
+    <string name="sync_chat_secret_hint">チャットシークレット（任意）</string>
+
+    <string name="brightness">明るさ</string>
+    <string name="volume">音量</string>
+    <string name="seek">シーク</string>
+
+    <plurals name="video_count">
+        <item quantity="one">%d 本の動画</item>
+        <item quantity="other">%d 本の動画</item>
+    </plurals>
+</resources>

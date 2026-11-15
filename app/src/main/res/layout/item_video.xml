@@ -31,7 +31,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/black"
                 android:scaleType="centerCrop"
-                android:contentDescription="Video Thumbnail" />
+                android:contentDescription="@null" />
 
             <TextView
                 android:id="@+id/tvDuration"
@@ -71,6 +71,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp"
                 tools:text="1920x1080 • 150 MB" />

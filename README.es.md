@@ -1,18 +1,21 @@
 <p align="center">
-  <img src="assets/branding/mnemis_logo.svg" width="180" alt="Logotipo de Mnemis">
+  <img src="assets/branding/mnemis_banner.svg" width="800" alt="Mnemis">
 </p>
 
 <h1 align="center">Mnemis</h1>
 
 <p align="center">
   <a href="https://github.com/Kaia-Alenia/Mnemis/actions/workflows/android.yml"><img src="https://github.com/Kaia-Alenia/Mnemis/actions/workflows/android.yml/badge.svg" alt="CI de Android"></a>
-  <a href="https://github.com/Kaia-Alenia/Mnemis"><img src="https://img.shields.io/badge/Plataforma-Android-3DDC84?logo=android&logoColor=white" alt="Android"></a>
+  <a href="https://github.com/Kaia-Alenia/Mnemis/releases"><img src="https://img.shields.io/github/v/release/Kaia-Alenia/Mnemis?logo=github" alt="Versión de GitHub"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue" alt="Licencia MIT"></a>
+  <a href="https://github.com/Kaia-Alenia/Mnemis"><img src="https://img.shields.io/badge/Platform-Android-3DDC84?logo=android&logoColor=white" alt="Plataforma Android"></a>
   <a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-1.9.22-7F52FF?logo=kotlin&logoColor=white" alt="Kotlin"></a>
   <a href="https://gradle.org/"><img src="https://img.shields.io/badge/Gradle-8.6-02303A?logo=gradle&logoColor=white" alt="Gradle"></a>
-  <a href="https://github.com/Kaia-Alenia/Mnemis/blob/main/SECURITY.md"><img src="https://img.shields.io/badge/Seguridad-Politica-2ea44f?logo=shield&logoColor=white" alt="Política de seguridad"></a>
 </p>
 
-<p align="center"><b>Un reproductor de video extensible para Android con salas nativas de KoalaSync.</b></p>
+<p align="center"><i>Un reproductor de video extensible para Android con salas nativas de KoalaSync. Reproduce archivos locales, streams directos y reproductores web en un solo lugar, y mira contenido en grupo y en sincronía.</i></p>
+
+<p align="center"><a href="https://github.com/Kaia-Alenia/Mnemis/releases"><b>Última versión: v1.0.2</b> — Ver qué cambió</a></p>
 
 **Mnemis es un reproductor de video extensible para Android desarrollado por Alenia Studios.**
 
@@ -20,30 +23,53 @@ Reúne la reproducción local, los streams web directos y las salas sincronizada
 
 [Read this in English](README.md)
 
-## Qué hace Mnemis
+## Por qué Mnemis
 
-- Reproduce archivos de video locales y URLs multimedia HTTP(S) directas.
-- Usa AndroidX Media3, incluyendo soporte para HLS y DASH.
-- Resuelve enlaces compatibles de YouTube, Google Drive, Dropbox y streams MP4/HLS.
-- Abre reproductores web mediante WebView cuando una fuente lo necesita.
-- Soporta picture-in-picture e intents de video comunes de Android.
-- Se conecta a salas de KoalaSync mediante un cliente WebSocket nativo.
-- Sincroniza reproducción entre participantes: play, pause, seek, miembros y modos de control.
-- Ofrece una base para plugins de fuentes y reproducción, de modo que las integraciones puedan evolucionar sin modificar el núcleo.
+- **Primero los plugins**: El núcleo del reproductor se mantiene pequeño. Las fuentes y las integraciones de reproducción son plugins, así que se pueden agregar nuevos servicios sin cambiar el núcleo.
+- **Ver en grupo**: Salas nativas de KoalaSync con sincronización de play, pausa y seek, controles de anfitrión y reconexión automática.
+- **Reproduce casi todo**: Archivos locales, streams directos MP4/HLS/DASH, enlaces de YouTube, Google Drive y Dropbox, y reproductores web mediante WebView.
+- **Basado en Media3**: Reproducción con AndroidX Media3, con soporte para HLS y DASH, picture-in-picture e intents de video estándar de Android.
+- **Abierto y privado**: Código abierto bajo la licencia MIT. No se necesita cuenta para reproducir contenido local o directo, y la integración de sincronización no copia ni redistribuye el contenido.
 
-## Salas de reproducción con KoalaSync
+## Características principales
 
-KoalaSync es la integración nativa de Mnemis para ver contenido en grupo. Una persona puede crear o unirse a una sala, proporcionar opcionalmente un nombre visible y una contraseña, y compartir acciones de reproducción con los demás participantes.
+- **Reproducción local**: Abre archivos de video desde el almacenamiento con el selector de archivos del sistema y los intents de video de Android.
+- **Streams directos**: Reproduce URLs multimedia HTTP(S) directas, incluyendo MP4 progresivo, HLS (`.m3u8`) y DASH.
+- **Resolución de enlaces**: Convierte enlaces compatibles de YouTube, Google Drive y Dropbox en streams reproducibles cuando la fuente lo permite.
+- **Reproductores web**: Abre reproductores web mediante WebView cuando una fuente lo necesita.
+- **Salas de KoalaSync**: Crea una sala o únete a una, define un nombre visible y una contraseña opcional, y sincroniza la reproducción con los demás participantes. Ver [Salas de reproducción con KoalaSync](#salas-de-reproducción-con-koalasync) más abajo.
+- **Picture-in-picture**: Sigue viendo mientras usas otras aplicaciones.
+- **Plugins incluidos**: Mnemis incluye cuatro plugins integrados:
+  - **KoalaSync** — salas sincronizadas por WebSocket, con estado de sala, heartbeat y corrección de desfase.
+  - **Web AdBlocker** — bloquea rastreadores de anuncios de red y anuncios pre-roll de YouTube en la reproducción web.
+  - **YouTube SPA Bridge** — gestiona la navegación de la app de una sola página de YouTube y los controles de `#movie_player`.
+  - **Universal Web Players** — agrega soporte de reproducción para reproductores web genéricos mediante scripts de usuario inyectados.
 
-La integración admite:
+## Inicio rápido
 
-- Salas identificadas mediante un room ID.
-- Modos de control `everyone` y `host-only`.
-- Sincronización con números de secuencia y corrección de desfase.
-- Heartbeat y reconexión automática.
-- Reproducción web mediante un puente JavaScript para fuentes HTML5.
+### Requisitos
 
-KoalaSync sincroniza comandos y metadatos de reproducción; no copia ni redistribuye el contenido. Cada participante debe tener derecho a acceder al material que reproduce.
+- Android Studio Hedgehog o posterior.
+- JDK 17.
+- Android SDK 34.
+- Un dispositivo o emulador Android con API 24 o posterior.
+
+### Compilación e instalación
+
+```bash
+./gradlew assembleDebug
+./gradlew test
+```
+
+Instala el APK de debug desde `app/build/outputs/apk/debug/` en un dispositivo de prueba. No uses cuentas de producción ni credenciales privadas de medios en builds de debug.
+
+Las versiones etiquetadas también se compilan en CI (`.github/workflows/android.yml`), que ejecuta las pruebas, compila el APK de debug y lo publica como release de GitHub. Descarga el APK más reciente desde la [página de releases](https://github.com/Kaia-Alenia/Mnemis/releases).
+
+### Cómo usarlo
+
+1. Abre Mnemis y elige un video: un archivo local, una URL de stream directo o un enlace compatible.
+2. Para ver en grupo, abre el panel de KoalaSync, crea una sala o únete a una con su room ID, y comparte ese ID con tus amigos.
+3. Reproduce, pausa o busca en el video: todos en la sala se mantienen en sincronía.
 
 ## Fuentes compatibles
 
@@ -60,7 +86,45 @@ KoalaSync sincroniza comandos y metadatos de reproducción; no copia ni redistri
 
 Las plataformas externas pueden cambiar sus APIs, autenticación, términos o formatos. Mnemis no garantiza compatibilidad permanente con servicios externos.
 
-## Arquitectura de plugins
+## Salas de reproducción con KoalaSync
+
+KoalaSync es la integración nativa de Mnemis para ver contenido en grupo. Una persona puede crear o unirse a una sala, proporcionar opcionalmente un nombre visible y una contraseña, y compartir acciones de reproducción con los demás participantes.
+
+La integración admite:
+
+- Salas identificadas mediante un room ID.
+- Modos de control `everyone` y `host-only`.
+- Sincronización con números de secuencia y corrección de desfase.
+- Heartbeat y reconexión automática.
+- Reproducción web mediante un puente JavaScript para fuentes HTML5.
+
+KoalaSync sincroniza comandos y metadatos de reproducción; no copia ni redistribuye el contenido. Cada participante debe tener derecho a acceder al material que reproduce.
+
+KoalaSync es un proyecto independiente de código abierto creado por Shik3i. Más información en el [sitio web de KoalaSync](https://sync.koalastuff.net/) y en el [repositorio de KoalaSync en GitHub](https://github.com/Shik3i/KoalaSync). Los detalles técnicos de la integración en Mnemis están en [docs/KOALASYNC.md](docs/KOALASYNC.md).
+
+## Localización
+
+Mnemis incluye traducciones de la interfaz para estos idiomas:
+
+- Inglés (`en`)
+- Alemán (`de`)
+- Español (`es`)
+- Francés (`fr`)
+- Italiano (`it`)
+- Japonés (`ja`)
+- Coreano (`ko`)
+- Neerlandés (`nl`)
+- Polaco (`pl`)
+- Portugués (`pt`)
+- Portugués brasileño (`pt-BR`)
+- Ruso (`ru`)
+- Turco (`tr`)
+- Ucraniano (`uk`)
+- Chino simplificado (`zh-CN`)
+
+Las traducciones de la comunidad son bienvenidas. Si puedes traducir Mnemis a otro idioma, consulta [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Desarrollo de plugins
 
 Mnemis está diseñado alrededor de integraciones reemplazables de fuentes multimedia y reproducción. La integración nativa de KoalaSync es la primera integración de referencia con forma de plugin. El contrato público de plugins todavía está evolucionando; consulta [Desarrollo de plugins](docs/PLUGIN_DEVELOPMENT.md) antes de crear una integración externa.
 
@@ -72,23 +136,33 @@ Los plugins deben:
 4. No recopilar datos que no sean necesarios para reproducir.
 5. Manejar los errores explícitamente y respetar las reglas de la plataforma.
 
-## Compilación
+## Estructura del proyecto
 
-### Requisitos
-
-- Android Studio Hedgehog o posterior.
-- JDK 17.
-- Android SDK 34.
-- Un dispositivo o emulador Android con API 24 o posterior.
-
-### Comandos
-
-```bash
-./gradlew assembleDebug
-./gradlew test
+```text
+app/src/main/java/com/alenia/mnemis/
+  model/       Modelos de medios
+  player/      Reproducción con Media3 y gestos
+  plugin/      Plugins incluidos y registro de plugins
+  resolver/    Resolución de enlaces y fuentes
+  sync/        Cliente KoalaSync, protocolo y puente WebView
+  ui/          Actividades y adaptadores de Android
+src/android/   Código Android compartido para resolución
+assets/        Recursos de marca
+docs/          Documentación técnica
 ```
 
-Instala el APK de debug desde `app/build/outputs/apk/debug/` en un dispositivo de prueba. No uses cuentas de producción ni credenciales privadas de medios en builds de debug.
+## Documentación y enlaces
+
+- **[docs/KOALASYNC.md](docs/KOALASYNC.md)**: Integración con KoalaSync, ciclo de una sala, eventos y reproducción web.
+- **[docs/PLUGIN_DEVELOPMENT.md](docs/PLUGIN_DEVELOPMENT.md)**: Responsabilidades de los plugins, flujo recomendado y guía de diseño.
+- **[PRIVACY.md](PRIVACY.md)**: Manejo de datos y política de privacidad.
+- **[SECURITY.md](SECURITY.md)**: Política de divulgación y prácticas de seguridad.
+- **[CONTRIBUTING.md](CONTRIBUTING.md)**: Cómo ayudar a mejorar Mnemis.
+- **[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)**: Normas de la comunidad.
+- **[SUPPORT.md](SUPPORT.md)**: Dónde preguntar y reportar problemas.
+- **[Sitio web de KoalaSync](https://sync.koalastuff.net/)**: El proyecto de referencia para ver en grupo: crea salas y aprende cómo funciona la sincronización.
+- **[KoalaSync en GitHub](https://github.com/Shik3i/KoalaSync)**: Código fuente de la extensión y el servidor relay de KoalaSync.
+- **[Releases de Mnemis](https://github.com/Kaia-Alenia/Mnemis/releases)**: APK publicados e historial de versiones.
 
 ## Privacidad y seguridad
 
@@ -106,4 +180,10 @@ Para preguntas de uso y solicitudes de funciones, consulta [SUPPORT.md](SUPPORT.
 
 ## Licencia
 
-Este repositorio todavía no publica una licencia. Hasta que se agregue una, todos los derechos permanecen con el titular del copyright y no debe asumirse autorización de reutilización.
+Mnemis es código abierto bajo la licencia MIT. Ver [LICENSE](LICENSE).
+
+---
+
+<div align="center">
+  <sub>Desarrollado por <a href="https://github.com/Kaia-Alenia">Alenia Studios</a>. Mnemis es código abierto bajo la <a href="LICENSE">licencia MIT</a>.</sub>
+</div>

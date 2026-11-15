@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">Mnemis</string>
+    <string name="title_videos">我的视频</string>
+    <string name="title_streams">播放链接</string>
+    <string name="open_link">打开视频链接</string>
+    <string name="enter_url_hint">粘贴 YouTube、Google Drive 或 MP4/HLS 链接…</string>
+    <string name="play">播放</string>
+    <string name="cancel">取消</string>
+    <string name="resolving_link">正在使用 Mnemis Resolver 解析链接…</string>
+    <string name="error_resolving">无法解析视频链接</string>
+    <string name="permission_required">需要权限才能读取设备上的视频</string>
+    <string name="grant_permission">授予权限</string>
+    <string name="no_videos_found">设备上未找到视频</string>
+
+    <string name="nav_home">首页</string>
+    <string name="nav_videos">我的视频</string>
+    <string name="nav_web">网页 / 流媒体</string>
+    <string name="nav_plugins">插件</string>
+    <string name="nav_downloads">下载</string>
+    <string name="nav_system">系统</string>
+    <string name="nav_settings">设置</string>
+
+    <string name="search_hint">搜索…</string>
+    <string name="search_no_results">没有找到“%1$s”的结果</string>
+    <string name="cd_back">返回</string>
+
+    <string name="home_continue_watching">继续观看</string>
+    <string name="home_resume_button">继续播放</string>
+    <string name="home_no_recent">暂无最近播放记录。打开网络流媒体或本地视频开始使用。</string>
+    <string name="home_quick_actions">快捷操作</string>
+    <string name="home_action_web">打开网页 / 流媒体</string>
+    <string name="home_action_videos">浏览本地专辑</string>
+    <string name="home_action_plugins">管理插件</string>
+    <string name="home_type_web">网络流媒体</string>
+    <string name="home_type_local">本地视频</string>
+
+    <string name="plugin_desc_hls_sniffer">适用于兼容网站的可选 HLS/MP4 流检测器。</string>
+    <string name="plugin_desc_subtitles">用于加载外部 SRT/VTT 字幕轨道的可选模块。</string>
+    <string name="plugins_subtitle">启用、搜索或安装动态模块。</string>
+    <string name="plugins_install_url">安装 URL</string>
+    <string name="plugins_url_hint">插件清单 JSON URL（https://…）</string>
+    <string name="plugins_install_action">安装</string>
+    <string name="plugins_url_invalid">请输入有效的 HTTP/HTTPS URL</string>
+    <string name="plugins_install_success">插件 %1$s 已安装</string>
+    <string name="plugins_install_failed">插件安装失败：%1$s</string>
+
+    <string name="settings_save">保存设置</string>
+    <string name="settings_saved">设置已保存</string>
+    <string name="updater_current_version">当前版本：%1$s</string>
+    <string name="updater_check_button">检查更新</string>
+    <string name="updater_up_to_date">Mnemis 已是最新版本</string>
+    <string name="updater_check_failed">无法检查更新</string>
+    <string name="updater_available_title">新版本 %1$s 可用</string>
+    <string name="updater_default_notes">GitHub 上有新的 Mnemis 版本。</string>
+    <string name="updater_download_action">下载</string>
+    <string name="updater_downloading">正在下载更新…</string>
+    <string name="updater_download_failed">无法下载更新</string>
+    <string name="updater_install_prompt">安装更新</string>
+    <string name="updater_install_conflict_title">无法安装更新</string>
+    <string name="updater_install_conflict_message">此更新的签名密钥与此设备上已安装的 Mnemis 应用不同。请先卸载一次 Mnemis，然后再安装新版本。</string>
+    <string name="updater_uninstall_action">卸载 Mnemis</string>
+
+    <string name="chat_title">房间聊天</string>
+    <string name="chat_empty">暂无消息。</string>
+    <string name="chat_input_hint">输入消息</string>
+    <string name="chat_send">发送</string>
+    <string name="chat_secret_badge">密钥：%1$s</string>
+    <string name="chat_send_failed">无法发送消息。请检查网络连接或聊天密钥。</string>
+
+    <string name="sync_password_hint">房间密码（可选）</string>
+    <string name="sync_chat_secret_hint">聊天密钥（可选）</string>
+
+    <string name="brightness">亮度</string>
+    <string name="volume">音量</string>
+    <string name="seek">播放进度</string>
+
+    <plurals name="video_count">
+        <item quantity="one">%d 个视频</item>
+        <item quantity="other">%d 个视频</item>
+    </plurals>
+</resources>

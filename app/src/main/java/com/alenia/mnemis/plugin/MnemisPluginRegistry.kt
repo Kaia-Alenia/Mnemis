@@ -55,6 +55,8 @@ object MnemisPluginRegistry {
                 override fun getUserScript(url: String): String = UNIVERSAL_PLAYERS_JS
             }
         )
+        register(SubtitleLoaderPlugin)
+        register(HlsSnifferPlugin)
     }
 
     fun register(plugin: MnemisPlugin) {

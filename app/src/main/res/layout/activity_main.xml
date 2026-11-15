@@ -40,6 +40,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@string/nav_home"
                     android:textColor="@color/text_primary"
                     android:textSize="19sp"
@@ -48,7 +50,7 @@
                 <EditText
                     android:id="@+id/etSearchBar"
                     android:layout_width="0dp"
-                    android:layout_height="38dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:background="@color/surface_card"
@@ -232,8 +234,8 @@
 
                         <ImageButton
                             android:id="@+id/btnBackToAlbums"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:contentDescription="@string/cd_back"
                             android:src="@drawable/ic_back"
@@ -241,9 +243,12 @@
 
                         <TextView
                             android:id="@+id/tvCurrentAlbumName"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -329,7 +334,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Reproductor Web"
+                        android:text="@string/nav_web"
                         android:textColor="@color/text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -440,7 +445,7 @@
                         android:id="@+id/btnInstallPluginUrl"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="38dp"
+                        android:layout_height="48dp"
                         android:layout_marginStart="8dp"
                         android:text="@string/plugins_install_url"
                         android:textAllCaps="false"
@@ -596,7 +601,7 @@
                         android:id="@+id/btnCheckUpdates"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="match_parent"
-                        android:layout_height="46dp"
+                        android:layout_height="48dp"
                         android:layout_marginTop="10dp"
                         android:text="@string/updater_check_button"
                         android:textAllCaps="false"

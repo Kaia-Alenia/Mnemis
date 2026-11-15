@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">Mnemis</string>
+    <string name="title_videos">I miei video</string>
+    <string name="title_streams">Riproduci link</string>
+    <string name="open_link">Apri URL video</string>
+    <string name="enter_url_hint">Incolla un link YouTube, Google Drive o MP4/HLS…</string>
+    <string name="play">Riproduci</string>
+    <string name="cancel">Annulla</string>
+    <string name="resolving_link">Risoluzione del link con Mnemis Resolver…</string>
+    <string name="error_resolving">Impossibile risolvere il link video</string>
+    <string name="permission_required">È necessaria l'autorizzazione per leggere i video del dispositivo</string>
+    <string name="grant_permission">Concedi autorizzazione</string>
+    <string name="no_videos_found">Nessun video trovato sul dispositivo</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_videos">I miei video</string>
+    <string name="nav_web">Web / Streaming</string>
+    <string name="nav_plugins">Plugin</string>
+    <string name="nav_downloads">Download</string>
+    <string name="nav_system">Sistema</string>
+    <string name="nav_settings">Impostazioni</string>
+
+    <string name="search_hint">Cerca…</string>
+    <string name="search_no_results">Nessun risultato per \"%1$s\"</string>
+    <string name="cd_back">Indietro</string>
+
+    <string name="home_continue_watching">Continua a guardare</string>
+    <string name="home_resume_button">Riprendi</string>
+    <string name="home_no_recent">Ancora nessuna riproduzione recente. Apri uno streaming web o un video locale per iniziare.</string>
+    <string name="home_quick_actions">Azioni rapide</string>
+    <string name="home_action_web">Apri Web / Streaming</string>
+    <string name="home_action_videos">Sfoglia album locali</string>
+    <string name="home_action_plugins">Gestisci plugin</string>
+    <string name="home_type_web">STREAM WEB</string>
+    <string name="home_type_local">VIDEO LOCALE</string>
+
+    <string name="plugin_desc_hls_sniffer">Rilevatore opzionale di flussi HLS/MP4 per i siti compatibili.</string>
+    <string name="plugin_desc_subtitles">Modulo opzionale per caricare sottotitoli esterni SRT/VTT.</string>
+    <string name="plugins_subtitle">Attiva, cerca o installa moduli dinamici.</string>
+    <string name="plugins_install_url">Installa URL</string>
+    <string name="plugins_url_hint">URL del manifest JSON del plugin (https://…)</string>
+    <string name="plugins_install_action">Installa</string>
+    <string name="plugins_url_invalid">Inserisci un URL HTTP/HTTPS valido</string>
+    <string name="plugins_install_success">Plugin %1$s installato</string>
+    <string name="plugins_install_failed">Installazione del plugin non riuscita: %1$s</string>
+
+    <string name="settings_save">Salva impostazioni</string>
+    <string name="settings_saved">Impostazioni salvate</string>
+    <string name="updater_current_version">Versione attuale: %1$s</string>
+    <string name="updater_check_button">Verifica aggiornamenti</string>
+    <string name="updater_up_to_date">Mnemis è aggiornato</string>
+    <string name="updater_check_failed">Impossibile verificare gli aggiornamenti</string>
+    <string name="updater_available_title">Nuova versione %1$s disponibile</string>
+    <string name="updater_default_notes">Una nuova versione di Mnemis è disponibile su GitHub.</string>
+    <string name="updater_download_action">Scarica</string>
+    <string name="updater_downloading">Download dell'aggiornamento in corso…</string>
+    <string name="updater_download_failed">Impossibile scaricare l'aggiornamento</string>
+    <string name="updater_install_prompt">Installa aggiornamento</string>
+    <string name="updater_install_conflict_title">Impossibile installare l’aggiornamento</string>
+    <string name="updater_install_conflict_message">Questo aggiornamento è firmato con una chiave diversa rispetto all’app Mnemis installata su questo dispositivo. Disinstalla Mnemis una volta e poi installa la nuova versione.</string>
+    <string name="updater_uninstall_action">Disinstalla Mnemis</string>
+
+    <string name="chat_title">Chat della stanza</string>
+    <string name="chat_empty">Ancora nessun messaggio.</string>
+    <string name="chat_input_hint">Scrivi un messaggio</string>
+    <string name="chat_send">Invia</string>
+    <string name="chat_secret_badge">Segreto: %1$s</string>
+    <string name="chat_send_failed">Impossibile inviare il messaggio. Controlla la connessione o il segreto della chat.</string>
+
+    <string name="sync_password_hint">Password della stanza (facoltativa)</string>
+    <string name="sync_chat_secret_hint">Segreto della chat (facoltativo)</string>
+
+    <string name="brightness">Luminosità</string>
+    <string name="volume">Volume</string>
+    <string name="seek">Posizione</string>
+
+    <plurals name="video_count">
+        <item quantity="one">%d video</item>
+        <item quantity="other">%d video</item>
+    </plurals>
+</resources>

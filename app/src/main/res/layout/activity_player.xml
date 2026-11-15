@@ -42,7 +42,7 @@
             android:id="@+id/ivFeedbackIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:contentDescription="Feedback Icon"
+            android:contentDescription="@null"
             android:src="@drawable/ic_volume"
             app:tint="@color/accent_light" />
 
@@ -83,7 +83,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Volver"
+            android:contentDescription="@string/cd_back"
             android:src="@drawable/ic_back"
             app:tint="@color/white" />
 
@@ -103,8 +103,9 @@
         <!-- Botón Chat KoalaSync -->
         <ImageButton
             android:id="@+id/btnPlayerChat"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="4dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/chat_title"
             android:src="@drawable/ic_chat"
@@ -114,8 +115,9 @@
         <!-- Botón KoalaSync -->
         <ImageButton
             android:id="@+id/btnKoalaSync"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="4dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="KoalaSync"
             android:src="@drawable/ic_sync"
@@ -124,8 +126,8 @@
         <!-- Botón Cambio Aspect Ratio (Fit / Zoom / Stretch) -->
         <ImageButton
             android:id="@+id/btnAspectRatio"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="4dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Aspect Ratio"
@@ -135,8 +137,8 @@
         <!-- Botón Rotación (Portrait / Landscape / Sensor) -->
         <ImageButton
             android:id="@+id/btnRotation"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="4dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Rotación"
@@ -146,8 +148,8 @@
         <!-- Botón Picture in Picture -->
         <ImageButton
             android:id="@+id/btnPip"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="4dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Picture in Picture"

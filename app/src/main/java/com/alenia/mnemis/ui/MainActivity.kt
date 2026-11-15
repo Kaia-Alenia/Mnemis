@@ -7,15 +7,20 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
@@ -33,8 +38,10 @@ import com.alenia.mnemis.plugin.MnemisPluginRegistry
 import com.alenia.mnemis.prefs.MnemisPreferences
 import com.alenia.mnemis.update.MnemisUpdater
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -72,6 +79,23 @@ class MainActivity : AppCompatActivity() {
             loadLocalVideos()
         } else {
             showPermissionDeniedState()
+        }
+    }
+
+    private var pendingInstallApk: File? = null
+    private var updateDownloadJob: Job? = null
+
+    private val installPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        val pendingApk = pendingInstallApk
+        pendingInstallApk = null
+        if (pendingApk != null && pendingApk.exists()) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O ||
+                packageManager.canRequestPackageInstalls()
+            ) {
+                startApkInstall(pendingApk)
+            }
         }
     }
 
@@ -414,10 +438,156 @@ class MainActivity : AppCompatActivity() {
             .setTitle(getString(R.string.updater_available_title, update.latestVersion))
             .setMessage(notes)
             .setPositiveButton(R.string.updater_download_action) { _, _ ->
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(update.downloadUrl)))
+                if (!MnemisUpdater.isApkUrl(update.downloadUrl)) {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(update.downloadUrl)))
+                } else {
+                    downloadAndInstallUpdate(update)
+                }
             }
             .setNegativeButton(R.string.cancel, null)
             .show()
+    }
+
+    private fun downloadAndInstallUpdate(update: MnemisUpdater.UpdateInfo) {
+        val safeVersion = update.latestVersion
+            .filter { it.isLetterOrDigit() || it == '.' || it == '-' }
+            .ifEmpty { "latest" }
+        val downloadsDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+        if (downloadsDir == null) {
+            Toast.makeText(this, R.string.updater_check_failed, Toast.LENGTH_SHORT).show()
+            return
+        }
+        val apkFile = File(downloadsDir, "mnemis-$safeVersion.apk")
+
+        val progressBar = ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal).apply {
+            max = 100
+            progress = 0
+        }
+        val progressContainer = FrameLayout(this).apply {
+            val padding = (16 * resources.displayMetrics.density).toInt()
+            setPadding(padding, padding, padding, padding)
+            addView(
+                progressBar,
+                FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+                )
+            )
+        }
+        val progressDialog = AlertDialog.Builder(this)
+            .setTitle(R.string.updater_downloading)
+            .setView(progressContainer)
+            .setNegativeButton(R.string.cancel) { _, _ ->
+                updateDownloadJob?.cancel()
+            }
+            .setCancelable(false)
+            .create()
+        progressDialog.show()
+
+        updateDownloadJob = lifecycleScope.launch {
+            try {
+                val result = MnemisUpdater.downloadApk(update.downloadUrl, apkFile) { downloaded, total ->
+                    runOnUiThread {
+                        if (total > 0) {
+                            progressBar.isIndeterminate = false
+                            progressBar.progress =
+                                ((downloaded * 100L) / total).toInt().coerceIn(0, 100)
+                        } else {
+                            progressBar.isIndeterminate = true
+                        }
+                    }
+                }
+                if (isFinishing || isDestroyed) return@launch
+                result.onSuccess { file ->
+                    requestInstallIfNeeded(file)
+                }.onFailure {
+                    Toast.makeText(this@MainActivity, R.string.updater_check_failed, Toast.LENGTH_LONG).show()
+                }
+            } finally {
+                if (!isFinishing && !isDestroyed && progressDialog.isShowing) {
+                    progressDialog.dismiss()
+                }
+            }
+        }
+    }
+
+    private fun requestInstallIfNeeded(apkFile: File) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+            !packageManager.canRequestPackageInstalls()
+        ) {
+            pendingInstallApk = apkFile
+            val settingsIntent = Intent(
+                Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                Uri.parse("package:$packageName")
+            )
+            installPermissionLauncher.launch(settingsIntent)
+        } else if (hasSignatureConflict(apkFile)) {
+            showSignatureConflictDialog()
+        } else {
+            startApkInstall(apkFile)
+        }
+    }
+
+    /**
+     * Returns true when the APK file is signed with a different key than the
+     * Mnemis app currently installed on this device. That happens for APKs
+     * installed before the shared debug keystore fix: each CI run used a fresh
+     * ephemeral key, so Android refuses to install the new APK over the old
+     * one ("package conflicts with an existing package"). When true, the user
+     * must uninstall the old app once and then install the new version.
+     * Returns false when the signatures match, when no Mnemis is installed,
+     * or when the signatures cannot be determined (let the installer decide).
+     */
+    @Suppress("DEPRECATION")
+    private fun hasSignatureConflict(apkFile: File): Boolean {
+        return try {
+            val installed = packageManager.getPackageInfo(
+                packageName,
+                PackageManager.GET_SIGNATURES
+            )
+            val installedSigs = installed.signatures
+                ?.map { it.toByteArray().contentHashCode() }
+                ?.toSet() ?: return false
+            if (installedSigs.isEmpty()) return false
+            val archive = packageManager.getPackageArchiveInfo(
+                apkFile.absolutePath,
+                PackageManager.GET_SIGNATURES
+            ) ?: return false
+            val apkSigs = archive.signatures
+                ?.map { it.toByteArray().contentHashCode() }
+                ?.toSet() ?: return false
+            if (apkSigs.isEmpty()) return false
+            installedSigs != apkSigs
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    private fun showSignatureConflictDialog() {
+        if (isFinishing || isDestroyed) return
+        AlertDialog.Builder(this)
+            .setTitle(R.string.updater_install_conflict_title)
+            .setMessage(R.string.updater_install_conflict_message)
+            .setPositiveButton(R.string.updater_uninstall_action) { _, _ ->
+                startActivity(
+                    Intent(Intent.ACTION_DELETE, Uri.parse("package:$packageName"))
+                )
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
+    private fun startApkInstall(apkFile: File) {
+        val uri = FileProvider.getUriForFile(
+            this,
+            "${BuildConfig.APPLICATION_ID}.fileprovider",
+            apkFile
+        )
+        val installIntent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, "application/vnd.android.package-archive")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        startActivity(installIntent)
     }
 
     private fun setupBackNavigation() {

@@ -53,6 +53,12 @@
     <string name="updater_available_title">Nova versão %1$s disponível</string>
     <string name="updater_default_notes">Uma nova versão do Mnemis está disponível no GitHub.</string>
     <string name="updater_download_action">Baixar</string>
+    <string name="updater_downloading">A transferir a atualização…</string>
+    <string name="updater_download_failed">Não foi possível transferir a atualização</string>
+    <string name="updater_install_prompt">Instalar atualização</string>
+    <string name="updater_install_conflict_title">Não é possível instalar a atualização</string>
+    <string name="updater_install_conflict_message">Esta atualização foi assinada com uma chave diferente da app Mnemis instalada neste dispositivo. Desinstala a Mnemis uma vez e depois instala a nova versão.</string>
+    <string name="updater_uninstall_action">Desinstalar Mnemis</string>
 
     <string name="chat_title">Chat da sala</string>
     <string name="chat_empty">Ainda não há mensagens.</string>

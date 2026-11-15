@@ -12,9 +12,24 @@ android {
         minSdk = 24
         targetSdk = 34
         versionCode = 40
-        versionName = "1.0.0"
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        // Shared debug keystore committed to the repo so every debug APK
+        // (local builds and CI) shares the same signature. Without this,
+        // each CI run generates a fresh ephemeral debug key, and Android
+        // refuses to install a new APK over the old one ("package conflicts
+        // with an existing package"). This is the standard Android debug
+        // key (alias androiddebugkey / password android), not a secret.
+        create("sharedDebug") {
+            storeFile = file("../debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
     }
 
     buildTypes {
@@ -25,6 +40,7 @@ android {
         debug {
             applicationIdSuffix = ""
             isDebuggable = true
+            signingConfig = signingConfigs.getByName("sharedDebug")
         }
     }
 
