@@ -31,6 +31,28 @@ public final class MnemisMediaResolver {
     );
 
     /**
+     * Extrae el ID de video de YouTube (11 caracteres) de una URL, o null si no es un video.
+     * Sirve para watch, shorts, live, embed, v y youtu.be (incluye music y -nocookie).
+     */
+    public static String extractYouTubeVideoId(String url) {
+        if (url == null || url.trim().isEmpty()) {
+            return null;
+        }
+        Matcher matcher = YT_PATTERN.matcher(url.trim());
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
+    }
+
+    /**
+     * True si la URL es un video de YouTube (no un canal, busqueda o pagina principal).
+     */
+    public static boolean isYouTubeVideoUrl(String url) {
+        return extractYouTubeVideoId(url) != null;
+    }
+
+    /**
      * Sanitiza el tipo de contenedor multimedia (HLS vs Progresivo MP4) para ExoPlayer.
      */
     public static String sanitizeType(android.net.Uri uri, String type) {

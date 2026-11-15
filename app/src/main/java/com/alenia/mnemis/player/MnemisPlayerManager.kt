@@ -96,7 +96,7 @@ class MnemisPlayerManager(private val context: Context) {
         playerView.player = exoPlayer
     }
 
-    fun playMedia(uri: Uri, mimeType: String? = null, title: String? = null) {
+    fun playMedia(uri: Uri, mimeType: String? = null, title: String? = null, startPositionMs: Long = 0L) {
         val player = exoPlayer ?: return
 
         val builder = MediaItem.Builder().setUri(uri)
@@ -104,7 +104,8 @@ class MnemisPlayerManager(private val context: Context) {
         // Asignación de MimeType según tipo o extensión
         val uriStr = uri.toString().lowercase()
         when {
-            mimeType?.contains("mpegurl", ignoreCase = true) == true || uriStr.contains(".m3u8") -> {
+            mimeType?.contains("mpegurl", ignoreCase = true) == true || uriStr.contains(".m3u8") ||
+                uriStr.contains("manifest/hls") || uriStr.contains("hls_playlist") -> {
                 builder.setMimeType(MimeTypes.APPLICATION_M3U8)
             }
             mimeType?.contains("dash", ignoreCase = true) == true || uriStr.contains(".mpd") -> {
@@ -125,6 +126,10 @@ class MnemisPlayerManager(private val context: Context) {
         val mediaItem = builder.build()
         player.setMediaItem(mediaItem)
         player.prepare()
+        if (startPositionMs > 0) {
+            // ExoPlayer aplica el seek cuando el medio esta preparado.
+            player.seekTo(startPositionMs)
+        }
         player.play()
     }
 

@@ -37,6 +37,15 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
     companion object {
         const val EXTRA_VIDEO_URI = "extra_video_uri"
         const val EXTRA_VIDEO_TITLE = "extra_video_title"
+        /** Posicion inicial en ms (para retomar un video de YouTube desde el WebView). */
+        const val EXTRA_START_POSITION_MS = "extra_start_position_ms"
+        /** Si es true, entra a PiP solo cuando el reproductor ya este sonando. */
+        const val EXTRA_ENTER_PIP_ON_READY = "extra_enter_pip_on_ready"
+        /** Credenciales de sala KoalaSync para re-unirse tras un traspaso desde el WebView. */
+        const val EXTRA_ROOM_ID = "extra_room_id"
+        const val EXTRA_ROOM_USERNAME = "extra_room_username"
+        const val EXTRA_ROOM_PASSWORD = "extra_room_password"
+        const val EXTRA_ROOM_CHAT_SECRET = "extra_room_chat_secret"
     }
 
     private lateinit var binding: ActivityPlayerBinding
@@ -58,6 +67,32 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
     private val aspectRatioNames = arrayOf("Ajustar", "Recortar (Zoom)", "Estirar")
 
     private var orientationMode = 0 // 0: Auto/Sensor, 1: Portrait, 2: Landscape
+
+    // Traspaso de YouTube desde el WebView: entrar a PiP cuando el
+    // reproductor ya este sonando (no se puede entrar a PiP antes de
+    // que la actividad este resumed y el video preparado).
+    private var pipOnReadyAttempts = 0
+    private val pipOnReadyHandler = Handler(Looper.getMainLooper())
+    private val pipOnReadyRunnable = object : Runnable {
+        override fun run() {
+            if (isFinishing || isDestroyed || isInPictureInPictureMode) return
+            val player = playerManager.exoPlayer
+            if (player != null && player.isPlaying) {
+                updatePlaybackService()
+                enterPipMode()
+                return
+            }
+            pipOnReadyAttempts++
+            if (pipOnReadyAttempts < 20) {
+                pipOnReadyHandler.postDelayed(this, 250)
+            }
+        }
+    }
+
+    private fun startEnterPipWhenReady() {
+        pipOnReadyAttempts = 0
+        pipOnReadyHandler.post(pipOnReadyRunnable)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,9 +117,28 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
         setupControls()
         setupGestures()
 
+        // Traspaso desde el WebView: re-unirse a la misma sala KoalaSync
+        // con las credenciales que traia el WebView. El cliente del
+        // WebView se desconecta cuando esa actividad termina; los demas
+        // participantes ven salir un peer y entrar otro.
+        val handoverRoomId = intent.getStringExtra(EXTRA_ROOM_ID)
+        if (!handoverRoomId.isNullOrBlank()) {
+            koalaSyncClient.connect(
+                roomId = handoverRoomId,
+                username = intent.getStringExtra(EXTRA_ROOM_USERNAME),
+                password = intent.getStringExtra(EXTRA_ROOM_PASSWORD),
+                mediaTitle = videoTitle,
+                chatSecret = intent.getStringExtra(EXTRA_ROOM_CHAT_SECRET)
+            )
+        }
+
         if (!videoUriStr.isNullOrEmpty()) {
             prefs.saveLastPlayed(videoTitle, videoUriStr, isWeb = false)
-            playerManager.playMedia(Uri.parse(videoUriStr), title = videoTitle)
+            val startPositionMs = intent.getLongExtra(EXTRA_START_POSITION_MS, 0L)
+            playerManager.playMedia(Uri.parse(videoUriStr), title = videoTitle, startPositionMs = startPositionMs)
+            if (intent.getBooleanExtra(EXTRA_ENTER_PIP_ON_READY, false)) {
+                startEnterPipWhenReady()
+            }
         } else {
             Toast.makeText(this, "No se proporcionó una URL de video válida", Toast.LENGTH_SHORT).show()
             finish()
@@ -418,6 +472,7 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
 
     override fun onDestroy() {
         super.onDestroy()
+        pipOnReadyHandler.removeCallbacksAndMessages(null)
         hideFeedbackHandler.removeCallbacksAndMessages(null)
         hideControlsHandler.removeCallbacksAndMessages(null)
         koalaSyncClient.disconnect()

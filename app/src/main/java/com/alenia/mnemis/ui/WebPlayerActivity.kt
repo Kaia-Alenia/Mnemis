@@ -2,6 +2,7 @@ package com.alenia.mnemis.ui
 
 import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.os.Build
@@ -27,10 +28,16 @@ import com.alenia.mnemis.plugin.DynamicPluginManager
 import com.alenia.mnemis.plugin.MnemisPluginRegistry
 import com.alenia.mnemis.playback.PlaybackService
 import com.alenia.mnemis.prefs.MnemisPreferences
+import com.alenia.mnemis.resolver.MnemisMediaResolver
 import com.alenia.mnemis.sync.KoalaSyncClient
 import com.alenia.mnemis.sync.KoalaSyncWebBridge
 import com.alenia.mnemis.sync.WebAdBlocker
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * WebView-based player with injected KoalaSync plugin script for web streaming platforms.
@@ -44,14 +51,28 @@ import kotlinx.coroutines.launch
  * huge black box instead of the video. That override is reverted here:
  * watching in fullscreen must never break to fix PiP.
  *
- * PiP: when entering PiP the fullscreen custom view is LEFT SHOWING.
- * v1.0.4 hid it first and v1.0.5 hid it after entering PiP; both destroyed
- * the video surface and left the PiP window black. Leaving the custom view
- * alone keeps the playing video surface in the PiP window; on PiP exit the
- * user is still in fullscreen, which is seamless. The video surface is
- * only torn down when the user explicitly exits fullscreen (Back button or
- * the player's exit control), and then [resumeVideo] restarts inline
- * playback.
+ * PiP: for non-YouTube platforms the fullscreen custom view is LEFT
+ * SHOWING when entering PiP (v1.0.4 hid it first and v1.0.5 hid it after
+ * entering PiP; both destroyed the video surface and left the PiP window
+ * black). YouTube is different: PiP does NOT work on YouTube in a WebView
+ * at all -- all four approaches failed on YouTube specifically (Josue:
+ * "Todo literal el pip no sirve en yotube"), while other platforms work.
+ * YouTube's #movie_player, its own fullscreen handling and its
+ * visibilitychange pause behavior make the WebView video surface
+ * unusable for PiP.
+ *
+ * So for YouTube videos, PiP hands playback over to the native Media3
+ * PlayerActivity with a direct stream URL resolved via
+ * MnemisMediaResolver (InnerTube API), which has proper PiP support.
+ * The stream URL is pre-resolved in the background while the video plays
+ * (auto-PiP on Home cannot wait for a network resolve: by the time it
+ * finished, the app would already be in the background and the activity
+ * launch would be blocked), and the playback position is polled every 2s
+ * so the native player resumes where the WebView video was. If no stream
+ * URL can be resolved (YouTube changed its API, age-restricted video,
+ * ...), PiP falls back to the WebView path. If the user is in a KoalaSync
+ * room, the room credentials are passed to the native player so it
+ * rejoins the same room.
  */
 class WebPlayerActivity : AppCompatActivity() {
 
@@ -68,6 +89,21 @@ class WebPlayerActivity : AppCompatActivity() {
     private var customViewCallback: WebChromeClient.CustomViewCallback? = null
     private var currentPageUrl: String = ""
     private var isInPipMode: Boolean = false
+
+    // YouTube PiP handover state (see class KDoc).
+    private var cachedYouTubeVideoId: String? = null
+    private var cachedYouTubeStreamUrl: String? = null
+    private var resolvingYouTubeVideoId: String? = null
+    private var latestPositionMs: Long = 0L
+    private var snapshotPollJob: Job? = null
+    private var pipHandoverInProgress: Boolean = false
+
+    // Room credentials, remembered from the join dialog so a YouTube PiP
+    // handover can rejoin the same room from the native player.
+    private var activeRoomId: String? = null
+    private var activeRoomUsername: String? = null
+    private var activeRoomPassword: String? = null
+    private var activeRoomChatSecret: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +126,16 @@ class WebPlayerActivity : AppCompatActivity() {
         prefs.saveLastPlayed(initialTitle, targetUrl, isWeb = true)
         setupWebView(targetUrl)
         setupControls()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startSnapshotPolling()
+    }
+
+    override fun onPause() {
+        stopSnapshotPolling()
+        super.onPause()
     }
 
     private fun setupSyncAndBridge() {
@@ -180,6 +226,194 @@ class WebPlayerActivity : AppCompatActivity() {
         }
     }
 
+    /** YouTube video ID of the current page, or null when the page is not a YouTube video. */
+    private fun currentYouTubeVideoId(): String? =
+        MnemisMediaResolver.extractYouTubeVideoId(currentPageUrl)
+
+    /**
+     * Pre-resolves the direct stream URL for the current YouTube video in
+     * the background and caches it, so a PiP request (button or Home) can
+     * hand over to the native player instantly. Auto-PiP on Home cannot
+     * wait for a network resolve: by the time it finished, the app would
+     * already be in the background and the activity launch would be
+     * blocked. Resolving early while the video plays avoids that.
+     * Only one resolve runs per video ID; a failed resolve simply leaves
+     * the cache empty and PiP falls back to the WebView behavior.
+     */
+    private fun maybePreResolveYouTubeStream() {
+        val videoId = currentYouTubeVideoId() ?: return
+        if (videoId == cachedYouTubeVideoId) return
+        if (videoId == resolvingYouTubeVideoId) return
+        // New video: drop the old stream URL and position.
+        cachedYouTubeVideoId = null
+        cachedYouTubeStreamUrl = null
+        latestPositionMs = 0L
+        resolvingYouTubeVideoId = videoId
+        val pageUrl = currentPageUrl
+        lifecycleScope.launch(Dispatchers.IO) {
+            val resolved = try {
+                MnemisMediaResolver.resolve(pageUrl)
+            } catch (_: Exception) {
+                null
+            }
+            withContext(Dispatchers.Main) {
+                if (resolvingYouTubeVideoId != videoId) return@withContext
+                resolvingYouTubeVideoId = null
+                if (resolved != null && resolved != pageUrl.trim() && currentYouTubeVideoId() == videoId) {
+                    cachedYouTubeVideoId = videoId
+                    cachedYouTubeStreamUrl = resolved
+                }
+            }
+        }
+    }
+
+    /**
+     * Keeps the current playback position fresh (at most ~2s stale) while
+     * a YouTube video plays, so the native player can resume at the right
+     * place on handover. The bridge only reports position on play/pause/
+     * seek events, which can be minutes stale mid-playback; a live JS
+     * query at handover time is too slow for auto-PiP on Home.
+     */
+    private fun startSnapshotPolling() {
+        snapshotPollJob?.cancel()
+        snapshotPollJob = lifecycleScope.launch {
+            while (isActive) {
+                delay(2000)
+                try {
+                    if (currentYouTubeVideoId() != null && webBridge.isVideoPlaying()) {
+                        val snap = webBridge.getLatestSnapshot()
+                        latestPositionMs = (snap.currentTimeSeconds * 1000.0).toLong().coerceAtLeast(0L)
+                    }
+                } catch (_: Exception) {
+                    // Polling is best-effort; a failed query just keeps the last position.
+                }
+            }
+        }
+    }
+
+    private fun stopSnapshotPolling() {
+        snapshotPollJob?.cancel()
+        snapshotPollJob = null
+    }
+
+    /**
+     * Hands a YouTube video over to the native Media3 player and finishes
+     * this activity. The native player starts at the last known position
+     * and enters PiP as soon as it is playing, so the user ends up in a
+     * PiP window with the video rendering from ExoPlayer instead of the
+     * WebView surface that YouTube breaks. If the user is in a KoalaSync
+     * room, the room credentials are passed along so the native player
+     * rejoins the same room (the old client disconnects when this activity
+     * finishes; peers briefly see one peer leave and another join).
+     */
+    private fun launchNativePlayerForYouTube(streamUrl: String) {
+        val title = binding.tvWebTitle.text?.toString() ?: currentPageUrl
+        val intent = Intent(this, PlayerActivity::class.java).apply {
+            putExtra(PlayerActivity.EXTRA_VIDEO_URI, streamUrl)
+            putExtra(PlayerActivity.EXTRA_VIDEO_TITLE, title)
+            putExtra(PlayerActivity.EXTRA_START_POSITION_MS, latestPositionMs)
+            putExtra(PlayerActivity.EXTRA_ENTER_PIP_ON_READY, true)
+            val roomState = koalaSyncClient.roomState.value
+            if (roomState.connectionState != KoalaSyncClient.ConnectionState.DISCONNECTED && activeRoomId != null) {
+                putExtra(PlayerActivity.EXTRA_ROOM_ID, activeRoomId)
+                putExtra(PlayerActivity.EXTRA_ROOM_USERNAME, activeRoomUsername)
+                putExtra(PlayerActivity.EXTRA_ROOM_PASSWORD, activeRoomPassword)
+                putExtra(
+                    PlayerActivity.EXTRA_ROOM_CHAT_SECRET,
+                    koalaSyncClient.getActiveChatSecret() ?: activeRoomChatSecret
+                )
+            }
+        }
+        startActivity(intent)
+        finish()
+    }
+
+    /**
+     * Handles a PiP request, from the PiP button ([fromUserTap] = true) or
+     * from auto-PiP on Home ([fromUserTap] = false).
+     *
+     * YouTube is special: PiP does NOT work on YouTube in a WebView at
+     * all (v1.0.4 hide-first, v1.0.5 hide-after, v1.0.6 in-app fullscreen
+     * and v1.0.7 leave-custom-view-showing all failed on YouTube, while
+     * other platforms work). For YouTube videos, PiP hands playback over
+     * to the native Media3 player instead, which has proper PiP support.
+     * The hand over needs a resolved direct stream URL: it is pre-resolved
+     * in the background while the video plays, so the common case is
+     * instant. The button tap runs in the foreground, so it can resolve
+     * on demand and wait; auto-PiP on Home cannot wait (the app is
+     * already backgrounding), so it only uses the synchronous fast path
+     * and otherwise falls back to WebView PiP.
+     */
+    private fun onPipRequested(fromUserTap: Boolean) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            if (fromUserTap) {
+                Toast.makeText(this, "PiP no compatible con esta versión de Android", Toast.LENGTH_SHORT).show()
+            }
+            return
+        }
+        if (isInPipMode) return
+
+        val videoId = currentYouTubeVideoId()
+        if (videoId != null) {
+            val cached = if (cachedYouTubeVideoId == videoId) cachedYouTubeStreamUrl else null
+            if (cached != null) {
+                launchNativePlayerForYouTube(cached)
+                return
+            }
+            if (fromUserTap && !pipHandoverInProgress) {
+                pipHandoverInProgress = true
+                Toast.makeText(this, "Preparando PiP…", Toast.LENGTH_SHORT).show()
+                val pageUrl = currentPageUrl
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val resolved = try {
+                        MnemisMediaResolver.resolve(pageUrl)
+                    } catch (_: Exception) {
+                        null
+                    }
+                    withContext(Dispatchers.Main) {
+                        pipHandoverInProgress = false
+                        if (isFinishing || isDestroyed) return@withContext
+                        if (resolved != null && resolved != pageUrl.trim() && currentYouTubeVideoId() == videoId) {
+                            cachedYouTubeVideoId = videoId
+                            cachedYouTubeStreamUrl = resolved
+                            launchNativePlayerForYouTube(resolved)
+                        } else {
+                            Toast.makeText(
+                                this@WebPlayerActivity,
+                                "No se pudo preparar el video para PiP",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            enterWebViewPip()
+                        }
+                    }
+                }
+                return
+            }
+            // Auto-PiP with nothing cached yet (video just started): the
+            // pre-resolve normally fills the cache while the video plays.
+            // Fall back to WebView PiP; it is known not to work on
+            // YouTube, but it is better than doing nothing.
+            enterWebViewPip()
+            return
+        }
+
+        // Not a YouTube video: WebView PiP as before.
+        enterWebViewPip()
+    }
+
+    /**
+     * The plain WebView PiP path (fullscreen custom view left showing).
+     * Works for non-YouTube platforms; kept as the fallback for YouTube
+     * when no direct stream URL could be resolved.
+     */
+    private fun enterWebViewPip() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || isInPipMode) return
+        val params = PictureInPictureParams.Builder()
+            .setAspectRatio(Rational(16, 9))
+            .build()
+        enterPictureInPictureMode(params)
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView(url: String) {
         binding.webViewPlayer.apply {
@@ -214,6 +448,7 @@ class WebPlayerActivity : AppCompatActivity() {
                     if (!url.isNullOrBlank()) {
                         currentPageUrl = url
                     }
+                    maybePreResolveYouTubeStream()
                     if (prefs.adBlockEnabled) {
                         webBridge.injectEarlyAdBlock()
                     }
@@ -223,6 +458,7 @@ class WebPlayerActivity : AppCompatActivity() {
                     super.onPageFinished(view, loadedUrl)
                     val activeUrl = loadedUrl ?: currentPageUrl
                     currentPageUrl = activeUrl
+                    maybePreResolveYouTubeStream()
                     if (prefs.adBlockEnabled) {
                         webBridge.injectEarlyAdBlock()
                     }
@@ -241,6 +477,7 @@ class WebPlayerActivity : AppCompatActivity() {
                     super.doUpdateVisitedHistory(view, url, isReload)
                     val activeUrl = url ?: currentPageUrl
                     currentPageUrl = activeUrl
+                    maybePreResolveYouTubeStream()
                     injectMatchingWebPlugins(activeUrl)
                     val isYouTube = activeUrl.contains("youtube.com", ignoreCase = true) ||
                         activeUrl.contains("youtu.be", ignoreCase = true)
@@ -313,7 +550,7 @@ class WebPlayerActivity : AppCompatActivity() {
         }
 
         binding.btnWebPip.setOnClickListener {
-            enterPipMode()
+            onPipRequested(fromUserTap = true)
         }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -331,31 +568,6 @@ class WebPlayerActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    /**
-     * Enters picture-in-picture.
-     *
-     * The fullscreen custom view is deliberately LEFT SHOWING when entering
-     * PiP. v1.0.4 hid it first and v1.0.5 hid it after entering PiP; both
-     * destroyed the video surface and left the PiP window black. Leaving
-     * the custom view alone keeps the playing video surface in the PiP
-     * window. On PiP exit the user is still in fullscreen, which is
-     * seamless -- Back or the player's exit control leaves fullscreen and
-     * [resumeVideo] restarts inline playback. From inline mode there is
-     * nothing to hide either: PiP captures the activity window with the
-     * video in the page.
-     */
-    private fun enterPipMode() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            Toast.makeText(this, "PiP no compatible con esta versión de Android", Toast.LENGTH_SHORT).show()
-            return
-        }
-        if (isInPipMode) return
-        val params = PictureInPictureParams.Builder()
-            .setAspectRatio(Rational(16, 9))
-            .build()
-        enterPictureInPictureMode(params)
     }
 
     /**
@@ -380,11 +592,13 @@ class WebPlayerActivity : AppCompatActivity() {
 
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
-        // Auto-PiP: works from native fullscreen too, because enterPipMode
-        // leaves the fullscreen custom view showing and enters PiP
-        // immediately while the activity is still resumed.
+        // Auto-PiP: works from native fullscreen too, because
+        // enterWebViewPip leaves the fullscreen custom view showing and
+        // enters PiP immediately while the activity is still resumed.
+        // For YouTube videos the handover to the native player uses the
+        // pre-resolved stream URL (see onPipRequested).
         if (webBridge.isVideoPlaying()) {
-            enterPipMode()
+            onPipRequested(fromUserTap = false)
         }
     }
 
@@ -444,6 +658,13 @@ class WebPlayerActivity : AppCompatActivity() {
             val password = dialogBinding.etRoomPassword.text?.toString()?.ifEmpty { null }
             val chatSecret = dialogBinding.etChatSecret.text?.toString()?.trim()?.ifEmpty { null }
 
+            // Remember the credentials so a YouTube PiP handover can
+            // rejoin the same room from the native player.
+            activeRoomId = roomId
+            activeRoomUsername = username
+            activeRoomPassword = password
+            activeRoomChatSecret = chatSecret
+
             koalaSyncClient.connect(
                 roomId = roomId,
                 username = username,
@@ -459,6 +680,7 @@ class WebPlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        stopSnapshotPolling()
         PlaybackService.stop(this)
         koalaSyncClient.disconnect()
         binding.webViewPlayer.destroy()
