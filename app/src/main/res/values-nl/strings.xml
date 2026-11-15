@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Mnemis</string>
-    <string name="title_videos">Mijn video's</string>
+    <string name="title_videos">Mijn video\'s</string>
     <string name="title_streams">Link afspelen</string>
     <string name="open_link">Video-URL openen</string>
     <string name="enter_url_hint">Plak een YouTube-, Google Drive- of MP4/HLS-link…</string>
@@ -8,12 +8,12 @@
     <string name="cancel">Annuleren</string>
     <string name="resolving_link">Link wordt opgelost met Mnemis Resolver…</string>
     <string name="error_resolving">Videolink kon niet worden opgelost</string>
-    <string name="permission_required">Toestemming is vereist om video's op het apparaat te lezen</string>
+    <string name="permission_required">Toestemming is vereist om video\'s op het apparaat te lezen</string>
     <string name="grant_permission">Toestemming geven</string>
-    <string name="no_videos_found">Geen video's gevonden op het apparaat</string>
+    <string name="no_videos_found">Geen video\'s gevonden op het apparaat</string>
 
     <string name="nav_home">Home</string>
-    <string name="nav_videos">Mijn video's</string>
+    <string name="nav_videos">Mijn video\'s</string>
     <string name="nav_web">Web / Streaming</string>
     <string name="nav_plugins">Plug-ins</string>
     <string name="nav_downloads">Downloads</string>
@@ -76,6 +76,6 @@
 
     <plurals name="video_count">
         <item quantity="one">%d video</item>
-        <item quantity="other">%d video's</item>
+        <item quantity="other">%d video\'s</item>
     </plurals>
 </resources>

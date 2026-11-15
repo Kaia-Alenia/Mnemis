@@ -8,7 +8,7 @@
     <string name="cancel">Annulla</string>
     <string name="resolving_link">Risoluzione del link con Mnemis Resolver…</string>
     <string name="error_resolving">Impossibile risolvere il link video</string>
-    <string name="permission_required">È necessaria l'autorizzazione per leggere i video del dispositivo</string>
+    <string name="permission_required">È necessaria l\'autorizzazione per leggere i video del dispositivo</string>
     <string name="grant_permission">Concedi autorizzazione</string>
     <string name="no_videos_found">Nessun video trovato sul dispositivo</string>
 
@@ -53,8 +53,8 @@
     <string name="updater_available_title">Nuova versione %1$s disponibile</string>
     <string name="updater_default_notes">Una nuova versione di Mnemis è disponibile su GitHub.</string>
     <string name="updater_download_action">Scarica</string>
-    <string name="updater_downloading">Download dell'aggiornamento in corso…</string>
-    <string name="updater_download_failed">Impossibile scaricare l'aggiornamento</string>
+    <string name="updater_downloading">Download dell\'aggiornamento in corso…</string>
+    <string name="updater_download_failed">Impossibile scaricare l\'aggiornamento</string>
     <string name="updater_install_prompt">Installa aggiornamento</string>
     <string name="updater_install_conflict_title">Impossibile installare l’aggiornamento</string>
     <string name="updater_install_conflict_message">Questo aggiornamento è firmato con una chiave diversa rispetto all’app Mnemis installata su questo dispositivo. Disinstalla Mnemis una volta e poi installa la nuova versione.</string>

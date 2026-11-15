@@ -2,7 +2,7 @@
     <string name="app_name">Mnemis</string>
     <string name="title_videos">Videolarım</string>
     <string name="title_streams">Bağlantıyı Oynat</string>
-    <string name="open_link">Video URL'si Aç</string>
+    <string name="open_link">Video URL\'si Aç</string>
     <string name="enter_url_hint">YouTube, Google Drive veya MP4/HLS bağlantısı yapıştırın…</string>
     <string name="play">Oynat</string>
     <string name="cancel">İptal</string>
@@ -38,9 +38,9 @@
     <string name="plugin_desc_subtitles">Harici SRT/VTT altyazı parçalarını yüklemek için isteğe bağlı modül.</string>
     <string name="plugins_subtitle">Dinamik modülleri etkinleştirin, arayın veya yükleyin.</string>
     <string name="plugins_install_url">URL Yükle</string>
-    <string name="plugins_url_hint">Eklenti bildirim JSON URL'si (https://…)</string>
+    <string name="plugins_url_hint">Eklenti bildirim JSON URL\'si (https://…)</string>
     <string name="plugins_install_action">Yükle</string>
-    <string name="plugins_url_invalid">Geçerli bir HTTP/HTTPS URL'si girin</string>
+    <string name="plugins_url_invalid">Geçerli bir HTTP/HTTPS URL\'si girin</string>
     <string name="plugins_install_success">%1$s eklentisi yüklendi</string>
     <string name="plugins_install_failed">Eklenti yüklenemedi: %1$s</string>
 
@@ -51,7 +51,7 @@
     <string name="updater_up_to_date">Mnemis güncel</string>
     <string name="updater_check_failed">Güncellemeler denetlenemedi</string>
     <string name="updater_available_title">Yeni sürüm %1$s kullanılabilir</string>
-    <string name="updater_default_notes">GitHub'da yeni bir Mnemis sürümü mevcut.</string>
+    <string name="updater_default_notes">GitHub\'da yeni bir Mnemis sürümü mevcut.</string>
     <string name="updater_download_action">İndir</string>
     <string name="updater_downloading">Güncelleme indiriliyor…</string>
     <string name="updater_download_failed">Güncelleme indirilemedi</string>
