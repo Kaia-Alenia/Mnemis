@@ -78,4 +78,9 @@
         <item quantity="one">%d video</item>
         <item quantity="other">%d video</item>
     </plurals>
+    <string name="pip_button">Picture in Picture</string>
+    <string name="sync_connecting">Connessione alla stanza...</string>
+    <string name="playback_channel_name">Riproduzione</string>
+    <string name="playback_notification_text">Riproduzione in background</string>
+    <string name="playback_stop">Interrompi</string>
 </resources>

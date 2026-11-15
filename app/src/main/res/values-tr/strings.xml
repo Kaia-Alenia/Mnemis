@@ -78,4 +78,9 @@
         <item quantity="one">%d video</item>
         <item quantity="other">%d video</item>
     </plurals>
+    <string name="pip_button">Resim içinde resim</string>
+    <string name="sync_connecting">Odaya bağlanılıyor...</string>
+    <string name="playback_channel_name">Oynatma</string>
+    <string name="playback_notification_text">Arka planda oynatılıyor</string>
+    <string name="playback_stop">Durdur</string>
 </resources>

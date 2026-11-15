@@ -68,7 +68,48 @@
             android:contentDescription="KoalaSync"
             android:src="@drawable/ic_sync"
             app:tint="@color/white" />
+
+        <ImageButton
+            android:id="@+id/btnWebPip"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/pip_button"
+            android:src="@drawable/ic_pip"
+            app:tint="@color/white" />
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/layoutConnectingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/pbConnecting"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:indeterminate="true" />
+
+            <TextView
+                android:id="@+id/tvConnectingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/sync_connecting"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </FrameLayout>
 
 </FrameLayout>
 

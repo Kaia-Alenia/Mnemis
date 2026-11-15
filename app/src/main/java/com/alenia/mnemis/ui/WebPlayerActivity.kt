@@ -1,8 +1,12 @@
 package com.alenia.mnemis.ui
 
 import android.annotation.SuppressLint
+import android.app.PictureInPictureParams
+import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
+import android.util.Rational
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
@@ -21,6 +25,7 @@ import com.alenia.mnemis.databinding.ActivityWebPlayerBinding
 import com.alenia.mnemis.databinding.DialogKoalasyncBinding
 import com.alenia.mnemis.plugin.DynamicPluginManager
 import com.alenia.mnemis.plugin.MnemisPluginRegistry
+import com.alenia.mnemis.playback.PlaybackService
 import com.alenia.mnemis.prefs.MnemisPreferences
 import com.alenia.mnemis.sync.KoalaSyncClient
 import com.alenia.mnemis.sync.KoalaSyncWebBridge
@@ -130,6 +135,16 @@ class WebPlayerActivity : AppCompatActivity() {
                     View.VISIBLE
                 } else {
                     View.GONE
+                }
+                binding.layoutConnectingOverlay.visibility = if (state.connectionState == KoalaSyncClient.ConnectionState.CONNECTING) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+                if (state.connectionState == KoalaSyncClient.ConnectionState.CONNECTED) {
+                    PlaybackService.start(this@WebPlayerActivity, binding.tvWebTitle.text?.toString())
+                } else if (state.connectionState == KoalaSyncClient.ConnectionState.DISCONNECTED) {
+                    PlaybackService.stop(this@WebPlayerActivity)
                 }
             }
         }
@@ -263,6 +278,10 @@ class WebPlayerActivity : AppCompatActivity() {
             showKoalaSyncDialog()
         }
 
+        binding.btnWebPip.setOnClickListener {
+            enterPipMode()
+        }
+
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 when {
@@ -278,6 +297,32 @@ class WebPlayerActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun enterPipMode() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            Toast.makeText(this, "PiP no compatible con esta versión de Android", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (customView != null) {
+            binding.webViewPlayer.webChromeClient?.onHideCustomView()
+        }
+        val params = PictureInPictureParams.Builder()
+            .setAspectRatio(Rational(16, 9))
+            .build()
+        enterPictureInPictureMode(params)
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        if (webBridge.isVideoPlaying()) {
+            enterPipMode()
+        }
+    }
+
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        binding.webTopBar.visibility = if (isInPictureInPictureMode) View.GONE else View.VISIBLE
     }
 
     private fun showKoalaSyncDialog() {
@@ -332,6 +377,7 @@ class WebPlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        PlaybackService.stop(this)
         koalaSyncClient.disconnect()
         binding.webViewPlayer.destroy()
     }

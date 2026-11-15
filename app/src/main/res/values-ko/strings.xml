@@ -78,4 +78,9 @@
         <item quantity="one">%d개의 동영상</item>
         <item quantity="other">%d개의 동영상</item>
     </plurals>
+    <string name="pip_button">화면 속 화면</string>
+    <string name="sync_connecting">방에 연결 중...</string>
+    <string name="playback_channel_name">재생</string>
+    <string name="playback_notification_text">백그라운드에서 재생 중</string>
+    <string name="playback_stop">정지</string>
 </resources>

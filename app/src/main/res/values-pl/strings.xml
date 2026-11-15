@@ -80,4 +80,9 @@
         <item quantity="many">%d filmów</item>
         <item quantity="other">%d filmu</item>
     </plurals>
+    <string name="pip_button">Obraz w obrazie</string>
+    <string name="sync_connecting">Łączenie z pokojem...</string>
+    <string name="playback_channel_name">Odtwarzanie</string>
+    <string name="playback_notification_text">Odtwarzanie w tle</string>
+    <string name="playback_stop">Zatrzymaj</string>
 </resources>

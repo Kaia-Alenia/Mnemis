@@ -25,6 +25,7 @@ import com.alenia.mnemis.databinding.ActivityPlayerBinding
 import com.alenia.mnemis.databinding.DialogKoalasyncBinding
 import com.alenia.mnemis.player.MnemisPlayerManager
 import com.alenia.mnemis.player.PlayerGestureHelper
+import com.alenia.mnemis.playback.PlaybackService
 import com.alenia.mnemis.prefs.MnemisPreferences
 import com.alenia.mnemis.sync.KoalaSyncClient
 import kotlinx.coroutines.Dispatchers
@@ -304,10 +305,12 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
         playerManager.setLocalPlaybackListener(object : MnemisPlayerManager.LocalPlaybackListener {
             override fun onLocalPlay(positionMs: Long) {
                 koalaSyncClient.sendPlay(positionMs / 1000.0)
+                updatePlaybackService()
             }
 
             override fun onLocalPause(positionMs: Long) {
                 koalaSyncClient.sendPause(positionMs / 1000.0)
+                updatePlaybackService()
             }
 
             override fun onLocalSeek(positionMs: Long) {
@@ -334,7 +337,29 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
                 } else {
                     View.GONE
                 }
+                binding.layoutConnectingOverlay.visibility = if (state.connectionState == KoalaSyncClient.ConnectionState.CONNECTING) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+                updatePlaybackService()
             }
+        }
+    }
+
+    /**
+     * Keeps the foreground playback service running while media is playing
+     * or a KoalaSync room is connected, so leaving the app does not stop
+     * playback or drop the room. Stops it otherwise.
+     */
+    private fun updatePlaybackService() {
+        val playing = playerManager.exoPlayer?.isPlaying == true
+        val connected = koalaSyncClient.roomState.value.connectionState ==
+            KoalaSyncClient.ConnectionState.CONNECTED
+        if (playing || connected) {
+            PlaybackService.start(this, currentMediaTitle)
+        } else {
+            PlaybackService.stop(this)
         }
     }
 
@@ -397,6 +422,7 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
         hideControlsHandler.removeCallbacksAndMessages(null)
         koalaSyncClient.disconnect()
         playerManager.release()
+        PlaybackService.stop(this)
     }
 }
 
