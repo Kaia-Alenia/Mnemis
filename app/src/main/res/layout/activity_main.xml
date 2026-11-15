@@ -552,8 +552,9 @@
                         android:text="Bloquear anuncios en WebView"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
-                        app:thumbTint="@color/white"
-                        app:trackTint="@color/switch_track_tint" />
+                        app:thumbTint="@color/switch_thumb_tint"
+                        app:trackTint="@color/switch_track_tint"
+                        app:useMaterialThemeColors="false" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switchSettingsKoalaSync"
@@ -563,8 +564,9 @@
                         android:text="Inyectar plugin KoalaSync automáticamente"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
-                        app:thumbTint="@color/white"
-                        app:trackTint="@color/switch_track_tint" />
+                        app:thumbTint="@color/switch_thumb_tint"
+                        app:trackTint="@color/switch_track_tint"
+                        app:useMaterialThemeColors="false" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSaveSettings"
