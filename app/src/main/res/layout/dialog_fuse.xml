@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/surface_dark">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Header Fuse Branding -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="◈ Alenia Fuse"
+                android:textColor="@color/teal_200"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_duration_badge"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:text="v2.0.7"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvFuseFileName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="middle"
+            android:maxLines="1"
+            android:text="video.mp4"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <!-- Ficha técnica / Inspector Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            app:cardBackgroundColor="@color/surface_card"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/divider_subtle"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inspección técnica (Media Info)"
+                    android:textColor="@color/teal_200"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvFuseInfoDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:lineSpacingExtra="3dp"
+                    android:text="Cargando detalles..."
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Selector de Acción: Comprimir / Convertir -->
+        <RadioGroup
+            android:id="@+id/rgFuseAction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbActionCompress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Comprimir"
+                android:textColor="@color/text_primary" />
+
+            <RadioButton
+                android:id="@+id/rbActionConvert"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Convertir / Remux"
+                android:textColor="@color/text_primary" />
+        </RadioGroup>
+
+        <!-- Panel de Compresión -->
+        <LinearLayout
+            android:id="@+id/layoutCompressOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Perfil de compresión inteligente:"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <RadioGroup
+                android:id="@+id/rgCompressProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
+
+                <RadioButton
+                    android:id="@+id/rbProfileBalanced"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Equilibrada (Recomendado — balance óptimo)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp" />
+
+                <RadioButton
+                    android:id="@+id/rbProfileFast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rápida (Hardware H.264 acelerado)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp" />
+
+                <RadioButton
+                    android:id="@+id/rbProfileHigh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Máxima (Ajuste 720p para mínimo peso)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp" />
+
+                <RadioButton
+                    android:id="@+id/rbProfileTargetSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tamaño objetivo en MB (Discord, etc.)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp" />
+            </RadioGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilTargetSizeMb"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Tamaño deseado en MB (ej. 15)"
+                android:visibility="gone"
+                app:boxStrokeColor="@color/teal_200"
+                app:hintTextColor="@color/teal_200">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etTargetSizeMb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:text="15"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!-- Panel de Conversión -->
+        <LinearLayout
+            android:id="@+id/layoutConvertOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Formato de salida:"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <RadioGroup
+                android:id="@+id/rgConvertFormat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
+
+                <RadioButton
+                    android:id="@+id/rbFormatMp4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="MP4 (Universal H.264 + AAC)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp" />
+
+                <RadioButton
+                    android:id="@+id/rbFormatWebm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="WebM (VP9 + Opus)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp" />
+
+                <RadioButton
+                    android:id="@+id/rbFormatAudioAac"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Extraer sólo audio (M4A / AAC)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp" />
+            </RadioGroup>
+
+            <CheckBox
+                android:id="@+id/cbRemuxOnly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:checked="true"
+                android:text="Remux rápido sin re-codificar (si los códecs son compatibles)"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Estado de progreso -->
+        <LinearLayout
+            android:id="@+id/layoutFuseProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvFuseStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Procesando con Alenia Fuse..."
+                android:textColor="@color/teal_200"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/progressBarFuse"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_marginTop="8dp"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="0"
+                android:progressTint="@color/teal_200" />
+
+            <TextView
+                android:id="@+id/tvFusePercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="4dp"
+                android:text="0%"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Botones de Acción -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelFuse"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cerrar"
+                android:textColor="@color/text_secondary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnStartFuse"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/teal_200"
+                android:text="Comenzar"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

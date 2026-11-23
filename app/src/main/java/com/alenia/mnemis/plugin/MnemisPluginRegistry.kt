@@ -57,6 +57,7 @@ object MnemisPluginRegistry {
         )
         register(SubtitleLoaderPlugin)
         register(HlsSnifferPlugin)
+        register(com.alenia.mnemis.fuse.FusePlugin)
     }
 
     fun register(plugin: MnemisPlugin) {

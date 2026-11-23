@@ -60,6 +60,17 @@
             app:tint="@color/white" />
 
         <ImageButton
+            android:id="@+id/btnWebSniffer"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Streams detectados"
+            android:src="@drawable/ic_video_library"
+            android:visibility="gone"
+            app:tint="@color/teal_200" />
+
+        <ImageButton
             android:id="@+id/btnWebKoalaSync"
             android:layout_width="48dp"
             android:layout_height="48dp"

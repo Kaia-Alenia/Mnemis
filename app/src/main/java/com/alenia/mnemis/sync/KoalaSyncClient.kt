@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicLong
 class KoalaSyncClient(
     private val serverUrl: String = KoalaSyncProtocol.OFFICIAL_SERVER_URL,
     private val token: String = KoalaSyncProtocol.OFFICIAL_SERVER_TOKEN,
+    val peerId: String = "mnemis-${UUID.randomUUID().toString().replace("-", "").take(8)}",
     private val listener: SyncListener
 ) {
 
@@ -80,8 +81,6 @@ class KoalaSyncClient(
     private val _chatMessages = MutableStateFlow<List<ChatMessage>>(emptyList())
     val chatMessages: StateFlow<List<ChatMessage>> = _chatMessages.asStateFlow()
 
-    val peerId: String = "mnemis-${UUID.randomUUID().toString().take(8)}"
-
     private var webSocket: WebSocket? = null
     private var heartbeatJob: Job? = null
     private var reconnectJob: Job? = null
@@ -98,6 +97,7 @@ class KoalaSyncClient(
     private val lastSeqBySender = ConcurrentHashMap<String, Long>()
     private val activePeers = ConcurrentHashMap.newKeySet<String>()
     private val peerUsernames = ConcurrentHashMap<String, String>()
+    private val peerLastSeen = ConcurrentHashMap<String, Long>()
 
     @Volatile
     private var currentHostPeerId: String? = null
@@ -129,7 +129,7 @@ class KoalaSyncClient(
         activePassword = password
         activeMediaTitle = mediaTitle
         activeChatSecret = chatSecret?.trim()?.takeIf { KoalaSyncChatCrypto.isValidSecret(it) }
-            ?: KoalaSyncChatCrypto.generateChatSecret()
+            ?: KoalaSyncChatCrypto.deriveDefaultSecret(roomId)
         _chatMessages.value = emptyList()
 
         openWebSocket()
@@ -144,6 +144,15 @@ class KoalaSyncClient(
         if (clean.isEmpty() || _roomState.value.connectionState != ConnectionState.CONNECTED) return false
         return try {
             val ciphertext = KoalaSyncChatCrypto.encrypt(clean, roomId, peerId, secret)
+            val localMsg = ChatMessage(
+                id = UUID.randomUUID().toString(),
+                senderId = peerId,
+                senderName = activeUsername?.ifBlank { null } ?: "Tú",
+                text = clean,
+                timestampMs = System.currentTimeMillis(),
+                isOwn = true
+            )
+            _chatMessages.value = (_chatMessages.value + localMsg).takeLast(100)
             sendEvent(KoalaSyncProtocol.Events.CHAT_MESSAGE, KoalaSyncProtocol.buildChatMessagePayload(ciphertext))
             true
         } catch (_: Exception) {
@@ -163,13 +172,20 @@ class KoalaSyncClient(
 
         webSocket?.let { ws ->
             if (clearTargetRoom && _roomState.value.connectionState == ConnectionState.CONNECTED) {
-                ws.send(KoalaSyncProtocol.buildEventFrame(KoalaSyncProtocol.Events.LEAVE_ROOM, JSONObject()))
+                try {
+                    val leavePayload = JSONObject().apply {
+                        put("peerId", peerId)
+                    }
+                    ws.send(KoalaSyncProtocol.buildEventFrame(KoalaSyncProtocol.Events.LEAVE_ROOM, leavePayload))
+                } catch (_: Exception) {}
             }
             ws.close(1000, "Client disconnected")
         }
         webSocket = null
         lastSeqBySender.clear()
         activePeers.clear()
+        peerUsernames.clear()
+        peerLastSeen.clear()
 
         if (clearTargetRoom) {
             _roomState.value = RoomState()
@@ -281,6 +297,9 @@ class KoalaSyncClient(
             KoalaSyncProtocol.Events.ROOM_DATA -> {
                 reconnectAttempt = 0
                 activePeers.clear()
+                peerUsernames.clear()
+                peerLastSeen.clear()
+                val now = System.currentTimeMillis()
                 val peersArray = data.optJSONArray("peers")
                 if (peersArray != null) {
                     for (i in 0 until peersArray.length()) {
@@ -288,6 +307,7 @@ class KoalaSyncClient(
                         val id = peerObj.optString("peerId").orEmpty()
                         if (id.isNotEmpty()) {
                             activePeers.add(id)
+                            peerLastSeen[id] = now
                             val uname = peerObj.optString("username", "").takeIf { it.isNotBlank() && it != "null" }
                             if (uname != null) peerUsernames[id] = uname
                         }
@@ -327,8 +347,10 @@ class KoalaSyncClient(
                     if (status == "left") {
                         activePeers.remove(remotePeerId)
                         peerUsernames.remove(remotePeerId)
+                        peerLastSeen.remove(remotePeerId)
                     } else {
                         activePeers.add(remotePeerId)
+                        peerLastSeen[remotePeerId] = System.currentTimeMillis()
                         val uname = data.optString("username", "").takeIf { it.isNotBlank() && it != "null" }
                         if (uname != null) peerUsernames[remotePeerId] = uname
                     }
@@ -403,6 +425,8 @@ class KoalaSyncClient(
                 val senderId = data.optString("senderId", "")
                 val ciphertext = data.optString("ciphertext", "")
                 if (senderId.isEmpty() || ciphertext.isEmpty()) return
+                if (senderId == peerId) return // Ya fue agregado con eco optimista
+
                 val decrypted = KoalaSyncChatCrypto.decrypt(ciphertext, roomId, senderId, secret) ?: return
                 val msg = ChatMessage(
                     id = data.optString("id", UUID.randomUUID().toString()),
@@ -410,7 +434,7 @@ class KoalaSyncClient(
                     senderName = peerUsernames[senderId] ?: senderId.take(10),
                     text = decrypted,
                     timestampMs = data.optLong("timestamp", System.currentTimeMillis()),
-                    isOwn = senderId == peerId
+                    isOwn = false
                 )
                 _chatMessages.value = (_chatMessages.value + msg).takeLast(100)
             }
@@ -473,6 +497,31 @@ class KoalaSyncClient(
             while (isActive) {
                 delay(KoalaSyncProtocol.HEARTBEAT_INTERVAL_MS)
                 sendLatencyPing()
+
+                // Purgar peers fantasmas que no han enviado heartbeat en >45s (3 heartbeats perdidos)
+                val now = System.currentTimeMillis()
+                val ghostCutoff = now - 45_000L
+                var prunedGhosts = false
+                val staleIds = ArrayList<String>()
+                for (pId in activePeers) {
+                    if (pId != peerId) {
+                        val lastSeen = peerLastSeen[pId]
+                        if (lastSeen != null && lastSeen < ghostCutoff) {
+                            staleIds.add(pId)
+                        }
+                    }
+                }
+                for (staleId in staleIds) {
+                    activePeers.remove(staleId)
+                    peerUsernames.remove(staleId)
+                    peerLastSeen.remove(staleId)
+                    prunedGhosts = true
+                    Log.d(TAG, "Sesión fantasma purgada por inactividad: $staleId")
+                }
+                if (prunedGhosts) {
+                    _roomState.value = _roomState.value.copy(peerCount = activePeers.size.coerceAtLeast(1))
+                }
+
                 val snapshot = snapshotProvider?.invoke() ?: continue
                 val payload = KoalaSyncProtocol.buildPeerStatusPayload(
                     peerId = peerId,

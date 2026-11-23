@@ -77,6 +77,17 @@
                 android:textSize="12sp"
                 tools:text="1920x1080 • 150 MB" />
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnFuse"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Alenia Fuse"
+            android:padding="8dp"
+            android:src="@drawable/ic_extension"
+            app:tint="@color/teal_200" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
 

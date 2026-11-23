@@ -2,6 +2,7 @@ package com.alenia.mnemis.player
 
 import android.content.Context
 import android.net.Uri
+import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
@@ -26,6 +27,8 @@ class MnemisPlayerManager(private val context: Context) {
 
     var exoPlayer: ExoPlayer? = null
         private set
+
+    var onIsPlayingChangedListener: ((Boolean) -> Unit)? = null
 
     private var localPlaybackListener: LocalPlaybackListener? = null
     private var suppressLocalEventsUntilMs: Long = 0L
@@ -57,8 +60,16 @@ class MnemisPlayerManager(private val context: Context) {
         val dataSourceFactory = DefaultDataSource.Factory(context.applicationContext, httpDataSourceFactory)
         val mediaSourceFactory = DefaultMediaSourceFactory(dataSourceFactory)
 
+        val audioAttributes = AudioAttributes.Builder()
+            .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
+            .setUsage(C.USAGE_MEDIA)
+            .build()
+
         exoPlayer = ExoPlayer.Builder(context.applicationContext, renderersFactory)
             .setMediaSourceFactory(mediaSourceFactory)
+            .setAudioAttributes(audioAttributes, true)
+            .setHandleAudioBecomingNoisy(true)
+            .setWakeMode(C.WAKE_MODE_NETWORK)
             .setSeekBackIncrementMs(10000)
             .setSeekForwardIncrementMs(10000)
             .build()
@@ -67,6 +78,10 @@ class MnemisPlayerManager(private val context: Context) {
                 addListener(object : Player.Listener {
                     override fun onPlayerError(error: PlaybackException) {
                         onPlayerError(error)
+                    }
+
+                    override fun onIsPlayingChanged(isPlaying: Boolean) {
+                        onIsPlayingChangedListener?.invoke(isPlaying)
                     }
 
                     override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
@@ -93,6 +108,7 @@ class MnemisPlayerManager(private val context: Context) {
                 })
             }
 
+        activePlayerManager = this
         playerView.player = exoPlayer
     }
 
@@ -208,12 +224,19 @@ class MnemisPlayerManager(private val context: Context) {
     }
 
     fun release() {
+        if (activePlayerManager === this) {
+            activePlayerManager = null
+        }
+        onIsPlayingChangedListener = null
         localPlaybackListener = null
         exoPlayer?.release()
         exoPlayer = null
     }
 
     companion object {
+        @Volatile
+        var activePlayerManager: MnemisPlayerManager? = null
+
         private const val REMOTE_SUPPRESS_WINDOW_MS = 600L
         private const val REMOTE_DRIFT_THRESHOLD_MS = 400L
         private const val DRIFT_CORRECTION_THRESHOLD_MS = 1200L

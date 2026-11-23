@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.util.Rational
 import android.view.View
 import android.view.WindowManager
@@ -46,6 +47,7 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
         const val EXTRA_ROOM_USERNAME = "extra_room_username"
         const val EXTRA_ROOM_PASSWORD = "extra_room_password"
         const val EXTRA_ROOM_CHAT_SECRET = "extra_room_chat_secret"
+        private const val TAG = "PlayerActivity"
     }
 
     private lateinit var binding: ActivityPlayerBinding
@@ -112,6 +114,12 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
         playerManager.initializePlayer(binding.playerView) { error ->
             Toast.makeText(this, "Error de reproducción: ${error.message}", Toast.LENGTH_LONG).show()
         }
+        playerManager.onIsPlayingChangedListener = { _ ->
+            runOnUiThread {
+                updatePipParams()
+                updatePlaybackService()
+            }
+        }
 
         setupKoalaSync()
         setupControls()
@@ -154,6 +162,20 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
             showKoalaSyncDialog()
         }
 
+        binding.btnPlayerFuse.setOnClickListener {
+            val videoUriStr = intent.getStringExtra(EXTRA_VIDEO_URI)
+            if (!videoUriStr.isNullOrEmpty()) {
+                com.alenia.mnemis.fuse.FuseDialogHelper.show(
+                    activity = this,
+                    scope = lifecycleScope,
+                    videoUri = Uri.parse(videoUriStr),
+                    videoTitle = currentMediaTitle
+                )
+            } else {
+                Toast.makeText(this, "No hay medio disponible para procesar con Fuse", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         binding.btnAspectRatio.setOnClickListener {
             currentAspectRatioIndex = (currentAspectRatioIndex + 1) % aspectRatios.size
             binding.playerView.resizeMode = aspectRatios[currentAspectRatioIndex]
@@ -192,13 +214,48 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
         }
     }
 
+    private fun calculateSafeAspectRatio(): Rational {
+        val format = playerManager.exoPlayer?.videoFormat
+        val width = format?.width ?: 16
+        val height = format?.height ?: 9
+        if (width <= 0 || height <= 0) return Rational(16, 9)
+        // Android PiP solo admite ratios entre 1:2.39 (~0.42) y 2.39:1 (2.39)
+        val ratio = (width.toFloat() / height.toFloat()).coerceIn(0.42f, 2.38f)
+        return Rational((ratio * 1000).toInt(), 1000)
+    }
+
+    private fun updatePipParams() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val rational = calculateSafeAspectRatio()
+            val builder = PictureInPictureParams.Builder()
+                .setAspectRatio(rational)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val isPlaying = playerManager.exoPlayer?.isPlaying == true
+                builder.setAutoEnterEnabled(isPlaying)
+                builder.setSeamlessResizeEnabled(true)
+            }
+            try {
+                setPictureInPictureParams(builder.build())
+            } catch (e: Exception) {
+                Log.w(TAG, "Error setting PiP params: ${e.message}")
+            }
+        }
+    }
+
     private fun enterPipMode() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val rational = Rational(16, 9)
+            val rational = calculateSafeAspectRatio()
             val params = PictureInPictureParams.Builder()
                 .setAspectRatio(rational)
-                .build()
-            enterPictureInPictureMode(params)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                params.setAutoEnterEnabled(true)
+                params.setSeamlessResizeEnabled(true)
+            }
+            try {
+                enterPictureInPictureMode(params.build())
+            } catch (e: Exception) {
+                Toast.makeText(this, "No se pudo entrar a PiP: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
         } else {
             Toast.makeText(this, "PiP no compatible con esta versión de Android", Toast.LENGTH_SHORT).show()
         }
@@ -206,8 +263,12 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
 
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
-        if (playerManager.exoPlayer?.isPlaying == true) {
-            enterPipMode()
+        // En Android 12+ (API 31+), setAutoEnterEnabled(true) se encarga de la transición fluida.
+        // En versiones anteriores (Android 8 a 11), invocamos enterPipMode manualmente.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            if (playerManager.exoPlayer?.isPlaying == true) {
+                enterPipMode()
+            }
         }
     }
 
@@ -216,10 +277,13 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
         if (isInPictureInPictureMode) {
             binding.topBar.visibility = View.GONE
             binding.layoutGestureFeedback.visibility = View.GONE
+            binding.gestureTouchView.visibility = View.GONE
             binding.playerView.useController = false
         } else {
             binding.topBar.visibility = View.VISIBLE
+            binding.gestureTouchView.visibility = View.VISIBLE
             binding.playerView.useController = true
+            binding.playerView.requestLayout()
             hideSystemUI()
         }
     }
@@ -302,9 +366,29 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
         controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !isInPictureInPictureMode) {
+            binding.playerView.player = playerManager.exoPlayer
+        }
+        updatePipParams()
+    }
+
     override fun onResume() {
         super.onResume()
         hideSystemUI()
+        updatePipParams()
+        updatePlaybackService()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Si la app pasa a segundo plano o se apaga la pantalla (y no estamos en PiP):
+        // Desvinculamos el PlayerView para que la destrucción del SurfaceView
+        // no detenga la decodificación de audio de fondo.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !isInPictureInPictureMode) {
+            binding.playerView.player = null
+        }
     }
 
     private fun setupKoalaSync() {
@@ -312,6 +396,7 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
         binding.btnKoalaSync.visibility = if (prefs.koalaSyncPluginEnabled) View.VISIBLE else View.GONE
         koalaSyncClient = KoalaSyncClient(
             serverUrl = prefs.relayServerUrl,
+            peerId = prefs.getOrCreatePeerId(),
             listener = object : KoalaSyncClient.SyncListener {
                 override fun onRemotePlay(senderId: String, currentTimeSeconds: Double?) {
                     runOnUiThread {

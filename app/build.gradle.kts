@@ -11,8 +11,8 @@ android {
         applicationId = "com.alenia.mnemis"
         minSdk = 24
         targetSdk = 34
-        versionCode = 46
-        versionName = "1.0.8"
+        versionCode = 47
+        versionName = "1.0.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -78,6 +78,8 @@ dependencies {
     implementation("androidx.media3:media3-exoplayer-hls:$media3Version")
     implementation("androidx.media3:media3-exoplayer-dash:$media3Version")
     implementation("androidx.media3:media3-datasource-okhttp:$media3Version")
+    implementation("androidx.media3:media3-transformer:$media3Version")
+    implementation("androidx.media3:media3-effect:$media3Version")
 
     // Red y Carga de Miniaturas
     implementation("com.squareup.okhttp3:okhttp:4.12.0")

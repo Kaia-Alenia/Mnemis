@@ -62,13 +62,23 @@ class MainActivity : AppCompatActivity() {
         applySearchFilter()
     }
 
-    private val videoAdapter = VideoAdapter { videoItem ->
-        openPlayer(videoItem.uri.toString(), videoItem.title)
-    }
+    private val videoAdapter = VideoAdapter(
+        onVideoClick = { videoItem ->
+            openPlayer(videoItem.uri.toString(), videoItem.title)
+        },
+        onFuseClick = { videoItem ->
+            showFuseDialog(videoItem)
+        }
+    )
 
-    private val downloadsAdapter = VideoAdapter { videoItem ->
-        openPlayer(videoItem.uri.toString(), videoItem.title)
-    }
+    private val downloadsAdapter = VideoAdapter(
+        onVideoClick = { videoItem ->
+            openPlayer(videoItem.uri.toString(), videoItem.title)
+        },
+        onFuseClick = { videoItem ->
+            showFuseDialog(videoItem)
+        }
+    )
 
     private lateinit var pluginAdapter: PluginAdapter
 
@@ -293,6 +303,22 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnQuickTwitch.setOnClickListener {
             openWebPlayer("https://m.twitch.tv", "Twitch")
+        }
+
+        binding.btnQuickCrunchyroll.setOnClickListener {
+            openWebPlayer("https://www.crunchyroll.com", "Crunchyroll")
+        }
+
+        binding.btnQuickKick.setOnClickListener {
+            openWebPlayer("https://kick.com", "Kick")
+        }
+
+        binding.btnQuickDailymotion.setOnClickListener {
+            openWebPlayer("https://www.dailymotion.com", "Dailymotion")
+        }
+
+        binding.btnQuickJellyfin.setOnClickListener {
+            showOpenUrlDialog()
         }
     }
 
@@ -830,18 +856,84 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIncomingIntent(intent)
+    }
+
+    private fun showFuseDialog(videoItem: VideoItem) {
+        com.alenia.mnemis.fuse.FuseDialogHelper.show(
+            activity = this,
+            scope = lifecycleScope,
+            videoUri = videoItem.uri,
+            videoTitle = videoItem.title,
+            onMediaProcessed = {
+                loadLocalVideos()
+            }
+        )
+    }
+
     private fun handleIncomingIntent(intent: Intent?) {
         if (intent == null) return
         val action = intent.action
-        val data = intent.data
 
-        if (Intent.ACTION_VIEW == action && data != null) {
-            val uriStr = data.toString()
-            if (uriStr.startsWith("http://") || uriStr.startsWith("https://")) {
-                openWebPlayer(uriStr, "Web Player")
-            } else {
-                openPlayer(uriStr, "Video")
+        if (Intent.ACTION_VIEW == action) {
+            val data = intent.data
+            if (data != null) {
+                val uriStr = data.toString()
+                if (uriStr.startsWith("http://") || uriStr.startsWith("https://")) {
+                    if (com.alenia.mnemis.plugin.HlsSnifferPlugin.isStreamUrl(uriStr)) {
+                        openPlayer(uriStr, "Stream")
+                    } else {
+                        openWebPlayer(uriStr, "Web Player")
+                    }
+                } else {
+                    openPlayer(uriStr, "Video")
+                }
             }
+        } else if (Intent.ACTION_SEND == action) {
+            val type = intent.type.orEmpty()
+            if (type.startsWith("video/")) {
+                val streamUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
+                } else {
+                    @Suppress("DEPRECATION")
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM)
+                }
+                if (streamUri != null) {
+                    openPlayer(streamUri.toString(), "Video compartido")
+                }
+            } else {
+                val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
+                val url = extractUrlFromSharedText(sharedText)
+                if (url != null) {
+                    if (com.alenia.mnemis.plugin.HlsSnifferPlugin.isStreamUrl(url)) {
+                        openPlayer(url, "Stream compartido")
+                    } else {
+                        openWebPlayer(url, "Web Player")
+                    }
+                } else if (!sharedText.isNullOrBlank()) {
+                    Toast.makeText(this, "Texto recibido: $sharedText", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    companion object {
+        private val URL_REGEX = java.util.regex.Pattern.compile("https?://[\\w\\d:#@%/;$()~_?\\+-=\\\\.&]+")
+
+        fun extractUrlFromSharedText(text: String?): String? {
+            if (text.isNullOrBlank()) return null
+            val matcher = URL_REGEX.matcher(text)
+            if (matcher.find()) {
+                return matcher.group()
+            }
+            val trimmed = text.trim()
+            if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+                return trimmed
+            }
+            return null
         }
     }
 }

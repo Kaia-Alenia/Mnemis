@@ -123,6 +123,17 @@
             android:src="@drawable/ic_sync"
             app:tint="@color/white" />
 
+        <!-- Botón Alenia Fuse (Inspección / Compresión / Conversión) -->
+        <ImageButton
+            android:id="@+id/btnPlayerFuse"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Alenia Fuse"
+            android:src="@drawable/ic_extension"
+            app:tint="@color/teal_200" />
+
         <!-- Botón Cambio Aspect Ratio (Fit / Zoom / Stretch) -->
         <ImageButton
             android:id="@+id/btnAspectRatio"

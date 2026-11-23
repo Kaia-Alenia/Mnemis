@@ -143,6 +143,7 @@ class WebPlayerActivity : AppCompatActivity() {
         binding.btnWebKoalaSync.visibility = if (prefs.koalaSyncPluginEnabled) View.VISIBLE else View.GONE
         koalaSyncClient = KoalaSyncClient(
             serverUrl = prefs.relayServerUrl,
+            peerId = prefs.getOrCreatePeerId(),
             listener = object : KoalaSyncClient.SyncListener {
                 override fun onRemotePlay(senderId: String, currentTimeSeconds: Double?) {
                     runOnUiThread {
@@ -309,6 +310,7 @@ class WebPlayerActivity : AppCompatActivity() {
     private fun launchNativePlayerForYouTube(streamUrl: String) {
         val title = binding.tvWebTitle.text?.toString() ?: currentPageUrl
         val intent = Intent(this, PlayerActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             putExtra(PlayerActivity.EXTRA_VIDEO_URI, streamUrl)
             putExtra(PlayerActivity.EXTRA_VIDEO_TITLE, title)
             putExtra(PlayerActivity.EXTRA_START_POSITION_MS, latestPositionMs)
@@ -408,10 +410,17 @@ class WebPlayerActivity : AppCompatActivity() {
      */
     private fun enterWebViewPip() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || isInPipMode) return
-        val params = PictureInPictureParams.Builder()
-            .setAspectRatio(Rational(16, 9))
-            .build()
-        enterPictureInPictureMode(params)
+        try {
+            val builder = PictureInPictureParams.Builder()
+                .setAspectRatio(Rational(16, 9))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                builder.setAutoEnterEnabled(true)
+                builder.setSeamlessResizeEnabled(true)
+            }
+            enterPictureInPictureMode(builder.build())
+        } catch (_: Exception) {
+            // Ignorar fallo de PiP en dispositivos que no lo soporten en este estado
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -466,6 +475,7 @@ class WebPlayerActivity : AppCompatActivity() {
                     if (prefs.koalaSyncPluginEnabled) {
                         webBridge.injectScript()
                     }
+                    updateSnifferVisibility()
                     val title = view?.title
                     if (!title.isNullOrBlank()) {
                         binding.tvWebTitle.text = title
@@ -479,6 +489,7 @@ class WebPlayerActivity : AppCompatActivity() {
                     currentPageUrl = activeUrl
                     maybePreResolveYouTubeStream()
                     injectMatchingWebPlugins(activeUrl)
+                    updateSnifferVisibility()
                     val isYouTube = activeUrl.contains("youtube.com", ignoreCase = true) ||
                         activeUrl.contains("youtu.be", ignoreCase = true)
                     val allowSpaBridge = !isYouTube || prefs.isPluginEnabled(MnemisPreferences.PLUGIN_YOUTUBE_SPA)
@@ -549,6 +560,27 @@ class WebPlayerActivity : AppCompatActivity() {
             showKoalaSyncDialog()
         }
 
+        binding.btnWebSniffer.setOnClickListener {
+            val streams = com.alenia.mnemis.plugin.HlsSnifferPlugin.getDetectedStreams()
+            if (streams.isEmpty()) {
+                Toast.makeText(this, "No se detectaron streams reproducibles en esta página", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val streamLabels = streams.map { "[${it.kind}] ${it.url.take(55)}…" }.toTypedArray()
+            AlertDialog.Builder(this)
+                .setTitle("Streams directos detectados")
+                .setItems(streamLabels) { _, which ->
+                    val chosen = streams[which]
+                    val playIntent = Intent(this, PlayerActivity::class.java).apply {
+                        putExtra(PlayerActivity.EXTRA_VIDEO_URI, chosen.url)
+                        putExtra(PlayerActivity.EXTRA_VIDEO_TITLE, binding.tvWebTitle.text?.toString() ?: "Stream")
+                    }
+                    startActivity(playIntent)
+                }
+                .setNegativeButton("Cerrar", null)
+                .show()
+        }
+
         binding.btnWebPip.setOnClickListener {
             onPipRequested(fromUserTap = true)
         }
@@ -592,13 +624,10 @@ class WebPlayerActivity : AppCompatActivity() {
 
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
-        // Auto-PiP: works from native fullscreen too, because
-        // enterWebViewPip leaves the fullscreen custom view showing and
-        // enters PiP immediately while the activity is still resumed.
-        // For YouTube videos the handover to the native player uses the
-        // pre-resolved stream URL (see onPipRequested).
         if (webBridge.isVideoPlaying()) {
-            onPipRequested(fromUserTap = false)
+            if (currentYouTubeVideoId() == null || cachedYouTubeStreamUrl != null) {
+                onPipRequested(fromUserTap = false)
+            }
         }
     }
 
@@ -676,6 +705,13 @@ class WebPlayerActivity : AppCompatActivity() {
         }
 
         dialog.show()
+    }
+
+    private fun updateSnifferVisibility() {
+        runOnUiThread {
+            val hasStreams = com.alenia.mnemis.plugin.HlsSnifferPlugin.getDetectedStreams().isNotEmpty()
+            binding.btnWebSniffer.visibility = if (hasStreams) View.VISIBLE else View.GONE
+        }
     }
 
     override fun onDestroy() {

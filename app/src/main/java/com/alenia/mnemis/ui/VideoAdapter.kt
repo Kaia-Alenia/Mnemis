@@ -9,7 +9,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class VideoAdapter(
-    private val onVideoClick: (VideoItem) -> Unit
+    private val onVideoClick: (VideoItem) -> Unit,
+    private val onFuseClick: ((VideoItem) -> Unit)? = null
 ) : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
 
     private val videoList = mutableListOf<VideoItem>()
@@ -50,6 +51,15 @@ class VideoAdapter(
 
             binding.root.setOnClickListener {
                 onVideoClick(item)
+            }
+
+            binding.root.setOnLongClickListener {
+                onFuseClick?.invoke(item)
+                true
+            }
+
+            binding.btnFuse.setOnClickListener {
+                onFuseClick?.invoke(item)
             }
         }
     }

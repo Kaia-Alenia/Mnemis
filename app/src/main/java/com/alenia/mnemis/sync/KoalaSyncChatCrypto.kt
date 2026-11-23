@@ -1,6 +1,7 @@
 package com.alenia.mnemis.sync
 
 import java.nio.ByteBuffer
+import java.security.MessageDigest
 import java.security.SecureRandom
 import javax.crypto.Cipher
 import javax.crypto.Mac
@@ -17,6 +18,8 @@ object KoalaSyncChatCrypto {
     private const val SECRET_BYTES = 16
     private const val IV_BYTES = 12
     private const val GCM_TAG_BITS = 128
+    const val MIN_CIPHERTEXT_BYTES = 29
+    const val MAX_CIPHERTEXT_BYTES = 2028
 
     private val random = SecureRandom()
 
@@ -24,6 +27,18 @@ object KoalaSyncChatCrypto {
         val bytes = ByteArray(SECRET_BYTES)
         random.nextBytes(bytes)
         return encodeBase64Url(bytes)
+    }
+
+    /**
+     * Derives a deterministic shared secret for participants in the same room
+     * who did not specify an explicit custom chat secret.
+     */
+    fun deriveDefaultSecret(roomId: String): String {
+        val md = MessageDigest.getInstance("SHA-256")
+        md.update("KoalaSync-Default-Chat-Secret-v1:".toByteArray(Charsets.UTF_8))
+        val hash = md.digest(roomId.trim().toByteArray(Charsets.UTF_8))
+        val secretBytes = hash.copyOfRange(0, SECRET_BYTES)
+        return encodeBase64Url(secretBytes)
     }
 
     fun isValidSecret(secret: String?): Boolean {
@@ -56,7 +71,7 @@ object KoalaSyncChatCrypto {
     fun decrypt(ciphertextBase64Url: String, roomId: String, senderId: String, secret: String): String? {
         return try {
             val combined = decodeBase64Url(ciphertextBase64Url) ?: return null
-            if (combined.size <= IV_BYTES + 16) return null
+            if (combined.size < MIN_CIPHERTEXT_BYTES || combined.size > MAX_CIPHERTEXT_BYTES) return null
 
             val iv = combined.copyOfRange(0, IV_BYTES)
             val encrypted = combined.copyOfRange(IV_BYTES, combined.size)
@@ -94,50 +109,70 @@ object KoalaSyncChatCrypto {
 
     private const val B64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
 
-    private fun encodeBase64Url(data: ByteArray): String {
-        val out = StringBuilder((data.size * 4 + 2) / 3)
+    fun encodeBase64Url(data: ByteArray): String {
+        val sb = StringBuilder((data.size * 4 + 2) / 3)
         var i = 0
-        while (i < data.size) {
+        val len = data.size
+        while (i < len) {
             val b0 = data[i].toInt() and 0xFF
-            val hasB1 = i + 1 < data.size
-            val b1 = if (hasB1) data[i + 1].toInt() and 0xFF else 0
-            val hasB2 = i + 2 < data.size
-            val b2 = if (hasB2) data[i + 2].toInt() and 0xFF else 0
-
-            out.append(B64_ALPHABET[b0 ushr 2])
-            out.append(B64_ALPHABET[((b0 and 0x03) shl 4) or (b1 ushr 4)])
-            if (hasB1) out.append(B64_ALPHABET[((b1 and 0x0F) shl 2) or (b2 ushr 6)])
-            if (hasB2) out.append(B64_ALPHABET[b2 and 0x3F])
+            sb.append(B64_ALPHABET[b0 ushr 2])
+            if (i + 1 < len) {
+                val b1 = data[i + 1].toInt() and 0xFF
+                sb.append(B64_ALPHABET[((b0 and 0x03) shl 4) or (b1 ushr 4)])
+                if (i + 2 < len) {
+                    val b2 = data[i + 2].toInt() and 0xFF
+                    sb.append(B64_ALPHABET[((b1 and 0x0F) shl 2) or (b2 ushr 6)])
+                    sb.append(B64_ALPHABET[b2 and 0x3F])
+                } else {
+                    sb.append(B64_ALPHABET[(b1 and 0x0F) shl 2])
+                }
+            } else {
+                sb.append(B64_ALPHABET[(b0 and 0x03) shl 4])
+            }
             i += 3
         }
-        return out.toString()
+        return sb.toString()
     }
 
-    private fun decodeBase64Url(input: String): ByteArray? {
+    fun decodeBase64Url(input: String): ByteArray? {
         if (input.isEmpty() || input.length % 4 == 1) return null
-        val values = IntArray(input.length)
-        for (idx in input.indices) {
+        val len = input.length
+        val values = IntArray(len)
+        for (idx in 0 until len) {
             val pos = B64_ALPHABET.indexOf(input[idx])
             if (pos < 0) return null
             values[idx] = pos
         }
-        val out = ByteArray((input.length * 3) / 4)
+        val rem = len % 4
+        val byteLen = (len / 4) * 3 + when (rem) {
+            2 -> 1
+            3 -> 2
+            else -> 0
+        }
+        val out = ByteArray(byteLen)
         var outIdx = 0
         var i = 0
-        while (i < values.size) {
+        while (i < len - rem) {
             val c0 = values[i]
             val c1 = values[i + 1]
+            val c2 = values[i + 2]
+            val c3 = values[i + 3]
             out[outIdx++] = ((c0 shl 2) or (c1 ushr 4)).toByte()
-            if (i + 2 < values.size) {
-                val c2 = values[i + 2]
-                out[outIdx++] = (((c1 and 0x0F) shl 4) or (c2 ushr 2)).toByte()
-                if (i + 3 < values.size) {
-                    val c3 = values[i + 3]
-                    out[outIdx++] = (((c2 and 0x03) shl 6) or c3).toByte()
-                }
-            }
+            out[outIdx++] = (((c1 and 0x0F) shl 4) or (c2 ushr 2)).toByte()
+            out[outIdx++] = (((c2 and 0x03) shl 6) or c3).toByte()
             i += 4
         }
-        return out.copyOf(outIdx)
+        if (rem == 2) {
+            val c0 = values[i]
+            val c1 = values[i + 1]
+            out[outIdx] = ((c0 shl 2) or (c1 ushr 4)).toByte()
+        } else if (rem == 3) {
+            val c0 = values[i]
+            val c1 = values[i + 1]
+            val c2 = values[i + 2]
+            out[outIdx++] = ((c0 shl 2) or (c1 ushr 4)).toByte()
+            out[outIdx] = (((c1 and 0x0F) shl 4) or (c2 ushr 2)).toByte()
+        }
+        return out
     }
 }

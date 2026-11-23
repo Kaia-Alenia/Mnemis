@@ -133,6 +133,50 @@ class KoalaSyncProtocolTest {
     }
 
     @Test
+    fun chatCrypto_derivesDeterministicDefaultSecretAndAllowsMutualChat() {
+        val room = "sala-compartida-10"
+        val secret1 = KoalaSyncChatCrypto.deriveDefaultSecret(room)
+        val secret2 = KoalaSyncChatCrypto.deriveDefaultSecret(room)
+        val otherRoomSecret = KoalaSyncChatCrypto.deriveDefaultSecret("otra-sala-20")
+
+        assertEquals(secret1, secret2)
+        assertTrue(secret1 != otherRoomSecret)
+        assertTrue(KoalaSyncChatCrypto.isValidSecret(secret1))
+
+        // Cliente A cifra con la clave por defecto de la sala
+        val messageA = "¡Hola desde cliente A! 👋🍿"
+        val cipherA = KoalaSyncChatCrypto.encrypt(messageA, room, "peer-A", secret1)
+
+        // Cliente B descifra con su clave por defecto de la misma sala
+        val decryptedB = KoalaSyncChatCrypto.decrypt(cipherA, room, "peer-A", secret2)
+        assertEquals(messageA, decryptedB)
+
+        // Probar varias longitudes de mensaje (1 carácter, medio, largo)
+        val singleChar = "a"
+        val cipherChar = KoalaSyncChatCrypto.encrypt(singleChar, room, "peer-B", secret2)
+        val decryptedChar = KoalaSyncChatCrypto.decrypt(cipherChar, room, "peer-B", secret1)
+        assertEquals(singleChar, decryptedChar)
+    }
+
+    @Test
+    fun chatCrypto_base64UrlEncodesAndDecodesAllResidualLengths() {
+        // Test de 1 a 64 bytes para validar restos 0, 1, 2
+        for (len in 1..64) {
+            val bytes = ByteArray(len) { idx -> (idx * 7 + 13).toByte() }
+            val encoded = KoalaSyncChatCrypto.encodeBase64Url(bytes)
+            assertFalse(encoded.contains("+"))
+            assertFalse(encoded.contains("/"))
+            assertFalse(encoded.contains("="))
+            val decoded = KoalaSyncChatCrypto.decodeBase64Url(encoded)
+            assertNotNull("Fallo al decodificar longitud $len", decoded)
+            assertEquals("Longitud no coincide para $len", len, decoded!!.size)
+            for (i in 0 until len) {
+                assertEquals(bytes[i], decoded[i])
+            }
+        }
+    }
+
+    @Test
     fun pluginRegistry_allowsCustomPluginRegistrationAndUrlMatching() {
         val customPlugin = object : MnemisPlugin {
             override val id = "test_custom_plugin"

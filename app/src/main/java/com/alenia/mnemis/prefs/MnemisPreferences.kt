@@ -33,7 +33,7 @@ class MnemisPreferences(context: Context) {
         set(value) = prefs.edit().putBoolean(KEY_KOALASYNC_ENABLED, value).apply()
 
     fun isPluginInstalled(pluginId: String): Boolean {
-        if (pluginId == PLUGIN_KOALASYNC || pluginId == PLUGIN_ADBLOCK || pluginId == PLUGIN_YOUTUBE_SPA) {
+        if (pluginId == PLUGIN_KOALASYNC || pluginId == PLUGIN_ADBLOCK || pluginId == PLUGIN_YOUTUBE_SPA || pluginId == PLUGIN_FUSE) {
             return true
         }
         return prefs.getBoolean("plugin_installed_$pluginId", false)
@@ -86,8 +86,23 @@ class MnemisPreferences(context: Context) {
         )
     }
 
+    /**
+     * Stable unique device peerId for KoalaSync rooms.
+     * Prevents ghost/zombie sessions across reconnects and activity handovers,
+     * allowing the relay server to perform instant deduplication.
+     */
+    fun getOrCreatePeerId(): String {
+        var id = prefs.getString(KEY_PEER_ID, null)
+        if (id.isNullOrBlank()) {
+            id = "mnemis-" + java.util.UUID.randomUUID().toString().replace("-", "").take(8)
+            prefs.edit().putString(KEY_PEER_ID, id).apply()
+        }
+        return id
+    }
+
     companion object {
         private const val PREFS_NAME = "mnemis_prefs"
+        private const val KEY_PEER_ID = "mnemis_peer_id"
         private const val KEY_USERNAME = "default_username"
         private const val KEY_SERVER_URL = "relay_server_url"
         private const val KEY_ADBLOCK_ENABLED = "adblock_enabled"
@@ -100,6 +115,7 @@ class MnemisPreferences(context: Context) {
         const val PLUGIN_KOALASYNC = "koalasync"
         const val PLUGIN_ADBLOCK = "web_adblock"
         const val PLUGIN_YOUTUBE_SPA = "youtube_spa"
+        const val PLUGIN_FUSE = "alenia_fuse"
     }
 }
 

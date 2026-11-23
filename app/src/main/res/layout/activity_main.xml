@@ -413,6 +413,66 @@
                             android:textColor="@color/text_primary"
                             app:strokeColor="@color/divider_subtle" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnQuickCrunchyroll"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Crunchyroll"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_primary"
+                            app:strokeColor="@color/divider_subtle" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnQuickKick"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:text="Kick"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_primary"
+                            app:strokeColor="@color/divider_subtle" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnQuickDailymotion"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Dailymotion"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_primary"
+                            app:strokeColor="@color/divider_subtle" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnQuickJellyfin"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:text="Jellyfin / Emby"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_primary"
+                            app:strokeColor="@color/divider_subtle" />
+                    </LinearLayout>
                 </LinearLayout>
             </ScrollView>
 
