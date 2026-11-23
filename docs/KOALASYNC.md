@@ -39,9 +39,9 @@ La implementación gestiona datos de sala, errores, modo de control, play, pause
 
 ## Web playback
 
-For HTML5 video sources, `KoalaSyncWebBridge` connects JavaScript video state to the native client. WebView integrations must validate navigation, avoid exposing privileged native methods, and never inject secrets into page content.
+For HTML5 video sources, `KoalaSyncWebBridge` connects JavaScript video state to the native client. When the room host navigates to a new video (including YouTube autoplay transitions), Mnemis broadcasts the normalized media URL over the encrypted room channel and automatically aligns connected peers to the same video. WebView integrations must validate navigation, avoid exposing privileged native methods, and never inject secrets into page content.
 
-Para fuentes de video HTML5, `KoalaSyncWebBridge` conecta el estado JavaScript con el cliente nativo. Las integraciones WebView deben validar la navegación, evitar exponer métodos nativos privilegiados y nunca inyectar secretos en el contenido de la página.
+Para fuentes de video HTML5, `KoalaSyncWebBridge` conecta el estado JavaScript con el cliente nativo. Cuando el líder de la sala cambia de video (incluyendo transiciones por reproducción automática en YouTube), Mnemis transmite la URL del medio por el canal cifrado de la sala y alinea automáticamente a los participantes al mismo video. Las integraciones WebView deben validar la navegación, evitar exponer métodos nativos privilegiados y nunca inyectar secretos en el contenido de la página.
 
 ## Compatibility
 

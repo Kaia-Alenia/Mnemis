@@ -155,17 +155,6 @@
             android:contentDescription="Rotación"
             android:src="@drawable/ic_rotate"
             app:tint="@color/white" />
-
-        <!-- Botón Picture in Picture -->
-        <ImageButton
-            android:id="@+id/btnPip"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/pip_button"
-            android:src="@drawable/ic_pip"
-            app:tint="@color/white" />
     </LinearLayout>
     <FrameLayout
         android:id="@+id/layoutConnectingOverlay"

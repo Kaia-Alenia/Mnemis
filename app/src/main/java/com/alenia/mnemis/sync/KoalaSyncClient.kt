@@ -37,6 +37,7 @@ class KoalaSyncClient(
         fun onRemotePause(senderId: String, currentTimeSeconds: Double?)
         fun onRemoteSeek(senderId: String, targetTimeSeconds: Double)
         fun onRemoteDriftCheck(senderId: String, expectedTimeSeconds: Double) {}
+        fun onRemoteMediaUrlChanged(senderId: String, mediaUrl: String) {}
         fun onSyncError(message: String)
     }
 
@@ -51,7 +52,8 @@ class KoalaSyncClient(
         val roomId: String? = null,
         val peerCount: Int = 0,
         val controlMode: String = KoalaSyncProtocol.ControlModes.EVERYONE,
-        val isController: Boolean = true
+        val isController: Boolean = true,
+        val isHost: Boolean = false
     )
 
     data class PlaybackSnapshot(
@@ -103,6 +105,9 @@ class KoalaSyncClient(
     private var currentHostPeerId: String? = null
 
     @Volatile
+    private var lastBroadcastMediaUrl: String? = null
+
+    @Volatile
     internal var halfRttSeconds: Double = 0.0
         private set
 
@@ -137,6 +142,31 @@ class KoalaSyncClient(
 
     fun getActiveChatSecret(): String? = activeChatSecret
 
+    fun isHost(): Boolean {
+        val state = _roomState.value
+        return state.connectionState == ConnectionState.CONNECTED && state.isHost
+    }
+
+    /**
+     * Transmite la URL del medio actual del líder a todos los Mnemis de la sala
+     * por el canal cifrado E2E (invisible en el historial de chat).
+     */
+    fun broadcastMediaUrl(url: String): Boolean {
+        val roomId = activeRoomId ?: return false
+        val secret = activeChatSecret ?: return false
+        val cleanUrl = url.trim()
+        if (cleanUrl.isEmpty() || !isHost()) return false
+        lastBroadcastMediaUrl = cleanUrl
+        return try {
+            val controlText = "$MEDIA_URL_CONTROL_PREFIX$cleanUrl"
+            val ciphertext = KoalaSyncChatCrypto.encrypt(controlText, roomId, peerId, secret)
+            sendEvent(KoalaSyncProtocol.Events.CHAT_MESSAGE, KoalaSyncProtocol.buildChatMessagePayload(ciphertext))
+            true
+        } catch (_: Exception) {
+            false
+        }
+    }
+
     fun sendChatMessage(text: String): Boolean {
         val roomId = activeRoomId ?: return false
         val secret = activeChatSecret ?: return false
@@ -164,6 +194,7 @@ class KoalaSyncClient(
         if (clearTargetRoom) {
             manualDisconnect = true
             activeRoomId = null
+            lastBroadcastMediaUrl = null
             reconnectJob?.cancel()
             reconnectJob = null
         }
@@ -301,11 +332,13 @@ class KoalaSyncClient(
                 peerLastSeen.clear()
                 val now = System.currentTimeMillis()
                 val peersArray = data.optJSONArray("peers")
+                var firstPeerId: String? = null
                 if (peersArray != null) {
                     for (i in 0 until peersArray.length()) {
                         val peerObj = peersArray.optJSONObject(i) ?: continue
                         val id = peerObj.optString("peerId").orEmpty()
                         if (id.isNotEmpty()) {
+                            if (firstPeerId == null) firstPeerId = id
                             activePeers.add(id)
                             peerLastSeen[id] = now
                             val uname = peerObj.optString("username", "").takeIf { it.isNotBlank() && it != "null" }
@@ -314,14 +347,17 @@ class KoalaSyncClient(
                     }
                 }
                 val mode = data.optString("controlMode", KoalaSyncProtocol.ControlModes.EVERYONE)
-                currentHostPeerId = data.optString("hostPeerId", "").ifEmpty { null }
+                val serverHostId = data.optString("hostPeerId", "").ifEmpty { null }
+                currentHostPeerId = serverHostId ?: firstPeerId ?: peerId
+                val isHostNow = currentHostPeerId == peerId
                 val isController = computeIsController(data, mode)
                 _roomState.value = RoomState(
                     connectionState = ConnectionState.CONNECTED,
                     roomId = data.optString("roomId", activeRoomId.orEmpty()),
                     peerCount = activePeers.size.coerceAtLeast(1),
                     controlMode = mode,
-                    isController = isController
+                    isController = isController,
+                    isHost = isHostNow
                 )
                 sendLatencyPing()
                 startHeartbeat()
@@ -335,9 +371,11 @@ class KoalaSyncClient(
             KoalaSyncProtocol.Events.CONTROL_MODE -> {
                 val mode = data.optString("controlMode", KoalaSyncProtocol.ControlModes.EVERYONE)
                 currentHostPeerId = data.optString("hostPeerId", "").ifEmpty { currentHostPeerId }
+                val isHostNow = currentHostPeerId == null || currentHostPeerId == peerId
                 _roomState.value = _roomState.value.copy(
                     controlMode = mode,
-                    isController = computeIsController(data, mode)
+                    isController = computeIsController(data, mode),
+                    isHost = isHostNow
                 )
             }
             KoalaSyncProtocol.Events.PEER_STATUS -> {
@@ -349,10 +387,14 @@ class KoalaSyncClient(
                         peerUsernames.remove(remotePeerId)
                         peerLastSeen.remove(remotePeerId)
                     } else {
-                        activePeers.add(remotePeerId)
+                        val isNewPeer = activePeers.add(remotePeerId)
                         peerLastSeen[remotePeerId] = System.currentTimeMillis()
                         val uname = data.optString("username", "").takeIf { it.isNotBlank() && it != "null" }
                         if (uname != null) peerUsernames[remotePeerId] = uname
+                        // Si un invitado se acaba de unir y somos el líder, le enviamos la URL actual
+                        if ((status == "joined" || isNewPeer) && remotePeerId != peerId && isHost()) {
+                            lastBroadcastMediaUrl?.let { url -> broadcastMediaUrl(url) }
+                        }
                     }
                     _roomState.value = _roomState.value.copy(peerCount = activePeers.size.coerceAtLeast(1))
 
@@ -428,6 +470,16 @@ class KoalaSyncClient(
                 if (senderId == peerId) return // Ya fue agregado con eco optimista
 
                 val decrypted = KoalaSyncChatCrypto.decrypt(ciphertext, roomId, senderId, secret) ?: return
+
+                // Mensaje de control interno para sincronizar URL del video desde el líder
+                if (decrypted.startsWith(MEDIA_URL_CONTROL_PREFIX)) {
+                    val mediaUrl = decrypted.removePrefix(MEDIA_URL_CONTROL_PREFIX).trim()
+                    if (mediaUrl.isNotEmpty() && (currentHostPeerId == null || senderId == currentHostPeerId)) {
+                        listener.onRemoteMediaUrlChanged(senderId, mediaUrl)
+                    }
+                    return
+                }
+
                 val msg = ChatMessage(
                     id = data.optString("id", UUID.randomUUID().toString()),
                     senderId = senderId,
@@ -531,6 +583,11 @@ class KoalaSyncClient(
                     username = activeUsername
                 )
                 sendEvent(KoalaSyncProtocol.Events.PEER_STATUS, payload)
+
+                // Re-afirmar la URL del líder periódicamente para autocorregir invitados desfasados de video
+                if (isHost() && activePeers.size > 1) {
+                    lastBroadcastMediaUrl?.let { url -> broadcastMediaUrl(url) }
+                }
             }
         }
     }
@@ -572,6 +629,7 @@ class KoalaSyncClient(
 
     companion object {
         private const val TAG = "KoalaSyncClient"
+        internal const val MEDIA_URL_CONTROL_PREFIX = "__MNEMIS_URL__|"
     }
 }
 

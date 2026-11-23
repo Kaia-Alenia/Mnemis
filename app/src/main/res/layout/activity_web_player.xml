@@ -5,91 +5,90 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-    <WebView
-        android:id="@+id/webViewPlayer"
+    <!-- Contenedor principal vertical: barra de Mnemis arriba y WebView debajo para no tapar la lupa ni controles web -->
+    <LinearLayout
+        android:id="@+id/webContentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:id="@+id/webTopBar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/surface_dark"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="6dp">
+
+            <ImageButton
+                android:id="@+id/btnWebBack"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_back"
+                android:src="@drawable/ic_back"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/tvWebTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btnWebSniffer"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="2dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Streams detectados"
+                android:src="@drawable/ic_video_library"
+                android:visibility="gone"
+                app:tint="@color/teal_200" />
+
+            <ImageButton
+                android:id="@+id/btnWebChat"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="2dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/chat_title"
+                android:src="@drawable/ic_chat"
+                android:visibility="gone"
+                app:tint="@color/white" />
+
+            <ImageButton
+                android:id="@+id/btnWebKoalaSync"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="2dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="KoalaSync"
+                android:src="@drawable/ic_sync"
+                app:tint="@color/white" />
+        </LinearLayout>
+
+        <com.alenia.mnemis.ui.BackgroundWebView
+            android:id="@+id/webViewPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <!-- Contenedor Fullscreen nativo (ocupa toda la pantalla en landscape) -->
     <FrameLayout
         android:id="@+id/fullscreenContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black"
         android:visibility="gone" />
-
-    <LinearLayout
-        android:id="@+id/webTopBar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_gravity="top"
-        android:background="@drawable/bg_gradient_top"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="8dp">
-
-        <ImageButton
-            android:id="@+id/btnWebBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/cd_back"
-            android:src="@drawable/ic_back"
-            app:tint="@color/white" />
-
-        <TextView
-            android:id="@+id/tvWebTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@+id/btnWebChat"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/chat_title"
-            android:src="@drawable/ic_chat"
-            android:visibility="gone"
-            app:tint="@color/white" />
-
-        <ImageButton
-            android:id="@+id/btnWebSniffer"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Streams detectados"
-            android:src="@drawable/ic_video_library"
-            android:visibility="gone"
-            app:tint="@color/teal_200" />
-
-        <ImageButton
-            android:id="@+id/btnWebKoalaSync"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="KoalaSync"
-            android:src="@drawable/ic_sync"
-            app:tint="@color/white" />
-
-        <ImageButton
-            android:id="@+id/btnWebPip"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/pip_button"
-            android:src="@drawable/ic_pip"
-            app:tint="@color/white" />
-    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/layoutConnectingOverlay"
@@ -123,4 +122,3 @@
     </FrameLayout>
 
 </FrameLayout>
-

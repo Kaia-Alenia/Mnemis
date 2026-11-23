@@ -1,15 +1,10 @@
 package com.alenia.mnemis.ui
 
-import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo
-import android.content.res.Configuration
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import android.util.Rational
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -38,16 +33,13 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
     companion object {
         const val EXTRA_VIDEO_URI = "extra_video_uri"
         const val EXTRA_VIDEO_TITLE = "extra_video_title"
-        /** Posicion inicial en ms (para retomar un video de YouTube desde el WebView). */
+        /** Posicion inicial en ms (para retomar un video desde el WebView). */
         const val EXTRA_START_POSITION_MS = "extra_start_position_ms"
-        /** Si es true, entra a PiP solo cuando el reproductor ya este sonando. */
-        const val EXTRA_ENTER_PIP_ON_READY = "extra_enter_pip_on_ready"
         /** Credenciales de sala KoalaSync para re-unirse tras un traspaso desde el WebView. */
         const val EXTRA_ROOM_ID = "extra_room_id"
         const val EXTRA_ROOM_USERNAME = "extra_room_username"
         const val EXTRA_ROOM_PASSWORD = "extra_room_password"
         const val EXTRA_ROOM_CHAT_SECRET = "extra_room_chat_secret"
-        private const val TAG = "PlayerActivity"
     }
 
     private lateinit var binding: ActivityPlayerBinding
@@ -70,32 +62,6 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
 
     private var orientationMode = 0 // 0: Auto/Sensor, 1: Portrait, 2: Landscape
 
-    // Traspaso de YouTube desde el WebView: entrar a PiP cuando el
-    // reproductor ya este sonando (no se puede entrar a PiP antes de
-    // que la actividad este resumed y el video preparado).
-    private var pipOnReadyAttempts = 0
-    private val pipOnReadyHandler = Handler(Looper.getMainLooper())
-    private val pipOnReadyRunnable = object : Runnable {
-        override fun run() {
-            if (isFinishing || isDestroyed || isInPictureInPictureMode) return
-            val player = playerManager.exoPlayer
-            if (player != null && player.isPlaying) {
-                updatePlaybackService()
-                enterPipMode()
-                return
-            }
-            pipOnReadyAttempts++
-            if (pipOnReadyAttempts < 20) {
-                pipOnReadyHandler.postDelayed(this, 250)
-            }
-        }
-    }
-
-    private fun startEnterPipWhenReady() {
-        pipOnReadyAttempts = 0
-        pipOnReadyHandler.post(pipOnReadyRunnable)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
@@ -116,7 +82,6 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
         }
         playerManager.onIsPlayingChangedListener = { _ ->
             runOnUiThread {
-                updatePipParams()
                 updatePlaybackService()
             }
         }
@@ -144,9 +109,6 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
             prefs.saveLastPlayed(videoTitle, videoUriStr, isWeb = false)
             val startPositionMs = intent.getLongExtra(EXTRA_START_POSITION_MS, 0L)
             playerManager.playMedia(Uri.parse(videoUriStr), title = videoTitle, startPositionMs = startPositionMs)
-            if (intent.getBooleanExtra(EXTRA_ENTER_PIP_ON_READY, false)) {
-                startEnterPipWhenReady()
-            }
         } else {
             Toast.makeText(this, "No se proporcionó una URL de video válida", Toast.LENGTH_SHORT).show()
             finish()
@@ -185,10 +147,6 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
         binding.btnRotation.setOnClickListener {
             cycleOrientation()
         }
-
-        binding.btnPip.setOnClickListener {
-            enterPipMode()
-        }
     }
 
     private fun setupGestures() {
@@ -211,80 +169,6 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                 Toast.makeText(this, "Rotación: Horizontal (Landscape)", Toast.LENGTH_SHORT).show()
             }
-        }
-    }
-
-    private fun calculateSafeAspectRatio(): Rational {
-        val format = playerManager.exoPlayer?.videoFormat
-        val width = format?.width ?: 16
-        val height = format?.height ?: 9
-        if (width <= 0 || height <= 0) return Rational(16, 9)
-        // Android PiP solo admite ratios entre 1:2.39 (~0.42) y 2.39:1 (2.39)
-        val ratio = (width.toFloat() / height.toFloat()).coerceIn(0.42f, 2.38f)
-        return Rational((ratio * 1000).toInt(), 1000)
-    }
-
-    private fun updatePipParams() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val rational = calculateSafeAspectRatio()
-            val builder = PictureInPictureParams.Builder()
-                .setAspectRatio(rational)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val isPlaying = playerManager.exoPlayer?.isPlaying == true
-                builder.setAutoEnterEnabled(isPlaying)
-                builder.setSeamlessResizeEnabled(true)
-            }
-            try {
-                setPictureInPictureParams(builder.build())
-            } catch (e: Exception) {
-                Log.w(TAG, "Error setting PiP params: ${e.message}")
-            }
-        }
-    }
-
-    private fun enterPipMode() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val rational = calculateSafeAspectRatio()
-            val params = PictureInPictureParams.Builder()
-                .setAspectRatio(rational)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                params.setAutoEnterEnabled(true)
-                params.setSeamlessResizeEnabled(true)
-            }
-            try {
-                enterPictureInPictureMode(params.build())
-            } catch (e: Exception) {
-                Toast.makeText(this, "No se pudo entrar a PiP: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            Toast.makeText(this, "PiP no compatible con esta versión de Android", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun onUserLeaveHint() {
-        super.onUserLeaveHint()
-        // En Android 12+ (API 31+), setAutoEnterEnabled(true) se encarga de la transición fluida.
-        // En versiones anteriores (Android 8 a 11), invocamos enterPipMode manualmente.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            if (playerManager.exoPlayer?.isPlaying == true) {
-                enterPipMode()
-            }
-        }
-    }
-
-    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
-        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
-        if (isInPictureInPictureMode) {
-            binding.topBar.visibility = View.GONE
-            binding.layoutGestureFeedback.visibility = View.GONE
-            binding.gestureTouchView.visibility = View.GONE
-            binding.playerView.useController = false
-        } else {
-            binding.topBar.visibility = View.VISIBLE
-            binding.gestureTouchView.visibility = View.VISIBLE
-            binding.playerView.useController = true
-            binding.playerView.requestLayout()
-            hideSystemUI()
         }
     }
 
@@ -368,27 +252,20 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
 
     override fun onStart() {
         super.onStart()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !isInPictureInPictureMode) {
-            binding.playerView.player = playerManager.exoPlayer
-        }
-        updatePipParams()
+        binding.playerView.player = playerManager.exoPlayer
     }
 
     override fun onResume() {
         super.onResume()
         hideSystemUI()
-        updatePipParams()
         updatePlaybackService()
     }
 
     override fun onStop() {
         super.onStop()
-        // Si la app pasa a segundo plano o se apaga la pantalla (y no estamos en PiP):
-        // Desvinculamos el PlayerView para que la destrucción del SurfaceView
-        // no detenga la decodificación de audio de fondo.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !isInPictureInPictureMode) {
-            binding.playerView.player = null
-        }
+        // Al pasar a segundo plano o apagar la pantalla, desvinculamos el PlayerView
+        // para que la destrucción de superficie no detenga la reproducción de audio en segundo plano.
+        binding.playerView.player = null
     }
 
     private fun setupKoalaSync() {
@@ -557,7 +434,6 @@ class PlayerActivity : AppCompatActivity(), PlayerGestureHelper.GestureListener 
 
     override fun onDestroy() {
         super.onDestroy()
-        pipOnReadyHandler.removeCallbacksAndMessages(null)
         hideFeedbackHandler.removeCallbacksAndMessages(null)
         hideControlsHandler.removeCallbacksAndMessages(null)
         koalaSyncClient.disconnect()

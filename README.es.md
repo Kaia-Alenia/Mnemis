@@ -23,6 +23,48 @@ Reúne la reproducción local, los streams web directos y las salas sincronizada
 
 [Read this in English](README.md)
 
+## Vista previa
+
+<p align="center">
+  <img src="assets/screenshots/mnemis-to-mnemis-sync.png" width="760" alt="Reproducción sincronizada Mnemis a Mnemis en dos dispositivos Android">
+  <br>
+  <sub><b>Watch Party Mnemis a Mnemis:</b> dos dispositivos Android conectados a la misma sala de KoalaSync reproduciendo exactamente el mismo video en sincronía (0:27 / 1:37).</sub>
+</p>
+
+<table>
+  <tr>
+    <td align="center" width="25%">
+      <img src="assets/screenshots/home.png" width="190" alt="Pantalla de inicio">
+      <br><sub><b>Inicio y Seguir viendo</b></sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="assets/screenshots/menu.png" width="190" alt="Menú lateral">
+      <br><sub><b>Menú de navegación</b></sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="assets/screenshots/web-streaming.png" width="190" alt="Accesos rápidos de Web y Streaming">
+      <br><sub><b>Web / Streaming</b></sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="assets/screenshots/plugins.png" width="190" alt="Gestor de plugins integrados">
+      <br><sub><b>Plugins modulares</b></sub>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="assets/screenshots/room-status.png" width="370" alt="Diálogo de estado de sala KoalaSync en ambos dispositivos">
+      <br><sub><b>Estado de la sala KoalaSync</b> — participantes en vivo y modo de control</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="assets/screenshots/room-chat.png" width="370" alt="Chat de sala cifrado de extremo a extremo en ambos dispositivos">
+      <br><sub><b>Chat E2E en vivo</b> — mensajes cifrados y reacciones rápidas</sub>
+    </td>
+  </tr>
+</table>
+
 ## Por qué Mnemis
 
 - **Primero los plugins**: El núcleo del reproductor se mantiene pequeño. Las fuentes y las integraciones de reproducción son plugins, así que se pueden agregar nuevos servicios sin cambiar el núcleo.
@@ -95,6 +137,7 @@ La integración admite:
 - Salas identificadas mediante un room ID.
 - Modos de control `everyone` y `host-only`.
 - Sincronización con números de secuencia y corrección de desfase.
+- Sincronización automática de siguiente video liderada por el anfitrión: cuando termina un video y avanza por reproducción automática (o el líder cambia de video), los demás Mnemis de la sala siguen automáticamente el mismo video.
 - Heartbeat y reconexión automática.
 - Reproducción web mediante un puente JavaScript para fuentes HTML5.
 

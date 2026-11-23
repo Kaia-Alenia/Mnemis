@@ -13,7 +13,8 @@ import kotlin.coroutines.resume
 class KoalaSyncWebBridge(
     private val webView: WebView,
     private val syncClient: KoalaSyncClient,
-    private val onRunOnUiThread: (() -> Unit) -> Unit
+    private val onRunOnUiThread: (() -> Unit) -> Unit,
+    private val onUrlChanged: ((String) -> Unit)? = null
 ) {
 
     @Volatile
@@ -56,6 +57,13 @@ class KoalaSyncWebBridge(
             currentTimeSeconds = if (currentTimeSeconds.isNaN()) 0.0 else currentTimeSeconds,
             mediaTitle = title?.takeIf { it.isNotBlank() }
         )
+    }
+
+    @JavascriptInterface
+    fun onUrlChanged(newUrl: String?) {
+        if (!newUrl.isNullOrBlank()) {
+            onUrlChanged?.invoke(newUrl)
+        }
     }
 
     suspend fun getLatestSnapshot(): KoalaSyncClient.PlaybackSnapshot {
@@ -177,7 +185,16 @@ class KoalaSyncWebBridge(
                 let mutedByAdSkip = false;
                 let scanTimer = null;
                 let rateResetTimer = null;
+                let lastReportedUrl = location.href;
                 const boundVideos = new WeakSet();
+
+                function reportUrlIfChanged() {
+                    const currentHref = location.href;
+                    if (currentHref && currentHref !== lastReportedUrl) {
+                        lastReportedUrl = currentHref;
+                        window.$JS_INTERFACE_NAME && window.$JS_INTERFACE_NAME.onUrlChanged(currentHref);
+                    }
+                }
 
                 function isSuppressed() {
                     return Date.now() < suppressUntil;
@@ -351,8 +368,13 @@ class KoalaSyncWebBridge(
                     boundVideos.add(video);
 
                     video.addEventListener('play', () => {
+                        reportUrlIfChanged();
                         if (isSuppressed() || isAdShowing()) return;
                         window.$JS_INTERFACE_NAME && window.$JS_INTERFACE_NAME.onPlay(video.currentTime || 0);
+                    });
+
+                    video.addEventListener('loadedmetadata', () => {
+                        reportUrlIfChanged();
                     });
 
                     video.addEventListener('pause', () => {
@@ -390,8 +412,16 @@ class KoalaSyncWebBridge(
                 if (document.documentElement) {
                     observer.observe(document.documentElement, { childList: true, subtree: true });
                 }
-                setInterval(() => trySkipAd(), 800);
-                window.addEventListener('yt-navigate-finish', () => setTimeout(scan, 300));
+                setInterval(() => {
+                    trySkipAd();
+                    reportUrlIfChanged();
+                }, 800);
+                window.addEventListener('yt-navigate-finish', () => {
+                    reportUrlIfChanged();
+                    setTimeout(scan, 300);
+                });
+                window.addEventListener('popstate', () => reportUrlIfChanged());
+                window.addEventListener('hashchange', () => reportUrlIfChanged());
 
                 window.__mnemisKoalaSync = {
                     scan,

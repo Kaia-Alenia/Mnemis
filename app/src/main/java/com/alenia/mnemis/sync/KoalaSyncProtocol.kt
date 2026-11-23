@@ -148,5 +148,68 @@ object KoalaSyncProtocol {
             if (!username.isNullOrBlank()) put("username", username.take(30))
         }
     }
+
+    /**
+     * Valida que una URL remota sea segura para cargarse en WebView (solo http/https con host válido).
+     */
+    fun isSafeWebMediaUrl(url: String?): Boolean {
+        if (url.isNullOrBlank()) return false
+        val trimmed = url.trim()
+        if (trimmed.any { it.isWhitespace() || it.isISOControl() }) return false
+        return try {
+            val uri = java.net.URI(trimmed)
+            val scheme = uri.scheme?.lowercase()
+            val host = uri.host
+            (scheme == "http" || scheme == "https") && !host.isNullOrBlank()
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    /**
+     * Normaliza la identidad de un medio web para detectar si dos URLs apuntan al mismo video
+     * (por ejemplo, m.youtube.com vs www.youtube.com o parámetros extra como &t= o &list=).
+     */
+    fun normalizeMediaIdentity(url: String?): String {
+        if (url.isNullOrBlank()) return ""
+        val trimmed = url.trim()
+        return try {
+            val uri = java.net.URI(trimmed)
+            val host = (uri.host ?: return trimmed).lowercase().removePrefix("www.").removePrefix("m.")
+            val path = uri.path.orEmpty()
+
+            if (host == "youtube.com" || host == "music.youtube.com") {
+                extractQueryParam(uri.rawQuery, "v")?.let { return "yt:$it" }
+                val segments = path.split('/').filter { it.isNotEmpty() }
+                if (segments.size >= 2 && segments[0] in setOf("shorts", "embed", "live")) {
+                    return "yt:${segments[1]}"
+                }
+            } else if (host == "youtu.be") {
+                val videoId = path.trim('/').substringBefore('/')
+                if (videoId.isNotEmpty()) return "yt:$videoId"
+            }
+
+            val scheme = (uri.scheme ?: "https").lowercase()
+            val cleanPath = path.trimEnd('/')
+            val query = uri.rawQuery?.takeIf { it.isNotBlank() }?.let { "?$it" } ?: ""
+            "$scheme://$host$cleanPath$query"
+        } catch (_: Exception) {
+            trimmed
+        }
+    }
+
+    private fun extractQueryParam(rawQuery: String?, key: String): String? {
+        if (rawQuery.isNullOrBlank()) return null
+        for (pair in rawQuery.split('&')) {
+            val eqIdx = pair.indexOf('=')
+            if (eqIdx <= 0) continue
+            val k = pair.substring(0, eqIdx)
+            if (k == key) {
+                val value = pair.substring(eqIdx + 1).trim()
+                if (value.isNotEmpty()) return value
+            }
+        }
+        return null
+    }
 }
 

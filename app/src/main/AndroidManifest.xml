@@ -46,8 +46,6 @@
             android:name=".ui.PlayerActivity"
             android:exported="true"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden"
-            android:supportsPictureInPicture="true"
-            android:resizeableActivity="true"
             android:launchMode="singleTop">
 
             <!-- Reproducir archivos de video locales -->
@@ -71,9 +69,7 @@
         <activity
             android:name=".ui.WebPlayerActivity"
             android:exported="false"
-            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden"
-            android:supportsPictureInPicture="true"
-            android:resizeableActivity="true" />
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

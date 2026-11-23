@@ -256,5 +256,27 @@ class KoalaSyncProtocolTest {
 
         assertNull(MnemisUpdater.parseReleaseJson(releaseJson, "1.2.0"))
     }
+
+    @Test
+    fun mediaUrlHelpers_validateSafetyAndNormalizeYouTubeIdentities() {
+        assertTrue(KoalaSyncProtocol.isSafeWebMediaUrl("https://m.youtube.com/watch?v=dQw4w9WgXcQ"))
+        assertTrue(KoalaSyncProtocol.isSafeWebMediaUrl("http://example.com/video.mp4"))
+        assertFalse(KoalaSyncProtocol.isSafeWebMediaUrl("javascript:alert(1)"))
+        assertFalse(KoalaSyncProtocol.isSafeWebMediaUrl("file:///etc/passwd"))
+        assertFalse(KoalaSyncProtocol.isSafeWebMediaUrl("   "))
+        assertFalse(KoalaSyncProtocol.isSafeWebMediaUrl(null))
+
+        val mobileYt = KoalaSyncProtocol.normalizeMediaIdentity("https://m.youtube.com/watch?v=abc123XYZ&t=42s")
+        val desktopYt = KoalaSyncProtocol.normalizeMediaIdentity("https://www.youtube.com/watch?v=abc123XYZ&list=RDabc123XYZ")
+        val shortLinkYt = KoalaSyncProtocol.normalizeMediaIdentity("https://youtu.be/abc123XYZ?si=sharetoken")
+        val shortsYt = KoalaSyncProtocol.normalizeMediaIdentity("https://m.youtube.com/shorts/abc123XYZ")
+        val otherYt = KoalaSyncProtocol.normalizeMediaIdentity("https://m.youtube.com/watch?v=different999")
+
+        assertEquals("yt:abc123XYZ", mobileYt)
+        assertEquals(mobileYt, desktopYt)
+        assertEquals(mobileYt, shortLinkYt)
+        assertEquals(mobileYt, shortsYt)
+        assertFalse(mobileYt == otherYt)
+    }
 }
 

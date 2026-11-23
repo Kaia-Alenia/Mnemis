@@ -23,6 +23,48 @@ It brings local playback, direct web streams, and synchronized watch parties tog
 
 [Read this in Spanish](README.es.md)
 
+## Preview
+
+<p align="center">
+  <img src="assets/screenshots/mnemis-to-mnemis-sync.png" width="760" alt="Mnemis-to-Mnemis synchronized playback on two Android devices">
+  <br>
+  <sub><b>Mnemis-to-Mnemis Watch Party:</b> two Android devices connected to the same KoalaSync room playing the exact same video in sync (0:27 / 1:37).</sub>
+</p>
+
+<table>
+  <tr>
+    <td align="center" width="25%">
+      <img src="assets/screenshots/home.png" width="190" alt="Home screen">
+      <br><sub><b>Home & Continue Watching</b></sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="assets/screenshots/menu.png" width="190" alt="Navigation menu">
+      <br><sub><b>Navigation Drawer</b></sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="assets/screenshots/web-streaming.png" width="190" alt="Web and streaming shortcuts">
+      <br><sub><b>Web / Streaming Hub</b></sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="assets/screenshots/plugins.png" width="190" alt="Built-in plugins manager">
+      <br><sub><b>Modular Plugins</b></sub>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="assets/screenshots/room-status.png" width="370" alt="KoalaSync room status dialog on two devices">
+      <br><sub><b>KoalaSync Room Status</b> — live participant count & control mode</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="assets/screenshots/room-chat.png" width="370" alt="End-to-end encrypted room chat on two devices">
+      <br><sub><b>Live E2E Room Chat</b> — encrypted messages & quick reactions</sub>
+    </td>
+  </tr>
+</table>
+
 ## Why Mnemis
 
 - **Plugin-first**: The player core stays small. Sources and playback integrations ship as plugins, so new services can be added without changing the core player.
@@ -95,6 +137,7 @@ The integration supports:
 - Room discovery through a room ID.
 - `everyone` and `host-only` control modes.
 - Playback synchronization with sequence numbers and drift correction.
+- Automatic host-led next-video synchronization: when a video finishes and autoplays (or the host navigates to another video), all connected Mnemis peers follow the host's video automatically.
 - Automatic heartbeat and reconnect handling.
 - Web playback through a JavaScript bridge for HTML5 video sources.
 
