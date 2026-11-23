@@ -15,7 +15,7 @@
 
 <p align="center"><i>Un reproductor de video extensible para Android con salas nativas de KoalaSync. Reproduce archivos locales, streams directos y reproductores web en un solo lugar, y mira contenido en grupo y en sincronía.</i></p>
 
-<p align="center"><a href="https://github.com/Kaia-Alenia/Mnemis/releases"><b>Última versión: v1.0.2</b> — Ver qué cambió</a></p>
+<p align="center"><a href="CHANGELOG.md"><b>Última versión: v1.0.9</b> — Ver qué cambió en el Changelog</a></p>
 
 **Mnemis es un reproductor de video extensible para Android desarrollado por Alenia Studios.**
 

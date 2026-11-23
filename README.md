@@ -15,7 +15,7 @@
 
 <p align="center"><i>An extensible Android video player with native KoalaSync watch parties. Play local files, direct streams and web players in one place, and watch together in sync.</i></p>
 
-<p align="center"><a href="https://github.com/Kaia-Alenia/Mnemis/releases"><b>Latest release: v1.0.2</b> — See what's changed</a></p>
+<p align="center"><a href="CHANGELOG.md"><b>Latest release: v1.0.9</b> — See what's changed in the Changelog</a></p>
 
 **Mnemis is an extensible Android video player built by Alenia Studios.**
 
